@@ -1,15 +1,22 @@
 package DataStructureAndAlgorithms;
 
-import DataStructureAndAlgorithms.Solutions.*;
+import DataStructureAndAlgorithms.Base_Solution.SolutionKind;
+import DataStructureAndAlgorithms.Solutions.Array.*;
 
 public class Run_Solutions {
     public static void main(String[] args) {
-        Base_Solution solution = new Largest_Sum_Contiguous_Subarray();
+        // int[] arr = { 1, -2, -3, 4, 5, -6, 7, -8 };
+        // Base_Solution solution = new Largest_Sum_Contiguous_Subarray(arr);
+        // solution.solve();
 
-        int[] arr = { -2, -3, 4, -1, -2, 1, 5, -3 };
+        int[][] arr = { { 10, 20, 30, 40 },
+                { 15, 25, 35, 45 },
+                { 27, 29, 37, 48 },
+                { 32, 33, 39, 50 } };
 
-        int result = solution.solution(arr);
+        Base_Solution solution = new Search_Row_And_Column_Wise_In_Matrix(arr, 4, 29,
+                SolutionKind.LinearTime);
+        solution.solve();
 
-        System.out.println("Largest sum contiguous subarray: " + result);
     }
 }

@@ -1,6 +1,12 @@
 package DataStructureAndAlgorithms;
 
-public abstract class Base_Solution {
-    @SuppressWarnings("unchecked")
-    public abstract <T, R> R solution(T... args);
+public interface Base_Solution {
+    enum SolutionKind {
+        LinearTime,
+        LogarthmicTime,
+        ConstantTime,
+        ParabolicTime
+    };
+
+    void solve();
 }
