@@ -20,11 +20,15 @@ public class Run_Solutions {
         // SolutionKind.LinearTime);
         // solution.solve();
 
-        int[][] arr = { { 10, 20, 30, 40 },
-                { 15, 25, 35, 45 },
-                { 27, 29, 37, 48 },
-                { 32, 33, 39, 50 } };
-        Print_Matrix_In_Spiral solution = new Print_Matrix_In_Spiral(arr);
+        // int[][] arr = { { 10, 20, 30, 40 },
+        // { 15, 25, 35, 45 },
+        // { 27, 29, 37, 48 },
+        // { 32, 33, 39, 50 } };
+        // Print_Matrix_In_Spiral solution = new Print_Matrix_In_Spiral(arr);
+        // solution.solve();
+
+        int[] arr = { 3, 4, 5, 6, 7, 1, 2 };
+        Rotate_Array_By_Given_Position solution = new Rotate_Array_By_Given_Position(arr, 2);
         solution.solve();
 
     }
