@@ -6,21 +6,42 @@ import DataStructureAndAlgorithms.Base_Solution;
 
 public class Search_Row_And_Column_Wise_In_Matrix implements Base_Solution {
 
-    private final int[][] martix;
-    private final int length;
-    private final int key;
-    private final SolutionKind solutionKind;
+    private int[][] matrix;
+    private int key;
+    private SolutionKind solutionKind;
 
-    public Search_Row_And_Column_Wise_In_Matrix(int[][] martix, int length, int key, SolutionKind solutionKind) {
-        this.martix = martix;
-        this.length = length;
+    public int[][] getMatrix() {
+        return matrix;
+    }
+
+    public void setMatrix(int[][] matrix) {
+        this.matrix = matrix;
+    }
+
+    public int getKey() {
+        return key;
+    }
+
+    public void setKey(int key) {
+        this.key = key;
+    }
+
+    public SolutionKind getSolutionKind() {
+        return solutionKind;
+    }
+
+    public void setSolutionKind(SolutionKind solutionKind) {
+        this.solutionKind = solutionKind;
+    }
+
+    public Search_Row_And_Column_Wise_In_Matrix(int[][] martix, int key, SolutionKind solutionKind) {
+        this.matrix = martix;
         this.key = key;
         this.solutionKind = solutionKind;
     }
 
-    public Search_Row_And_Column_Wise_In_Matrix(int[][] martix, int length, int key) {
-        this.martix = martix;
-        this.length = length;
+    public Search_Row_And_Column_Wise_In_Matrix(int[][] martix, int key) {
+        this.matrix = martix;
         this.key = key;
         this.solutionKind = null;
     }
@@ -28,9 +49,9 @@ public class Search_Row_And_Column_Wise_In_Matrix implements Base_Solution {
     public int[] findElementInSortedMatrix_DivideAndConquer() {
         int[] answer = new int[2];
 
-        for (int i = 0; i < length; i++) {
-            for (int j = 0; j < length; j++) {
-                answer = DivideAndConquer(martix, 0, length - 1, 0, length - 1, key);
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                answer = DivideAndConquer(matrix, 0, matrix.length - 1, 0, matrix[0].length - 1, key);
             }
         }
         return answer;
@@ -75,12 +96,12 @@ public class Search_Row_And_Column_Wise_In_Matrix implements Base_Solution {
 
     public int[] findElementInSortedMatrix_LinearTime() {
         int i = 0;
-        int j = length - 1;
-        while (i < length && j >= 0) {
-            if (martix[i][j] == key)
+        int j = matrix[0].length - 1;
+        while (i < matrix.length && j >= 0) {
+            if (matrix[i][j] == key)
                 return new int[] { i, j };
 
-            if (martix[i][j] > key)
+            if (matrix[i][j] > key)
                 j--;
             else
                 i++;
@@ -90,17 +111,21 @@ public class Search_Row_And_Column_Wise_In_Matrix implements Base_Solution {
 
     @Override
     public void solve() {
-        switch (solutionKind) {
-            case LogarthmicTime:
-                printSolution(findElementInSortedMatrix_DivideAndConquer(),
-                        String.valueOf(SolutionKind.LogarthmicTime));
-                break;
-            case LinearTime:
-                printSolution(findElementInSortedMatrix_LinearTime(), String.valueOf(SolutionKind.LinearTime));
-                break;
-            default:
-                printSolution(findElementInSortedMatrix_LinearTime(), String.valueOf(SolutionKind.LinearTime));
-                break;
+        if (solutionKind != null) {
+            switch (solutionKind) {
+                case LogarthmicTime:
+                    printSolution(findElementInSortedMatrix_DivideAndConquer(),
+                            String.valueOf(SolutionKind.LogarthmicTime));
+                    break;
+                case LinearTime:
+                    printSolution(findElementInSortedMatrix_LinearTime(), String.valueOf(SolutionKind.LinearTime));
+                    break;
+                default:
+                    printSolution(findElementInSortedMatrix_LinearTime(), String.valueOf(SolutionKind.LinearTime));
+                    break;
+            }
+        } else {
+            printSolution(findElementInSortedMatrix_LinearTime(), String.valueOf(SolutionKind.LinearTime));
         }
     }
 
