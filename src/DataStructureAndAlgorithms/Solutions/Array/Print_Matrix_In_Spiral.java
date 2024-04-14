@@ -3,19 +3,11 @@ package DataStructureAndAlgorithms.Solutions.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-import DataStructureAndAlgorithms.Base_Solution;
+import DataStructureAndAlgorithms.ISolvable;
 
-public class Print_Matrix_In_Spiral implements Base_Solution {
+public class Print_Matrix_In_Spiral implements ISolvable {
 
-    private int[][] matrix;
-
-    public void setMatrix(int[][] matrix) {
-        this.matrix = matrix;
-    }
-
-    public int[][] getMatrix() {
-        return matrix;
-    }
+    private final int[][] matrix;
 
     public Print_Matrix_In_Spiral(int[][] matrix) {
         this.matrix = matrix;
@@ -50,7 +42,7 @@ public class Print_Matrix_In_Spiral implements Base_Solution {
     }
 
     @Override
-    public void solve() {
+    public void solve(SolutionKind solutionKind) {
         System.out.println(printMatrixInSpiral().toString());
     }
 

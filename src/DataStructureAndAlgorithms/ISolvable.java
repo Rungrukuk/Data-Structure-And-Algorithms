@@ -1,6 +1,6 @@
 package DataStructureAndAlgorithms;
 
-public interface Base_Solution {
+public interface ISolvable {
     enum SolutionKind {
         LinearTime,
         LogarthmicTime,
@@ -8,5 +8,5 @@ public interface Base_Solution {
         ParabolicTime
     };
 
-    void solve();
+    void solve(SolutionKind solutionKind);
 }

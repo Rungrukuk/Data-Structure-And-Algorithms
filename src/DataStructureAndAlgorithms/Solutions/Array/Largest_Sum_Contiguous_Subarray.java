@@ -1,8 +1,8 @@
 package DataStructureAndAlgorithms.Solutions.Array;
 
-import DataStructureAndAlgorithms.Base_Solution;
+import DataStructureAndAlgorithms.ISolvable;
 
-public class Largest_Sum_Contiguous_Subarray implements Base_Solution {
+public class Largest_Sum_Contiguous_Subarray implements ISolvable {
 
     private final int[] arr;
 
@@ -27,7 +27,7 @@ public class Largest_Sum_Contiguous_Subarray implements Base_Solution {
     }
 
     @Override
-    public void solve() {
+    public void solve(SolutionKind solutionKind) {
         System.out.println(findLargestSumContiguousSubarray());
     }
 }

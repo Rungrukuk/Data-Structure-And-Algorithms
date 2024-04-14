@@ -1,8 +1,5 @@
 package DataStructureAndAlgorithms;
 
-// import DataStructureAndAlgorithms.Base_Solution.SolutionKind;
-import DataStructureAndAlgorithms.Solutions.Array.*;
-
 public class Run_Solutions {
     public static void main(String[] args) {
         // int[] arr = { 1, -2, -3, 4, 5, -6, 7, -8 };
@@ -10,26 +7,26 @@ public class Run_Solutions {
         // Largest_Sum_Contiguous_Subarray(arr);
         // solution.solve();
 
-        // int[][] arr = { { 10, 20, 30, 40 },
-        // { 15, 25, 35, 45 },
-        // { 27, 29, 37, 48 },
-        // { 32, 33, 39, 50 } };
-
         // Search_Row_And_Column_Wise_In_Matrix solution = new
-        // Search_Row_And_Column_Wise_In_Matrix(arr, 29,
+        // Search_Row_And_Column_Wise_In_Matrix(arr, ,
         // SolutionKind.LinearTime);
         // solution.solve();
 
-        // int[][] arr = { { 10, 20, 30, 40 },
-        // { 15, 25, 35, 45 },
-        // { 27, 29, 37, 48 },
-        // { 32, 33, 39, 50 } };
-        // Print_Matrix_In_Spiral solution = new Print_Matrix_In_Spiral(arr);
+        // Print_Matrix_In_Spiral solution = new Print_Matrix_In_Spiral();
+        // solution.printResult();
+
+        // int[] arr = { 3, 4, 5, 6, 7, 1, 2 };
+        // Rotate_Array_By_Given_Position solution = new
+        // Rotate_Array_By_Given_Position(arr, 2);
         // solution.solve();
 
-        int[] arr = { 3, 4, 5, 6, 7, 1, 2 };
-        Rotate_Array_By_Given_Position solution = new Rotate_Array_By_Given_Position(arr, 2);
-        solution.solve();
+        // int[] arr = { 0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1 };
+        // Trapping_Rain_Water solution = new Trapping_Rain_Water(arr,
+        // SolutionKind.ParabolicTime);
+        // solution.solve();
+        Solution_Manager solution_Manager = new Solution_Manager(
+                Solution_Names.Largest_Sum_Contiguous_Subarray_Contiguous, false);
+        solution_Manager.run();
 
     }
 }

@@ -2,49 +2,15 @@ package DataStructureAndAlgorithms.Solutions.Array;
 
 import java.util.Arrays;
 
-import DataStructureAndAlgorithms.Base_Solution;
+import DataStructureAndAlgorithms.ISolvable;
 
-public class Search_Row_And_Column_Wise_In_Matrix implements Base_Solution {
+public class Search_Row_And_Column_Wise_In_Matrix implements ISolvable {
 
-    private int[][] matrix;
-    private int key;
-    private SolutionKind solutionKind;
-
-    public int[][] getMatrix() {
-        return matrix;
-    }
-
-    public void setMatrix(int[][] matrix) {
-        this.matrix = matrix;
-    }
-
-    public int getKey() {
-        return key;
-    }
-
-    public void setKey(int key) {
-        this.key = key;
-    }
-
-    public SolutionKind getSolutionKind() {
-        return solutionKind;
-    }
-
-    public void setSolutionKind(SolutionKind solutionKind) {
-        this.solutionKind = solutionKind;
-    }
-
-    public Search_Row_And_Column_Wise_In_Matrix(int[][] martix, int key, SolutionKind solutionKind) {
-        this.matrix = martix;
-        this.key = key;
-        this.solutionKind = solutionKind;
-    }
-
-    public Search_Row_And_Column_Wise_In_Matrix(int[][] martix, int key) {
-        this.matrix = martix;
-        this.key = key;
-        this.solutionKind = null;
-    }
+    private final int[][] matrix = new int[][] { { 10, 20, 30, 40 },
+            { 15, 25, 35, 45 },
+            { 27, 29, 37, 48 },
+            { 32, 33, 39, 50 } };
+    private final int key = 29;
 
     public int[] findElementInSortedMatrix_DivideAndConquer() {
         int[] answer = new int[2];
@@ -110,7 +76,7 @@ public class Search_Row_And_Column_Wise_In_Matrix implements Base_Solution {
     }
 
     @Override
-    public void solve() {
+    public void solve(SolutionKind solutionKind) {
         if (solutionKind != null) {
             switch (solutionKind) {
                 case LogarthmicTime:

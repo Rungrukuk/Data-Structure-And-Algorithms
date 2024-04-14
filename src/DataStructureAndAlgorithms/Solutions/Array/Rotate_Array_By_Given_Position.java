@@ -2,9 +2,9 @@ package DataStructureAndAlgorithms.Solutions.Array;
 
 import java.util.ArrayList;
 
-import DataStructureAndAlgorithms.Base_Solution;
+import DataStructureAndAlgorithms.ISolvable;
 
-public class Rotate_Array_By_Given_Position implements Base_Solution {
+public class Rotate_Array_By_Given_Position implements ISolvable {
 
     private int[] arr;
     private int position;
@@ -44,7 +44,7 @@ public class Rotate_Array_By_Given_Position implements Base_Solution {
     }
 
     @Override
-    public void solve() {
+    public void solve(SolutionKind solutionKind) {
         System.out.println(rotateArray().toString());
     }
 
