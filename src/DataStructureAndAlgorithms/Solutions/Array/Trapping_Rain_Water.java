@@ -2,7 +2,7 @@ package DataStructureAndAlgorithms.Solutions.Array;
 
 import DataStructureAndAlgorithms.ISolvable;
 
-public class Trapping_Rain_Water implements ISolvable {
+public class Trapping_Rain_Water implements ISolvable<Integer> {
 
     private final int[] arr;
 
@@ -10,7 +10,8 @@ public class Trapping_Rain_Water implements ISolvable {
         this.arr = arr;
     }
 
-    private Integer findTrappingWater_parabolic() {
+    @Override
+    public Integer solve() {
         int answwer = 0;
 
         for (int i = 1; i < arr.length - 1; i++) {
@@ -31,29 +32,7 @@ public class Trapping_Rain_Water implements ISolvable {
     }
 
     @Override
-    public void solve(SolutionKind solutionKind) {
-        if (solutionKind != null) {
-            switch (solutionKind) {
-                case ParabolicTime:
-                    printSolution(findTrappingWater_parabolic(), SolutionKind.ParabolicTime.toString());
-                    break;
-                case LinearTime:
-                    // printSolution(findElementInSortedMatrix_LinearTime(),
-                    // String.valueOf(SolutionKind.LinearTime));
-                    break;
-                default:
-                    // printSolution(findElementInSortedMatrix_LinearTime(),
-                    // String.valueOf(SolutionKind.LinearTime));
-                    break;
-            }
-        }
-        // else {
-        // printSolution(findElementInSortedMatrix_LinearTime(),
-        // String.valueOf(SolutionKind.LinearTime));
-        // }
-    }
-
-    private void printSolution(int answer, String solutionKind) {
-        System.out.println(solutionKind + ": " + answer);
+    public void printAnswer() {
+        System.out.println(solve());
     }
 }

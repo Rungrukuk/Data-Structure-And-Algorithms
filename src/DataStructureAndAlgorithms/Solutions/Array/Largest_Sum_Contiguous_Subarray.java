@@ -2,15 +2,16 @@ package DataStructureAndAlgorithms.Solutions.Array;
 
 import DataStructureAndAlgorithms.ISolvable;
 
-public class Largest_Sum_Contiguous_Subarray implements ISolvable {
+public class Largest_Sum_Contiguous_Subarray implements ISolvable<Integer> {
 
-    private final int[] arr;
+    public final int[] arr;
 
     public Largest_Sum_Contiguous_Subarray(int[] arr) {
         this.arr = arr;
     }
 
-    public Integer findLargestSumContiguousSubarray() {
+    @Override
+    public Integer solve() {
         int maxEndingHere = 0;
         int maxSoFar = Integer.MIN_VALUE;
 
@@ -27,7 +28,7 @@ public class Largest_Sum_Contiguous_Subarray implements ISolvable {
     }
 
     @Override
-    public void solve(SolutionKind solutionKind) {
-        System.out.println(findLargestSumContiguousSubarray());
+    public void printAnswer() {
+        System.out.println(solve());
     }
 }

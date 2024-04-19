@@ -1,12 +1,7 @@
 package DataStructureAndAlgorithms;
 
-public interface ISolvable {
-    enum SolutionKind {
-        LinearTime,
-        LogarthmicTime,
-        ConstantTime,
-        ParabolicTime
-    };
+public interface ISolvable<T> {
+    T solve();
 
-    void solve(SolutionKind solutionKind);
+    void printAnswer();
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 import DataStructureAndAlgorithms.ISolvable;
 
-public class Print_Matrix_In_Spiral implements ISolvable {
+public class Print_Matrix_In_Spiral implements ISolvable<List<Integer>> {
 
     private final int[][] matrix;
 
@@ -13,7 +13,8 @@ public class Print_Matrix_In_Spiral implements ISolvable {
         this.matrix = matrix;
     }
 
-    private List<Integer> printMatrixInSpiral() {
+    @Override
+    public List<Integer> solve() {
         List<Integer> answer = new ArrayList<Integer>();
 
         int m = matrix.length, n = matrix[0].length;
@@ -42,8 +43,8 @@ public class Print_Matrix_In_Spiral implements ISolvable {
     }
 
     @Override
-    public void solve(SolutionKind solutionKind) {
-        System.out.println(printMatrixInSpiral().toString());
+    public void printAnswer() {
+        System.out.println(solve().toString());
     }
 
 }

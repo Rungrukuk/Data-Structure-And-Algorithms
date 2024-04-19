@@ -1,10 +1,11 @@
 package DataStructureAndAlgorithms.Solutions.Array;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import DataStructureAndAlgorithms.ISolvable;
 
-public class Rotate_Array_By_Given_Position implements ISolvable {
+public class Rotate_Array_By_Given_Position implements ISolvable<List<Integer>> {
 
     private int[] arr;
     private int position;
@@ -14,8 +15,9 @@ public class Rotate_Array_By_Given_Position implements ISolvable {
         this.position = position;
     }
 
-    private ArrayList<Integer> rotateArray() {
-        ArrayList<Integer> answer = new ArrayList<Integer>();
+    @Override
+    public List<Integer> solve() {
+        List<Integer> answer = new ArrayList<Integer>();
         for (int i = 0; i < arr.length; i++) {
             if (i + position < arr.length) {
                 answer.add(i, arr[position + i]);
@@ -27,25 +29,9 @@ public class Rotate_Array_By_Given_Position implements ISolvable {
         return answer;
     }
 
-    public int[] getArr() {
-        return arr;
-    }
-
-    public void setArr(int[] arr) {
-        this.arr = arr;
-    }
-
-    public int getPosition() {
-        return position;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
-    }
-
     @Override
-    public void solve(SolutionKind solutionKind) {
-        System.out.println(rotateArray().toString());
+    public void printAnswer() {
+        System.out.println(solve().toString());
     }
 
 }
