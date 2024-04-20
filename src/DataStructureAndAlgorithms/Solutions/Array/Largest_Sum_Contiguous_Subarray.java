@@ -1,8 +1,8 @@
 package DataStructureAndAlgorithms.Solutions.Array;
 
-import DataStructureAndAlgorithms.ISolvable;
+import DataStructureAndAlgorithms.Base_Solution;
 
-public class Largest_Sum_Contiguous_Subarray implements ISolvable<Integer> {
+public class Largest_Sum_Contiguous_Subarray extends Base_Solution<Integer> {
 
     public final int[] arr;
 

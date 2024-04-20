@@ -3,9 +3,9 @@ package DataStructureAndAlgorithms.Solutions.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-import DataStructureAndAlgorithms.ISolvable;
+import DataStructureAndAlgorithms.Base_Solution;
 
-public class Rotate_Array_By_Given_Position implements ISolvable<List<Integer>> {
+public class Rotate_Array_By_Given_Position extends Base_Solution<List<Integer>> {
 
     private int[] arr;
     private int position;

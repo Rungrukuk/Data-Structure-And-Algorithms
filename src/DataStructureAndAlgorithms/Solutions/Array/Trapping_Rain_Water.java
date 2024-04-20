@@ -1,8 +1,8 @@
 package DataStructureAndAlgorithms.Solutions.Array;
 
-import DataStructureAndAlgorithms.ISolvable;
+import DataStructureAndAlgorithms.Base_Solution;
 
-public class Trapping_Rain_Water implements ISolvable<Integer> {
+public class Trapping_Rain_Water extends Base_Solution<Integer> {
 
     private final int[] arr;
 

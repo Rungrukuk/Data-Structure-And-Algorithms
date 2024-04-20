@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import DataStructureAndAlgorithms.ISolvable;
+import DataStructureAndAlgorithms.Base_Solution;
 
-public class Search_Row_And_Column_Wise_In_Matrix implements ISolvable<List<Integer>> {
+public class Search_Row_And_Column_Wise_In_Matrix extends Base_Solution<List<Integer>> {
 
     private final int[][] matrix = new int[][] { { 10, 20, 30, 40 },
             { 15, 25, 35, 45 },

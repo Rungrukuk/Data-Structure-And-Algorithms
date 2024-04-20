@@ -3,9 +3,9 @@ package DataStructureAndAlgorithms.Solutions.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-import DataStructureAndAlgorithms.ISolvable;
+import DataStructureAndAlgorithms.Base_Solution;
 
-public class Print_Matrix_In_Spiral implements ISolvable<List<Integer>> {
+public class Print_Matrix_In_Spiral extends Base_Solution<List<Integer>> {
 
     private final int[][] matrix;
 
