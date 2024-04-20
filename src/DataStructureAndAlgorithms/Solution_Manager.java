@@ -8,6 +8,7 @@ import DataStructureAndAlgorithms.Solutions.Array.Print_Matrix_In_Spiral;
 import DataStructureAndAlgorithms.Solutions.Array.Rotate_Array_By_Given_Position;
 import DataStructureAndAlgorithms.Solutions.Array.Trapping_Rain_Water;
 import DataStructureAndAlgorithms.Tests.Array.Largest_Sum_Contiguous_Subarray_Test;
+import DataStructureAndAlgorithms.Tests.Array.Print_Matrix_In_Spiral_Test;
 
 public class Solution_Manager {
 
@@ -43,10 +44,10 @@ public class Solution_Manager {
 
     private void initializeTestMap() {
         testsMap.put(Solution_Names.Largest_Sum_Contiguous_Subarray_Contiguous,
-                new Largest_Sum_Contiguous_Subarray_Test(
-                        (Largest_Sum_Contiguous_Subarray) solutionsMap
-                                .get(Solution_Names.Largest_Sum_Contiguous_Subarray_Contiguous)));
-        testsMap.put(Solution_Names.Print_Matrix_In_Spiral, null);
+                new Largest_Sum_Contiguous_Subarray_Test((Largest_Sum_Contiguous_Subarray) solutionsMap
+                        .get(Solution_Names.Largest_Sum_Contiguous_Subarray_Contiguous)));
+        testsMap.put(Solution_Names.Print_Matrix_In_Spiral, new Print_Matrix_In_Spiral_Test(
+                (Print_Matrix_In_Spiral) solutionsMap.get(Solution_Names.Print_Matrix_In_Spiral)));
         testsMap.put(Solution_Names.Rotate_Array_By_Given_Position, null);
         testsMap.put(Solution_Names.Trapping_Rain_Water, null);
     }
@@ -54,7 +55,7 @@ public class Solution_Manager {
     public void run() {
         if (isTest) {
             System.out.println("Expected answer: " + solution.solve());
-            System.out.println("Your answer: " + testObject.test());
+            System.out.println("Your answer    : " + testObject.test());
             System.out.println("Result: " + testObject.compare());
         } else {
             System.out.println("Answer: " + solution.solve());

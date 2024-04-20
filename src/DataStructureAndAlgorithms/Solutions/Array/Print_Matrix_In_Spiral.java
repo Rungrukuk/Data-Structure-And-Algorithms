@@ -7,7 +7,7 @@ import DataStructureAndAlgorithms.Base_Solution;
 
 public class Print_Matrix_In_Spiral extends Base_Solution<List<Integer>> {
 
-    private final int[][] matrix;
+    public final int[][] matrix;
 
     public Print_Matrix_In_Spiral(int[][] matrix) {
         this.matrix = matrix;
