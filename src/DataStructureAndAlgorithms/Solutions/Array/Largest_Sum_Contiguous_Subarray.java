@@ -26,9 +26,4 @@ public class Largest_Sum_Contiguous_Subarray implements ISolvable<Integer> {
         }
         return maxSoFar;
     }
-
-    @Override
-    public void printAnswer() {
-        System.out.println(solve());
-    }
 }

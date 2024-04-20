@@ -30,9 +30,4 @@ public class Trapping_Rain_Water implements ISolvable<Integer> {
         }
         return answwer;
     }
-
-    @Override
-    public void printAnswer() {
-        System.out.println(solve());
-    }
 }

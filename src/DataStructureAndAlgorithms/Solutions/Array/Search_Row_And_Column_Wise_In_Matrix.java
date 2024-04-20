@@ -28,10 +28,4 @@ public class Search_Row_And_Column_Wise_In_Matrix implements ISolvable<List<Inte
         }
         return new ArrayList<Integer>(Arrays.asList(-1, -1));
     }
-
-    @Override
-    public void printAnswer() {
-        System.out.println(solve().toString());
-    }
-
 }

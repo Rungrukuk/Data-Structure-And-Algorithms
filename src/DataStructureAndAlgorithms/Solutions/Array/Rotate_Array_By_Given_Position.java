@@ -29,9 +29,4 @@ public class Rotate_Array_By_Given_Position implements ISolvable<List<Integer>> 
         return answer;
     }
 
-    @Override
-    public void printAnswer() {
-        System.out.println(solve().toString());
-    }
-
 }

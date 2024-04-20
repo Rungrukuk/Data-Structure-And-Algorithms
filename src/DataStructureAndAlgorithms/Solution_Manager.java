@@ -3,11 +3,11 @@ package DataStructureAndAlgorithms;
 import java.util.HashMap;
 import java.util.Map;
 
-import DataStructureAndAlgorithms.Debugs.Largest_Sum_Contiguous_Subarray_Debug;
 import DataStructureAndAlgorithms.Solutions.Array.Largest_Sum_Contiguous_Subarray;
 import DataStructureAndAlgorithms.Solutions.Array.Print_Matrix_In_Spiral;
 import DataStructureAndAlgorithms.Solutions.Array.Rotate_Array_By_Given_Position;
 import DataStructureAndAlgorithms.Solutions.Array.Trapping_Rain_Water;
+import DataStructureAndAlgorithms.Tests.Largest_Sum_Contiguous_Subarray_Debug;
 
 @SuppressWarnings("rawtypes")
 public class Solution_Manager {
@@ -37,27 +37,27 @@ public class Solution_Manager {
 
     private boolean debug;
     private ISolvable solution;
-    private ITestable debugObject;
+    private ITestable testObject;
 
     public Solution_Manager(Solution_Names solutionName, boolean debug) {
         this.solution = solutionsMap.get(solutionName);
-        this.debugObject = debugsMap.get(solutionName);
-        this.debug = true;
+        this.testObject = debugsMap.get(solutionName);
+        this.debug = debug;
     }
 
     public Solution_Manager(Solution_Names solutionName) {
         this.solution = solutionsMap.get(solutionName);
-        this.debugObject = null;
+        this.testObject = null;
         this.debug = false;
     }
 
     public void run() {
         if (debug) {
             System.out.println("Expected answer: " + solution.solve());
-            System.out.println("Your answer: " + debugObject.test());
-            System.out.println("Result: " + debugObject.compare());
+            System.out.println("Your answer: " + testObject.test());
+            System.out.println("Result: " + testObject.compare());
         } else
-            solution.solve();
+            System.out.println("Answer: " + solution.solve());
     }
 
 }

@@ -41,10 +41,4 @@ public class Print_Matrix_In_Spiral implements ISolvable<List<Integer>> {
         }
         return answer;
     }
-
-    @Override
-    public void printAnswer() {
-        System.out.println(solve().toString());
-    }
-
 }
