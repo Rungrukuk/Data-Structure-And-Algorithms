@@ -8,11 +8,13 @@ import DataStructureAndAlgorithms.Base_Solution;
 
 public class Search_Row_And_Column_Wise_In_Matrix extends Base_Solution<List<Integer>> {
 
-    private final int[][] matrix = new int[][] { { 10, 20, 30, 40 },
-            { 15, 25, 35, 45 },
-            { 27, 29, 37, 48 },
-            { 32, 33, 39, 50 } };
-    private final int key = 29;
+    public final int[][] matrix;
+    public final int key;
+
+    public Search_Row_And_Column_Wise_In_Matrix(int[][] matrix, int key){
+        this.matrix = matrix;
+        this.key = key;
+    }
 
     @Override
     public List<Integer> solve() {

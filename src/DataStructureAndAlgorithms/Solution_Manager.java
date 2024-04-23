@@ -6,10 +6,12 @@ import java.util.Map;
 import DataStructureAndAlgorithms.Solutions.Array.Largest_Sum_Contiguous_Subarray;
 import DataStructureAndAlgorithms.Solutions.Array.Print_Matrix_In_Spiral;
 import DataStructureAndAlgorithms.Solutions.Array.Rotate_Array_By_Given_Position;
+import DataStructureAndAlgorithms.Solutions.Array.Search_Row_And_Column_Wise_In_Matrix;
 import DataStructureAndAlgorithms.Solutions.Array.Trapping_Rain_Water;
 import DataStructureAndAlgorithms.Tests.Array.Largest_Sum_Contiguous_Subarray_Test;
 import DataStructureAndAlgorithms.Tests.Array.Print_Matrix_In_Spiral_Test;
 import DataStructureAndAlgorithms.Tests.Array.Rotate_Array_By_Given_Position_Test;
+import DataStructureAndAlgorithms.Tests.Array.Search_Row_And_Column_Wise_In_Matrix_Test;
 
 public class Solution_Manager {
 
@@ -40,6 +42,7 @@ public class Solution_Manager {
         solutionsMap.put(Solution_Names.Print_Matrix_In_Spiral, new Print_Matrix_In_Spiral(Shared_Data.matrix));
         solutionsMap.put(Solution_Names.Rotate_Array_By_Given_Position,
                 new Rotate_Array_By_Given_Position(Shared_Data.arr, Shared_Data.position));
+        solutionsMap.put(Solution_Names.Search_Row_And_Column_Wise_In_Matrix, new Search_Row_And_Column_Wise_In_Matrix(Shared_Data.matrix, Shared_Data.key));
         solutionsMap.put(Solution_Names.Trapping_Rain_Water, new Trapping_Rain_Water(Shared_Data.arr_2));
     }
 
@@ -51,6 +54,8 @@ public class Solution_Manager {
                 (Print_Matrix_In_Spiral) solutionsMap.get(Solution_Names.Print_Matrix_In_Spiral)));
         testsMap.put(Solution_Names.Rotate_Array_By_Given_Position, new Rotate_Array_By_Given_Position_Test(
                 (Rotate_Array_By_Given_Position) solutionsMap.get(Solution_Names.Rotate_Array_By_Given_Position)));
+        testsMap.put(Solution_Names.Search_Row_And_Column_Wise_In_Matrix, new Search_Row_And_Column_Wise_In_Matrix_Test(
+            (Search_Row_And_Column_Wise_In_Matrix)solutionsMap.get(Solution_Names.Search_Row_And_Column_Wise_In_Matrix)));
         testsMap.put(Solution_Names.Trapping_Rain_Water, null);
     }
 
