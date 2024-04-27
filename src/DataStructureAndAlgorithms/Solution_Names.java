@@ -6,5 +6,6 @@ public enum Solution_Names {
     Rotate_Array_By_Given_Position,
     Search_Row_And_Column_Wise_In_Matrix,
     Trapping_Rain_Water,
-    Count_Pairs_With_Given_Sum
+    Count_Pairs_With_Given_Sum,
+    Find_Least_Average_Subarray
 }

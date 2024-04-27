@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import DataStructureAndAlgorithms.Solutions.Array.Count_Pairs_With_Given_Sum;
+import DataStructureAndAlgorithms.Solutions.Array.Find_Least_Average_Subarray;
 import DataStructureAndAlgorithms.Solutions.Array.Largest_Sum_Contiguous_Subarray;
 import DataStructureAndAlgorithms.Solutions.Array.Print_Matrix_In_Spiral;
 import DataStructureAndAlgorithms.Solutions.Array.Rotate_Array_By_Given_Position;
@@ -48,6 +49,7 @@ public class Solution_Manager {
                 new Search_Row_And_Column_Wise_In_Matrix());
         solutionsMap.put(Solution_Names.Trapping_Rain_Water, new Trapping_Rain_Water());
         solutionsMap.put(Solution_Names.Count_Pairs_With_Given_Sum, new Count_Pairs_With_Given_Sum());
+        solutionsMap.put(Solution_Names.Find_Least_Average_Subarray, new Find_Least_Average_Subarray());
     }
 
     private void initializeTestMap() {
