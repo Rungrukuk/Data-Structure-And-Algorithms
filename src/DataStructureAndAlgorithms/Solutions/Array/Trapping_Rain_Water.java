@@ -4,7 +4,7 @@ import DataStructureAndAlgorithms.Base_Solution;
 
 public class Trapping_Rain_Water extends Base_Solution<Integer> {
 
-    private final int[] arr;
+    public final int[] arr;
 
     public Trapping_Rain_Water(int[] arr) {
         this.arr = arr;
@@ -12,22 +12,25 @@ public class Trapping_Rain_Water extends Base_Solution<Integer> {
 
     @Override
     public Integer solve() {
-        int answwer = 0;
-
-        for (int i = 1; i < arr.length - 1; i++) {
-
-            int left = arr[i];
-            for (int j = 0; j < i; j++) {
-                left = Math.max(left, arr[j]);
+        int answer = 0;
+        int left = 0, right = arr.length - 1, leftMax = 0, rightMax = 0;
+        while (left < right) {
+            if (arr[left] < arr[right]) {
+                if (arr[left] > leftMax) {
+                    leftMax = arr[left];
+                } else {
+                    answer += leftMax - arr[left];
+                }
+                left++;
+            } else {
+                if (arr[right] > rightMax) {
+                    rightMax = arr[right];
+                } else {
+                    answer += rightMax - arr[right];
+                }
+                right--;
             }
-
-            int right = arr[i];
-            for (int j = i + 1; j < arr.length; j++) {
-                right = Math.max(right, arr[j]);
-            }
-
-            answwer += Math.min(left, right) - arr[i];
         }
-        return answwer;
+        return answer;
     }
 }
