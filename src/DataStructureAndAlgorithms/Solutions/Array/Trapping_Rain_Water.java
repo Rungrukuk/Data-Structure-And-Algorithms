@@ -4,11 +4,7 @@ import DataStructureAndAlgorithms.Base_Solution;
 
 public class Trapping_Rain_Water extends Base_Solution<Integer> {
 
-    public final int[] arr;
-
-    public Trapping_Rain_Water(int[] arr) {
-        this.arr = arr;
-    }
+    public final int[] arr = { 0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1 };
 
     @Override
     public Integer solve() {

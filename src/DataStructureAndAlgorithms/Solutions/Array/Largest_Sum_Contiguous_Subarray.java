@@ -4,11 +4,7 @@ import DataStructureAndAlgorithms.Base_Solution;
 
 public class Largest_Sum_Contiguous_Subarray extends Base_Solution<Integer> {
 
-    public final int[] arr;
-
-    public Largest_Sum_Contiguous_Subarray(int[] arr) {
-        this.arr = arr;
-    }
+    public final int[] arr = { -2, -3, 4, -1, 2, 1, -5, 3 };
 
     @Override
     public Integer solve() {

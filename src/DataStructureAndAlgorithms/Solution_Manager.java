@@ -3,6 +3,7 @@ package DataStructureAndAlgorithms;
 import java.util.HashMap;
 import java.util.Map;
 
+import DataStructureAndAlgorithms.Solutions.Array.Count_Pairs_With_Given_Sum;
 import DataStructureAndAlgorithms.Solutions.Array.Largest_Sum_Contiguous_Subarray;
 import DataStructureAndAlgorithms.Solutions.Array.Print_Matrix_In_Spiral;
 import DataStructureAndAlgorithms.Solutions.Array.Rotate_Array_By_Given_Position;
@@ -39,13 +40,14 @@ public class Solution_Manager {
 
     private void initializeSolutionMap() {
         solutionsMap.put(Solution_Names.Largest_Sum_Contiguous_Subarray_Contiguous,
-                new Largest_Sum_Contiguous_Subarray(Shared_Data.arr));
-        solutionsMap.put(Solution_Names.Print_Matrix_In_Spiral, new Print_Matrix_In_Spiral(Shared_Data.matrix));
+                new Largest_Sum_Contiguous_Subarray());
+        solutionsMap.put(Solution_Names.Print_Matrix_In_Spiral, new Print_Matrix_In_Spiral());
         solutionsMap.put(Solution_Names.Rotate_Array_By_Given_Position,
-                new Rotate_Array_By_Given_Position(Shared_Data.arr, Shared_Data.position));
+                new Rotate_Array_By_Given_Position());
         solutionsMap.put(Solution_Names.Search_Row_And_Column_Wise_In_Matrix,
-                new Search_Row_And_Column_Wise_In_Matrix(Shared_Data.matrix, Shared_Data.key));
-        solutionsMap.put(Solution_Names.Trapping_Rain_Water, new Trapping_Rain_Water(Shared_Data.arr_2));
+                new Search_Row_And_Column_Wise_In_Matrix());
+        solutionsMap.put(Solution_Names.Trapping_Rain_Water, new Trapping_Rain_Water());
+        solutionsMap.put(Solution_Names.Count_Pairs_With_Given_Sum, new Count_Pairs_With_Given_Sum());
     }
 
     private void initializeTestMap() {

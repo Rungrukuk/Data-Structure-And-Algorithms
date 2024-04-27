@@ -7,11 +7,12 @@ import DataStructureAndAlgorithms.Base_Solution;
 
 public class Print_Matrix_In_Spiral extends Base_Solution<List<Integer>> {
 
-    public final int[][] matrix;
-
-    public Print_Matrix_In_Spiral(int[][] matrix) {
-        this.matrix = matrix;
-    }
+    public final int[][] matrix = {
+            { 1, 2, 3, 4 },
+            { 5, 6, 7, 8 },
+            { 9, 10, 11, 12 },
+            { 13, 14, 15, 16 }
+    };
 
     @Override
     public List<Integer> solve() {

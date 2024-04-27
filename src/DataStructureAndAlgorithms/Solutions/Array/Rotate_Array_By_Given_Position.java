@@ -7,13 +7,8 @@ import DataStructureAndAlgorithms.Base_Solution;
 
 public class Rotate_Array_By_Given_Position extends Base_Solution<List<Integer>> {
 
-    public int[] arr;
-    public int position;
-
-    public Rotate_Array_By_Given_Position(int[] arr, int position) {
-        this.arr = arr;
-        this.position = position;
-    }
+    public final int[] arr = { 3, 4, 5, 6, 7, 1, 2 };
+    public final int position = 2;
 
     @Override
     public List<Integer> solve() {
