@@ -19,10 +19,9 @@ public class Find_Least_Average_Subarray extends Base_Solution<Integer> {
             sum += arr[i] - arr[i - key];
             if (sum < minSum) {
                 minSum = sum;
-                answer = i - key + 1;
+                answer = i - key + 2;
             }
         }
-        answer += 1;
         return answer;
     }
 
