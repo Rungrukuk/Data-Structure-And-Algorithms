@@ -11,6 +11,7 @@ import DataStructureAndAlgorithms.Solutions.Array.Print_Matrix_In_Spiral;
 import DataStructureAndAlgorithms.Solutions.Array.Rotate_Array_By_Given_Position;
 import DataStructureAndAlgorithms.Solutions.Array.Search_Row_And_Column_Wise_In_Matrix;
 import DataStructureAndAlgorithms.Solutions.Array.Trapping_Rain_Water;
+import DataStructureAndAlgorithms.Tests.Array.Find_Least_Average_Subarray_Test;
 import DataStructureAndAlgorithms.Tests.Array.Largest_Sum_Contiguous_Subarray_Test;
 import DataStructureAndAlgorithms.Tests.Array.Print_Matrix_In_Spiral_Test;
 import DataStructureAndAlgorithms.Tests.Array.Rotate_Array_By_Given_Position_Test;
@@ -67,6 +68,8 @@ public class Solution_Manager {
                         .get(Solution_Names.Search_Row_And_Column_Wise_In_Matrix)));
         testsMap.put(Solution_Names.Trapping_Rain_Water, new Trapping_Rain_Water_Test(
                 (Trapping_Rain_Water) solutionsMap.get(Solution_Names.Trapping_Rain_Water)));
+        testsMap.put(Solution_Names.Find_Least_Average_Subarray, new Find_Least_Average_Subarray_Test(
+                (Find_Least_Average_Subarray) solutionsMap.get(Solution_Names.Find_Least_Average_Subarray)));
     }
 
     public void run() {
