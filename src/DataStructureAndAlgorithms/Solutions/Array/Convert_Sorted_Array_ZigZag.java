@@ -13,14 +13,16 @@ public class Convert_Sorted_Array_ZigZag extends Base_Solution<List<Integer>> {
     protected List<Integer> solve() {
         List<Integer> answer = new ArrayList<Integer>();
         int temp = 0;
+        for (Integer integer : arr) {
+            answer.add(integer);
+
+        }
         for (int i = 1; i <= arr.length - 2; i += 2) {
-            temp = arr[i];
-            arr[i] = arr[i + 1];
-            arr[i + 1] = temp;
+            temp = answer.get(i);
+            answer.set(i, answer.get(i + 1));
+            answer.set(i + 1, temp);
         }
-        for (int i : arr) {
-            answer.add(i);
-        }
+
         return answer;
     }
 
