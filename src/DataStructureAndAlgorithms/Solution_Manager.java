@@ -12,6 +12,7 @@ import DataStructureAndAlgorithms.Solutions.Array.Rotate_Array_By_Given_Position
 import DataStructureAndAlgorithms.Solutions.Array.Search_Row_And_Column_Wise_In_Matrix;
 import DataStructureAndAlgorithms.Solutions.Array.Trapping_Rain_Water;
 import DataStructureAndAlgorithms.Solutions.Array.Triplet_Sum_In_Array;
+import DataStructureAndAlgorithms.Solutions.String.IsAnagram;
 import DataStructureAndAlgorithms.Tests.Array.Convert_Sorter_Array_ZigZag_Test;
 import DataStructureAndAlgorithms.Tests.Array.Count_Pairs_With_Given_Sum_Test;
 import DataStructureAndAlgorithms.Tests.Array.Find_Least_Average_Subarray_Test;
@@ -57,6 +58,7 @@ public class Solution_Manager {
                 solutionsMap.put(Solution_Names.Find_Least_Average_Subarray, new Find_Least_Average_Subarray());
                 solutionsMap.put(Solution_Names.Convert_Sorted_Array_ZigZag, new Convert_Sorted_Array_ZigZag());
                 solutionsMap.put(Solution_Names.Triplet_Sum_In_Array, new Triplet_Sum_In_Array());
+                solutionsMap.put(Solution_Names.Is_Anagram, new IsAnagram());
         }
 
         private void initializeTestMap() {
