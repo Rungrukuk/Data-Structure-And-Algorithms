@@ -8,5 +8,6 @@ public enum Solution_Names {
     Trapping_Rain_Water,
     Count_Pairs_With_Given_Sum,
     Find_Least_Average_Subarray,
-    Convert_Sorted_Array_ZigZag
+    Convert_Sorted_Array_ZigZag,
+    Triplet_Sum_In_Array
 }
