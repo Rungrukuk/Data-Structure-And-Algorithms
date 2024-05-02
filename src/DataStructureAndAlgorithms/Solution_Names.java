@@ -10,5 +10,6 @@ public enum Solution_Names {
     Find_Least_Average_Subarray,
     Convert_Sorted_Array_ZigZag,
     Triplet_Sum_In_Array,
-    Is_Anagram
+    Is_Anagram,
+    Two_Sum
 }
