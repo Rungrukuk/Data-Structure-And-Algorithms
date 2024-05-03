@@ -11,5 +11,6 @@ public enum Solution_Names {
     Convert_Sorted_Array_ZigZag,
     Triplet_Sum_In_Array,
     Is_Anagram,
-    Two_Sum
+    Two_Sum,
+    Group_Anagram
 }
