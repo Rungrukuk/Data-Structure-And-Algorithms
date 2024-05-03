@@ -5,7 +5,7 @@ import java.util.Map;
 
 import DataStructureAndAlgorithms.Base_Solution;
 
-public class IsAnagram extends Base_Solution<Boolean> {
+public class Is_Anagram extends Base_Solution<Boolean> {
 
     public final String s = "anagram";
     public final String t = "nagaram";
