@@ -23,6 +23,7 @@ import DataStructureAndAlgorithms.Tests.Array.Largest_Sum_Contiguous_Subarray_Te
 import DataStructureAndAlgorithms.Tests.Array.Print_Matrix_In_Spiral_Test;
 import DataStructureAndAlgorithms.Tests.Array.Rotate_Array_By_Given_Position_Test;
 import DataStructureAndAlgorithms.Tests.Array.Search_Row_And_Column_Wise_In_Matrix_Test;
+import DataStructureAndAlgorithms.Tests.Array.Top_K_Frequent_Test;
 import DataStructureAndAlgorithms.Tests.Array.Trapping_Rain_Water_Test;
 import DataStructureAndAlgorithms.Tests.Array.Triplet_Sum_In_Array_Test;
 
@@ -92,6 +93,9 @@ public class Solution_Manager {
                 testsMap.put(Solution_Names.Convert_Sorted_Array_ZigZag,
                                 new Convert_Sorter_Array_ZigZag_Test((Convert_Sorted_Array_ZigZag) solutionsMap
                                                 .get(Solution_Names.Convert_Sorted_Array_ZigZag)));
+                testsMap.put(Solution_Names.Top_K_Frequent,
+                                new Top_K_Frequent_Test((Top_K_Frequent) solutionsMap
+                                                .get(Solution_Names.Top_K_Frequent)));
                 testsMap.put(Solution_Names.Triplet_Sum_In_Array,
                                 new Triplet_Sum_In_Array_Test((Triplet_Sum_In_Array) solutionsMap
                                                 .get(Solution_Names.Triplet_Sum_In_Array)));
