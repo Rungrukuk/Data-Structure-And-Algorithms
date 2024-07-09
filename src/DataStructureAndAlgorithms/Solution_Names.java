@@ -12,5 +12,6 @@ public enum Solution_Names {
     Triplet_Sum_In_Array,
     Is_Anagram,
     Two_Sum,
-    Group_Anagram
+    Group_Anagram,
+    Top_K_Frequent
 }

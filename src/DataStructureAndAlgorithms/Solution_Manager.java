@@ -10,6 +10,7 @@ import DataStructureAndAlgorithms.Solutions.Array.Largest_Sum_Contiguous_Subarra
 import DataStructureAndAlgorithms.Solutions.Array.Print_Matrix_In_Spiral;
 import DataStructureAndAlgorithms.Solutions.Array.Rotate_Array_By_Given_Position;
 import DataStructureAndAlgorithms.Solutions.Array.Search_Row_And_Column_Wise_In_Matrix;
+import DataStructureAndAlgorithms.Solutions.Array.Top_K_Frequent;
 import DataStructureAndAlgorithms.Solutions.Array.Trapping_Rain_Water;
 import DataStructureAndAlgorithms.Solutions.Array.Triplet_Sum_In_Array;
 import DataStructureAndAlgorithms.Solutions.Array.Two_Sum;
@@ -23,6 +24,7 @@ import DataStructureAndAlgorithms.Tests.Array.Print_Matrix_In_Spiral_Test;
 import DataStructureAndAlgorithms.Tests.Array.Rotate_Array_By_Given_Position_Test;
 import DataStructureAndAlgorithms.Tests.Array.Search_Row_And_Column_Wise_In_Matrix_Test;
 import DataStructureAndAlgorithms.Tests.Array.Trapping_Rain_Water_Test;
+import DataStructureAndAlgorithms.Tests.Array.Triplet_Sum_In_Array_Test;
 
 public class Solution_Manager {
 
@@ -63,6 +65,7 @@ public class Solution_Manager {
                 solutionsMap.put(Solution_Names.Is_Anagram, new Is_Anagram());
                 solutionsMap.put(Solution_Names.Two_Sum, new Two_Sum());
                 solutionsMap.put(Solution_Names.Group_Anagram, new Group_Anagram());
+                solutionsMap.put(Solution_Names.Top_K_Frequent, new Top_K_Frequent());
         }
 
         private void initializeTestMap() {
@@ -89,6 +92,10 @@ public class Solution_Manager {
                 testsMap.put(Solution_Names.Convert_Sorted_Array_ZigZag,
                                 new Convert_Sorter_Array_ZigZag_Test((Convert_Sorted_Array_ZigZag) solutionsMap
                                                 .get(Solution_Names.Convert_Sorted_Array_ZigZag)));
+                testsMap.put(Solution_Names.Triplet_Sum_In_Array,
+                                new Triplet_Sum_In_Array_Test((Triplet_Sum_In_Array) solutionsMap
+                                                .get(Solution_Names.Triplet_Sum_In_Array)));
+
         }
 
         public void run() {
