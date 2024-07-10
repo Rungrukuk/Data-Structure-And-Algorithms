@@ -13,6 +13,7 @@ import DataStructureAndAlgorithms.Solutions.Array.Search_Row_And_Column_Wise_In_
 import DataStructureAndAlgorithms.Solutions.Array.Top_K_Frequent;
 import DataStructureAndAlgorithms.Solutions.Array.Trapping_Rain_Water;
 import DataStructureAndAlgorithms.Solutions.Array.Triplet_Sum_In_Array;
+import DataStructureAndAlgorithms.Solutions.Array.Triplet_Sum_Nearest;
 import DataStructureAndAlgorithms.Solutions.Array.Two_Sum;
 import DataStructureAndAlgorithms.Solutions.String.Group_Anagram;
 import DataStructureAndAlgorithms.Solutions.String.Is_Anagram;
@@ -67,6 +68,7 @@ public class Solution_Manager {
                 solutionsMap.put(Solution_Names.Two_Sum, new Two_Sum());
                 solutionsMap.put(Solution_Names.Group_Anagram, new Group_Anagram());
                 solutionsMap.put(Solution_Names.Top_K_Frequent, new Top_K_Frequent());
+                solutionsMap.put(Solution_Names.Triplet_Sum_Nearest, new Triplet_Sum_Nearest());
         }
 
         private void initializeTestMap() {
