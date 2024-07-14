@@ -16,5 +16,6 @@ public enum Solution_Names {
     Top_K_Frequent,
     Triplet_Sum_Nearest,
     Four_Sum,
-    Remove_Duplicates
+    Remove_Duplicates,
+    Remove_Element
 }

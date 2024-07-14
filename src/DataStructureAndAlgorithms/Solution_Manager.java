@@ -10,6 +10,7 @@ import DataStructureAndAlgorithms.Solutions.Array.Four_Sum;
 import DataStructureAndAlgorithms.Solutions.Array.Largest_Sum_Contiguous_Subarray;
 import DataStructureAndAlgorithms.Solutions.Array.Print_Matrix_In_Spiral;
 import DataStructureAndAlgorithms.Solutions.Array.Remove_Duplicates;
+import DataStructureAndAlgorithms.Solutions.Array.Remove_Element;
 import DataStructureAndAlgorithms.Solutions.Array.Rotate_Array_By_Given_Position;
 import DataStructureAndAlgorithms.Solutions.Array.Search_Row_And_Column_Wise_In_Matrix;
 import DataStructureAndAlgorithms.Solutions.Array.Top_K_Frequent;
@@ -73,6 +74,7 @@ public class Solution_Manager {
                 solutionsMap.put(Solution_Names.Triplet_Sum_Nearest, new Triplet_Sum_Nearest());
                 solutionsMap.put(Solution_Names.Four_Sum, new Four_Sum());
                 solutionsMap.put(Solution_Names.Remove_Duplicates, new Remove_Duplicates());
+                solutionsMap.put(Solution_Names.Remove_Element, new Remove_Element());
         }
 
         private void initializeTestMap() {
