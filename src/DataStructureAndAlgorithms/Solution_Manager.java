@@ -6,6 +6,7 @@ import java.util.Map;
 import DataStructureAndAlgorithms.Solutions.Array.Convert_Sorted_Array_ZigZag;
 import DataStructureAndAlgorithms.Solutions.Array.Count_Pairs_With_Given_Sum;
 import DataStructureAndAlgorithms.Solutions.Array.Find_Least_Average_Subarray;
+import DataStructureAndAlgorithms.Solutions.Array.Four_Sum;
 import DataStructureAndAlgorithms.Solutions.Array.Largest_Sum_Contiguous_Subarray;
 import DataStructureAndAlgorithms.Solutions.Array.Print_Matrix_In_Spiral;
 import DataStructureAndAlgorithms.Solutions.Array.Rotate_Array_By_Given_Position;
@@ -69,6 +70,7 @@ public class Solution_Manager {
                 solutionsMap.put(Solution_Names.Group_Anagram, new Group_Anagram());
                 solutionsMap.put(Solution_Names.Top_K_Frequent, new Top_K_Frequent());
                 solutionsMap.put(Solution_Names.Triplet_Sum_Nearest, new Triplet_Sum_Nearest());
+                solutionsMap.put(Solution_Names.Four_Sum, new Four_Sum());
         }
 
         private void initializeTestMap() {
