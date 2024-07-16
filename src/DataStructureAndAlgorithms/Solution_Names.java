@@ -17,5 +17,6 @@ public enum Solution_Names {
     Triplet_Sum_Nearest,
     Four_Sum,
     Remove_Duplicates,
-    Remove_Element
+    Remove_Element,
+    Next_Permutation
 }

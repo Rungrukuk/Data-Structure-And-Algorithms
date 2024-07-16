@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import DataStructureAndAlgorithms.Base_Solution;
 
-public class Remove_Elements extends Base_Solution<Integer> {
+public class Remove_Element extends Base_Solution<Integer> {
 
     public final int[] arr = { 0, 1, 2, 2, 3, 0, 4, 2 };
     public final int k = 2;

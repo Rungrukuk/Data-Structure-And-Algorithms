@@ -8,6 +8,7 @@ import DataStructureAndAlgorithms.Solutions.Array.Count_Pairs_With_Given_Sum;
 import DataStructureAndAlgorithms.Solutions.Array.Find_Least_Average_Subarray;
 import DataStructureAndAlgorithms.Solutions.Array.Four_Sum;
 import DataStructureAndAlgorithms.Solutions.Array.Largest_Sum_Contiguous_Subarray;
+import DataStructureAndAlgorithms.Solutions.Array.Next_Permutation;
 import DataStructureAndAlgorithms.Solutions.Array.Print_Matrix_In_Spiral;
 import DataStructureAndAlgorithms.Solutions.Array.Remove_Duplicates;
 import DataStructureAndAlgorithms.Solutions.Array.Remove_Element;
@@ -75,6 +76,7 @@ public class Solution_Manager {
                 solutionsMap.put(Solution_Names.Four_Sum, new Four_Sum());
                 solutionsMap.put(Solution_Names.Remove_Duplicates, new Remove_Duplicates());
                 solutionsMap.put(Solution_Names.Remove_Element, new Remove_Element());
+                solutionsMap.put(Solution_Names.Next_Permutation, new Next_Permutation());
         }
 
         private void initializeTestMap() {
