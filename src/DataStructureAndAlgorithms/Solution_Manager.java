@@ -25,6 +25,7 @@ import DataStructureAndAlgorithms.Tests.Array.Convert_Sorter_Array_ZigZag_Test;
 import DataStructureAndAlgorithms.Tests.Array.Count_Pairs_With_Given_Sum_Test;
 import DataStructureAndAlgorithms.Tests.Array.Find_Least_Average_Subarray_Test;
 import DataStructureAndAlgorithms.Tests.Array.Largest_Sum_Contiguous_Subarray_Test;
+import DataStructureAndAlgorithms.Tests.Array.Next_Permutation_Test;
 import DataStructureAndAlgorithms.Tests.Array.Print_Matrix_In_Spiral_Test;
 import DataStructureAndAlgorithms.Tests.Array.Rotate_Array_By_Given_Position_Test;
 import DataStructureAndAlgorithms.Tests.Array.Search_Row_And_Column_Wise_In_Matrix_Test;
@@ -109,6 +110,8 @@ public class Solution_Manager {
                 testsMap.put(Solution_Names.Triplet_Sum_In_Array,
                                 new Triplet_Sum_In_Array_Test((Triplet_Sum_In_Array) solutionsMap
                                                 .get(Solution_Names.Triplet_Sum_In_Array)));
+                testsMap.put(Solution_Names.Next_Permutation, new Next_Permutation_Test(
+                                (Next_Permutation) solutionsMap.get(Solution_Names.Next_Permutation)));
 
         }
 
