@@ -8,8 +8,8 @@ import java.util.Map;
 import DataStructureAndAlgorithms.Base_Solution;
 
 public class Top_K_Frequent extends Base_Solution<List<Integer>> {
-    public final int[] arr = { 1, 1, 1, 2, 2, 3, 4, 6, 6, 7, 7, 8, 8, 8, 9, 6, 5, 7, 5, 7, 6, 7, 8, 6, 8, 7 };
-    public final int key = 5;
+    public final int[] arr = { 1, 1, 1, 2, 2, 3 };
+    public final int key = 2;
 
     @Override
     protected List<Integer> solve() {
