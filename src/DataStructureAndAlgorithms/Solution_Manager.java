@@ -19,6 +19,7 @@ import DataStructureAndAlgorithms.Solutions.Array.Trapping_Rain_Water;
 import DataStructureAndAlgorithms.Solutions.Array.Triplet_Sum_In_Array;
 import DataStructureAndAlgorithms.Solutions.Array.Triplet_Sum_Nearest;
 import DataStructureAndAlgorithms.Solutions.Array.Two_Sum;
+import DataStructureAndAlgorithms.Solutions.String.Encode_Decode;
 import DataStructureAndAlgorithms.Solutions.String.Group_Anagram;
 import DataStructureAndAlgorithms.Solutions.String.Is_Anagram;
 import DataStructureAndAlgorithms.Tests.Array.Convert_Sorter_Array_ZigZag_Test;
@@ -78,6 +79,7 @@ public class Solution_Manager {
                 solutionsMap.put(Solution_Names.Remove_Duplicates, new Remove_Duplicates());
                 solutionsMap.put(Solution_Names.Remove_Element, new Remove_Element());
                 solutionsMap.put(Solution_Names.Next_Permutation, new Next_Permutation());
+                solutionsMap.put(Solution_Names.Encode_Decode, new Encode_Decode());
         }
 
         private void initializeTestMap() {

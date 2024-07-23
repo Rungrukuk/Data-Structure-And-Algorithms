@@ -18,5 +18,6 @@ public enum Solution_Names {
     Four_Sum,
     Remove_Duplicates,
     Remove_Element,
-    Next_Permutation
+    Next_Permutation,
+    Encode_Decode
 }
