@@ -48,9 +48,4 @@ public class Encode_Decode extends Base_Solution<Boolean> {
 
         return decoded;
     }
-
-    public static void main(String[] args) {
-        Encode_Decode solution = new Encode_Decode();
-        solution.solve();
-    }
 }

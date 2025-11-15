@@ -3,36 +3,10 @@ package DataStructureAndAlgorithms;
 import java.util.HashMap;
 import java.util.Map;
 
-import DataStructureAndAlgorithms.Solutions.Array.Convert_Sorted_Array_ZigZag;
-import DataStructureAndAlgorithms.Solutions.Array.Count_Pairs_With_Given_Sum;
-import DataStructureAndAlgorithms.Solutions.Array.Find_Least_Average_Subarray;
-import DataStructureAndAlgorithms.Solutions.Array.Four_Sum;
-import DataStructureAndAlgorithms.Solutions.Array.Largest_Sum_Contiguous_Subarray;
-import DataStructureAndAlgorithms.Solutions.Array.Next_Permutation;
-import DataStructureAndAlgorithms.Solutions.Array.Print_Matrix_In_Spiral;
-import DataStructureAndAlgorithms.Solutions.Array.Remove_Duplicates;
-import DataStructureAndAlgorithms.Solutions.Array.Remove_Element;
-import DataStructureAndAlgorithms.Solutions.Array.Rotate_Array_By_Given_Position;
-import DataStructureAndAlgorithms.Solutions.Array.Search_Row_And_Column_Wise_In_Matrix;
-import DataStructureAndAlgorithms.Solutions.Array.Top_K_Frequent;
-import DataStructureAndAlgorithms.Solutions.Array.Trapping_Rain_Water;
-import DataStructureAndAlgorithms.Solutions.Array.Triplet_Sum_In_Array;
-import DataStructureAndAlgorithms.Solutions.Array.Triplet_Sum_Nearest;
-import DataStructureAndAlgorithms.Solutions.Array.Two_Sum;
-import DataStructureAndAlgorithms.Solutions.String.Encode_Decode;
-import DataStructureAndAlgorithms.Solutions.String.Group_Anagram;
-import DataStructureAndAlgorithms.Solutions.String.Is_Anagram;
-import DataStructureAndAlgorithms.Tests.Array.Convert_Sorter_Array_ZigZag_Test;
-import DataStructureAndAlgorithms.Tests.Array.Count_Pairs_With_Given_Sum_Test;
-import DataStructureAndAlgorithms.Tests.Array.Find_Least_Average_Subarray_Test;
-import DataStructureAndAlgorithms.Tests.Array.Largest_Sum_Contiguous_Subarray_Test;
-import DataStructureAndAlgorithms.Tests.Array.Next_Permutation_Test;
-import DataStructureAndAlgorithms.Tests.Array.Print_Matrix_In_Spiral_Test;
-import DataStructureAndAlgorithms.Tests.Array.Rotate_Array_By_Given_Position_Test;
-import DataStructureAndAlgorithms.Tests.Array.Search_Row_And_Column_Wise_In_Matrix_Test;
-import DataStructureAndAlgorithms.Tests.Array.Top_K_Frequent_Test;
-import DataStructureAndAlgorithms.Tests.Array.Trapping_Rain_Water_Test;
-import DataStructureAndAlgorithms.Tests.Array.Triplet_Sum_In_Array_Test;
+import DataStructureAndAlgorithms.Solutions.Array.*;
+import DataStructureAndAlgorithms.Tests.Array.*;
+import DataStructureAndAlgorithms.Solutions.String.*;
+// import DataStructureAndAlgorithms.Tests.String.*;
 
 public class Solution_Manager {
 
