@@ -1,4 +1,3 @@
-````{"id":"67421","variant":"standard"}
 # Data Structures & Algorithms — Problem & Practice Runner
 A Java-based console application to **solve, practice, and verify algorithm problems** through an interactive menu. Problems and practice implementations are automatically discovered using reflection, enabling efficient learning and tracking of your mastery.
 
@@ -289,4 +288,3 @@ Result: ❌ INCORRECT
 5. **Track:** Monitor progress via practice results
 
 Happy coding! 🚀
-````
