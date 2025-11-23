@@ -8,8 +8,6 @@ import org.reflections.util.ConfigurationBuilder;
 import DataStructureAndAlgorithms.utils.HelperMethods;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.*;
 
 public class Problem_Manager {
@@ -56,59 +54,26 @@ public class Problem_Manager {
                 }
         }
 
-        @SuppressWarnings("rawtypes")
         private void initializePracticeMap() {
                 try {
                         Reflections reflections = new Reflections(
                                         new ConfigurationBuilder()
                                                         .setUrls(ClasspathHelper.forPackage(
                                                                         "DataStructureAndAlgorithms.Practices"))
-                                                        .setScanners(Scanners.SubTypes));
+                                                        .setScanners(Scanners.TypesAnnotated));
 
-                        Set<Class<? extends Base_Practice>> practiceClasses = reflections
-                                        .getSubTypesOf(Base_Practice.class);
+                        // Find all classes annotated with @Practice
+                        Set<Class<?>> practiceClasses = reflections.getTypesAnnotatedWith(Practice.class);
 
-                        for (Class<? extends Base_Practice> practiceClass : practiceClasses) {
-                                try {
-                                        Type genericSuperclass = practiceClass.getGenericSuperclass();
-
-                                        if (genericSuperclass instanceof ParameterizedType) {
-                                                ParameterizedType parameterizedType = (ParameterizedType) genericSuperclass;
-                                                Type[] typeArguments = parameterizedType.getActualTypeArguments();
-
-                                                if (typeArguments.length >= 2) {
-                                                        Type problemType = typeArguments[1];
-                                                        if (problemType instanceof Class) {
-                                                                Class<?> problemClass = (Class<?>) problemType;
-
-                                                                String problemName = extractProblemNameFromClass(
-                                                                                problemClass);
-
-                                                                Base_Problem<?> correspondingProblem = problemsMap
-                                                                                .get(problemName);
-                                                                if (correspondingProblem != null) {
-                                                                        Constructor<? extends Base_Practice> constructor = practiceClass
-                                                                                        .getDeclaredConstructor(
-                                                                                                        problemClass);
-                                                                        Base_Practice<?, ?> practiceInstance = constructor
-                                                                                        .newInstance(correspondingProblem);
-                                                                        practicesMap.put(problemName, practiceInstance);
-                                                                        practiceCategories.put(problemName,
-                                                                                        problemCategories.get(
-                                                                                                        problemName));
-                                                                } else {
-                                                                        System.err.println(
-                                                                                        "✗ Corresponding problem not found for practice: "
-                                                                                                        +
-                                                                                                        practiceClass.getSimpleName());
-                                                                }
-                                                        }
-                                                }
-                                        }
-                                } catch (Exception e) {
-                                        System.err.println("✗ Failed to instantiate practice "
-                                                        + practiceClass.getSimpleName() + ": " + e.getMessage());
-                                        e.printStackTrace();
+                        for (Class<?> practiceClass : practiceClasses) {
+                                // Verify it extends Base_Practice
+                                if (Base_Practice.class.isAssignableFrom(practiceClass)) {
+                                        @SuppressWarnings("unchecked")
+                                        Class<? extends Base_Practice<?, ?>> typedClass = (Class<? extends Base_Practice<?, ?>>) practiceClass;
+                                        registerPracticeClass(typedClass);
+                                } else {
+                                        System.err.println("✗ Class " + practiceClass.getSimpleName() +
+                                                        " has @Practice annotation but does not extend Base_Practice");
                                 }
                         }
                 } catch (Exception e) {
@@ -117,15 +82,70 @@ public class Problem_Manager {
                 }
         }
 
-        private String extractProblemNameFromClass(Class<?> problemClass) {
-                if (problemClass.isAnnotationPresent(Problem.class)) {
-                        Problem annotation = problemClass.getAnnotation(Problem.class);
-                        return annotation.name();
-                }
+        private void registerPracticeClass(Class<? extends Base_Practice<?, ?>> practiceClass) {
+                try {
+                        Practice annotation = practiceClass.getAnnotation(Practice.class);
+                        String problemName = annotation.problemName();
+                        String category = annotation.category();
 
-                // Fallback: use class name without underscores and with proper casing
-                String className = problemClass.getSimpleName();
-                return className.replace("_", "");
+                        // Find the corresponding problem
+                        Base_Problem<?> correspondingProblem = problemsMap.get(problemName);
+                        if (correspondingProblem == null) {
+                                System.err.println("✗ Corresponding problem not found for practice: " +
+                                                practiceClass.getSimpleName() + " (problem: " + problemName + ")");
+                                return;
+                        }
+
+                        // Find the constructor that takes the problem type
+                        Constructor<? extends Base_Practice<?, ?>> constructor = findSuitableConstructor(practiceClass,
+                                        correspondingProblem.getClass());
+                        if (constructor == null) {
+                                System.err.println("✗ No suitable constructor found for "
+                                                + practiceClass.getSimpleName() +
+                                                " that takes " + correspondingProblem.getClass().getSimpleName());
+                                return;
+                        }
+
+                        // Create the practice instance
+                        Base_Practice<?, ?> practiceInstance = constructor.newInstance(correspondingProblem);
+                        practicesMap.put(problemName, practiceInstance);
+                        practiceCategories.put(problemName, category);
+
+                        System.out.println("✓ Registered practice: " + problemName + " (" + category + ")");
+
+                } catch (Exception e) {
+                        System.err.println("✗ Failed to register practice " + practiceClass.getSimpleName() + ": "
+                                        + e.getMessage());
+                        e.printStackTrace();
+                }
+        }
+
+        private Constructor<? extends Base_Practice<?, ?>> findSuitableConstructor(
+                        Class<? extends Base_Practice<?, ?>> practiceClass,
+                        Class<?> problemClass) {
+
+                // Try to find a constructor that takes the exact problem class
+                try {
+                        return practiceClass.getDeclaredConstructor(problemClass);
+                } catch (NoSuchMethodException e1) {
+                        // Fallback: try to find a constructor that takes Base_Problem
+                        try {
+                                return practiceClass.getDeclaredConstructor(Base_Problem.class);
+                        } catch (NoSuchMethodException e2) {
+                                // Last resort: try any constructor and hope for the best
+                                for (Constructor<?> constructor : practiceClass.getDeclaredConstructors()) {
+                                        if (constructor.getParameterCount() == 1) {
+                                                Class<?> paramType = constructor.getParameterTypes()[0];
+                                                if (Base_Problem.class.isAssignableFrom(paramType)) {
+                                                        @SuppressWarnings("unchecked")
+                                                        Constructor<? extends Base_Practice<?, ?>> safeConstructor = (Constructor<? extends Base_Practice<?, ?>>) constructor;
+                                                        return safeConstructor;
+                                                }
+                                        }
+                                }
+                                return null;
+                        }
+                }
         }
 
         // Getters for problems
