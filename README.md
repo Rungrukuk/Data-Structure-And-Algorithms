@@ -46,7 +46,7 @@ src/main/java/DataStructureAndAlgorithms/
 ### 1. Creating a New Problem
 Add a class under `Problems/<Category>` and annotate it with `@Problem`:
 ```java
-@Problem(name = "BinarySearch", category = "Binary Search")
+@Problem(name = "Binary Search", category = "Binary Search")
 public class Binary_Search extends Base_Problem<Integer> {
     public final int[] nums = { -1, 0, 3, 5, 9, 12 };
     public final int target = 5;
@@ -68,11 +68,7 @@ public class Binary_Search extends Base_Problem<Integer> {
 ### 2. Creating a Practice Implementation
 Practice classes allow you to **re-implement the solution from memory** and automatically compare your output to the reference. Annotate with `@Practice`:
 ```java
-@Practice(
-    problemName = "BinarySearch",
-    category = "Binary Search",
-    description = "Practice implementation for binary search algorithm"
-)
+@Practice(name = "Binary Search", category = "Binary Search")
 public class Binary_Search_Practice extends Base_Practice<Integer, Binary_Search> {
 
     public Binary_Search_Practice(Binary_Search problem) {
