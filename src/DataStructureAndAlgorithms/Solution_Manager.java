@@ -13,8 +13,8 @@ public class Solution_Manager {
         private final Map<Solution_Names, Base_Solution<?>> solutionsMap = new HashMap<>();
         private final Map<Solution_Names, Base_Test<?, ?>> testsMap = new HashMap<>();
 
-        private boolean isTest;
-        private Base_Solution<?> solution;
+        private final boolean isTest;
+        private final Base_Solution<?> solution;
         private Base_Test<?, ?> testObject;
 
         public Solution_Manager(Solution_Names solutionName, boolean isTest) {
