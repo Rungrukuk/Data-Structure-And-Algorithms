@@ -1,49 +1,55 @@
-Data Structures & Algorithms Problem & Practice Runner
-A Java-based console application designed to help you practice, organize, and run algorithm problems through an interactive menu-driven system with built-in knowledge verification.
+# Data Structures & Algorithms — Problem & Practice Runner
 
-🚀 Overview
-This project provides a structured and extensible framework for managing algorithm problems. It includes:
+A Java-based console application designed to help you **solve**, **practice**, and **verify** algorithm problems using an interactive menu-driven interface. It automatically discovers problems and practice implementations, allowing you to learn efficiently and track your mastery.
 
-Organized problem categories
+---
 
-Automatic problem discovery via reflection
+## 🚀 Overview
 
-Interactive console-based problem runner
+This project provides a clean, extensible framework for learning algorithms by combining:
 
-Practice system to test your knowledge and retention
+* **Organized problem categories**
+* **Automatic problem discovery** using reflection
+* **Interactive console runner**
+* **Built-in practice system** to reinforce knowledge
+* **Automatic comparison** between your practice solution and the original implementation
 
-Separate practice implementations with automatic result comparison
+---
 
-📁 Project Structure
-text
+## 📁 Project Structure
+
+```
 src/main/java/DataStructureAndAlgorithms/
-├── Base_Problem.java          # Base class for all problems
-├── Base_Practice.java         # Base class for practice implementations
-├── Problem.java               # Annotation for auto-discovery
-├── Problem_Manager.java       # Handles scanning and execution
-├── Run_Problems.java          # Main entry point (interactive menu)
-├── Problems/                  # Your algorithm implementations
+├── Base_Problem.java              # Base class for problem implementations
+├── Base_Practice.java             # Base class for practice attempts
+├── Problem.java                   # Annotation used for auto-discovery
+├── Problem_Manager.java           # Scans, manages, and executes items
+├── Run_Problems.java              # Main interactive entry point
+│
+├── Problems/                      # Official solutions
 │   ├── Binary_Search/
 │   │   ├── Binary_Search.java
 │   │   ├── First_Bad_Version.java
 │   │   └── Search_And_Insert.java
 │   └── Other_Categories/
 │       └── ...
-└── Practices/                 # Your practice implementations
+│
+└── Practices/                     # Your practice solutions
     ├── Binary_Search/
     │   └── Binary_Search_Practice.java
     └── Other_Categories/
         └── ...
-⚡ Quick Start
-1. Creating a New Problem
-Create a new Java class inside the appropriate category and annotate it using @Problem:
+```
 
-java
-package DataStructureAndAlgorithms.Problems.Binary_Search;
+---
 
-import DataStructureAndAlgorithms.Base_Problem;
-import DataStructureAndAlgorithms.Problem;
+## ⚡ Quick Start
 
+### 1. Creating a New Problem
+
+Add a class under `Problems/<Category>` and annotate it using `@Problem`:
+
+```
 @Problem(name = "BinarySearch", category = "Binary Search")
 public class Binary_Search extends Base_Problem<Integer> {
 
@@ -62,15 +68,15 @@ public class Binary_Search extends Base_Problem<Integer> {
         return -1;
     }
 }
-2. Creating a Practice Implementation
-Create a corresponding practice class to test your knowledge:
+```
 
-java
-package DataStructureAndAlgorithms.Practices.BinarySearch;
+---
 
-import DataStructureAndAlgorithms.Base_Practice;
-import DataStructureAndAlgorithms.Problems.BinarySearch.Binary_Search;
+### 2. Creating a Practice Implementation
 
+Practice classes allow you to **re-implement the solution from memory** and compare it to the original.
+
+```
 public class Binary_Search_Practice extends Base_Practice<Integer, Binary_Search> {
 
     public Binary_Search_Practice(Binary_Search problem) {
@@ -79,7 +85,6 @@ public class Binary_Search_Practice extends Base_Practice<Integer, Binary_Search
 
     @Override
     protected Integer practice() {
-        // Your implementation to test your knowledge
         int left = 0, right = problem.nums.length - 1;
         while (left <= right) {
             int mid = left + (right - left) / 2;
@@ -90,19 +95,27 @@ public class Binary_Search_Practice extends Base_Practice<Integer, Binary_Search
         return -1;
     }
 }
-3. Running the Application
-Compile and run:
+```
 
-bash
+---
+
+### 3. Running the Application
+
+```
 cd src/main/java
 javac DataStructureAndAlgorithms/Run_Problems.java
 java DataStructureAndAlgorithms.Run_Problems
-Or simply run Run_Problems from your IDE.
+```
 
-🧭 Using the Interactive Menu
-When started, the program displays:
+Or simply run `Run_Problems` from your IDE.
 
-text
+---
+
+## 🧭 Interactive Menu Overview
+
+When launched:
+
+```
 =========================================
     DATA STRUCTURES & ALGORITHMS
        PROBLEM & PRACTICE RUNNER
@@ -116,185 +129,188 @@ text
 5. List practices by category
 6. Run a specific practice
 7. Exit
-Problems vs Practices
-Problems: View the original solution implementations
+```
 
-Practices: Test your knowledge by solving problems independently, then compare your results with the original solution
+---
 
-Option 1-3: Problem Management
-List All Problems:
+## 📝 Problems vs Practices
 
-text
+### **Problems**
+
+* Contain the **main reference solution**.
+* Used to learn correct algorithmic approaches.
+
+### **Practices**
+
+* Your **memory-based re-implementation**.
+* Automatically compared against the real solution.
+* Helps reinforce retention and mastery.
+
+---
+
+## 🔍 Problem Management (Options 1–3)
+
+### List All Problems
+
+```
 === ALL PROBLEMS ===
  1. BinarySearch              [Binary Search]
  2. FirstBadVersion           [Binary Search]
  3. SearchInsert              [Binary Search]
  4. TwoSum                    [Arrays]
-List Problems by Category:
+```
 
-text
+### List by Category
+
+```
 --- Binary Search ---
  1. BinarySearch
  2. FirstBadVersion
  3. SearchInsert
+```
 
---- Arrays ---
- 4. TwoSum
- 5. ContainerWithMostWater
-Run Specific Problem:
-You can enter variations like:
+### Run Specific Problem
 
-binarysearch
+Supports flexible input:
 
-binary search
-
-BinarySearch
-
-binary-search
-
-binary_search
+* binarysearch
+* binary search
+* BinarySearch
+* binary-search
+* binary_search
 
 Example:
 
-text
-=== RUN SPECIFIC PROBLEM ===
-Enter problem name: binary search
-
+```
 === Running Binary Search ===
 Solution: 3
-Option 4-6: Practice Management
-List All Practices:
+```
 
-text
+---
+
+## 💪 Practice Management (Options 4–6)
+
+### List All Practices
+
+```
 === ALL PRACTICES ===
- 1. BinarySearch              [Binary Search]
- 2. FirstBadVersion           [Binary Search]
-List Practices by Category:
+1. BinarySearch              [Binary Search]
+2. FirstBadVersion           [Binary Search]
+```
 
-text
---- Binary Search ---
- 1. BinarySearch
- 2. FirstBadVersion
+### Run a Practice
 
---- Arrays ---
- 3. TwoSum
-Run Specific Practice:
-
-text
-=== RUN SPECIFIC PRACTICE ===
-Enter practice name: binary search
-
+```
 === Practicing Binary Search ===
 Your answer: 3
 Expected answer: 3
 Result: ✅ CORRECT
-If your answer differs:
+```
 
-text
-=== Practicing Binary Search ===
+Incorrect output:
+
+```
 Your answer: 2
 Expected answer: 3
 Result: ❌ INCORRECT
-Error Handling
-If a problem/practice is not found:
+```
 
-text
+---
+
+## ❗ Error Handling
+
+Missing problem or practice:
+
+```
 ❌ Problem not found: binariserch
 
 📋 Available problems:
    1. Binary Search
    2. First Bad Version
    3. Search And Insert
+```
 
-🔍 Quick reference: Binary Search, First Bad Version, Search And Insert
-🏷️ Problem Annotation Reference
-java
+---
+
+## 🏷️ Problem Annotation Reference
+
+```
 @Problem(
-    name = "MeaningfulName",         // Required: unique identifier
-    category = "Algorithm Category", // Required: used for grouping
-    description = "Optional details" // Optional
+    name = "MeaningfulName",          // Required
+    category = "Algorithm Category",  // Required
+    description = "Optional details"  // Optional
 )
-➕ Adding New Categories
-Create a new folder under DataStructureAndAlgorithms.Problems/
+```
 
-Add your problem classes inside it
+---
 
-Create corresponding practice classes in DataStructureAndAlgorithms.Practices/
+## ➕ Adding New Categories
 
-Annotate problems with @Problem
+1. Create a new folder inside `Problems/`.
+2. Implement your problem classes.
+3. Create matching practice classes inside `Practices/`.
+4. Annotate problems with `@Problem`.
+5. They will be discovered automatically.
 
-They will be automatically discovered at runtime
+---
 
-🌟 Features
-Auto-Discovery — Just annotate and run
+## 🌟 Features
 
-Flexible Input Matching — Supports many naming formats
+* Automatic problem & practice discovery
+* Flexible input matching
+* Clear category grouping
+* Interactive console interface
+* Knowledge verification via Practice mode
+* Instant answer comparison
+* Clean, extensible architecture
 
-Category Grouping — Clean, organized structure
+---
 
-Interactive UI — Easy console navigation
+## 🧩 Dependencies
 
-Knowledge Verification — Practice system tests your understanding
+* **Java 8+**
+* **Reflections** (Maven managed)
 
-Automatic Comparison — Instantly see if your solution matches
+---
 
-Helpful Error Messages — Fix problems quickly
+## ❗ Troubleshooting
 
-Extensible Architecture — Add problems and practices easily
+### Problems not found?
 
-🧩 Dependencies
-Java 8+
+* Ensure they are inside `Problems/`
+* Verify `@Problem` annotation
+* Ensure class extends `Base_Problem`
 
-Reflections library (configured in Maven)
+### Practices not found?
 
-❗ Troubleshooting
-No problems are found?
-Ensure they are inside the Problems package
+* Ensure they are inside `Practices/`
+* Extend `Base_Practice`
+* Pass the correct problem instance in the constructor
 
-Check the @Problem annotation
+### Compilation errors?
 
-Confirm the class extends Base_Problem
+* Check package names
+* Validate directory structure
 
-No practices are found?
-Ensure they are inside the Practices package
+---
 
-Confirm the class extends Base_Practice
+## 🤝 Contributing
 
-Check that the constructor takes the corresponding problem type
+1. Add a new problem in `Problems/`.
+2. Implement its solution.
+3. Add a practice class in `Practices/`.
+4. Implement your practice logic.
+5. Test both.
 
-Verify naming convention: ProblemName_Practice.java
+---
 
-Compilation errors?
-Check classpath and dependencies
+## 🎯 Learning Strategy
 
-Ensure package declarations match folder structure
+1. **Study:** Examine the official solution.
+2. **Practice:** Re-implement from memory.
+3. **Verify:** Compare your output using Practice mode.
+4. **Repeat:** Build long-term algorithm mastery.
 
-🤝 Contributing
-To add new problems:
-
-Create a new class in a category under Problems/
-
-Extend Base_Problem
-
-Implement solve()
-
-Add a @Problem annotation
-
-Create a practice class in Practices/
-
-Extend Base_Practice
-
-Implement practice() method
-
-Test both implementations
-
-🎯 Learning Strategy
-Study: Review the problem solution in the Problems/ directory
-
-Practice: Implement your own solution in the Practices/ directory
-
-Verify: Use the practice runner to check your understanding
-
-Repeat: Regularly practice to reinforce your knowledge
+---
 
 Happy coding! 🚀
