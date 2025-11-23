@@ -162,7 +162,51 @@ If not found:
 
 ## 🧪 Creating Tests (Optional)
 
-If you want test cases:
+Test classes help you **reinforce your understanding** of a problem by solving it again later and **checking whether your new solution still matches the correct answer**.
+
+They act as a personal practice tool—allowing you to re‑attempt problems for memorization while automatically comparing your result with the expected output.
+
+```
+@Problem(name = "BinarySearchTest", category = "Tests")
+public class Binary_Search_Test extends Base_Test<Integer, Integer> {
+
+    @Override
+    protected Integer test() {
+        return yourSolution();
+    }
+
+    @Override
+    protected Integer expected() {
+        return 3;
+    }
+
+    @Override
+    protected boolean compare() {
+        return test().equals(expected());
+    }
+}
+```
+```
+@Problem(name = "BinarySearchTest", category = "Tests")
+public class Binary_Search_Test extends Base_Test<Integer, Integer> {
+
+@Override
+protected Integer test() {
+    return yourSolution();
+}
+
+@Override
+protected Integer expected() {
+    return 3;
+}
+
+@Override
+protected boolean compare() {
+    return test().equals(expected());
+}
+
+}
+```
 
 ```
 @Problem(name = "BinarySearchTest", category = "Tests")
