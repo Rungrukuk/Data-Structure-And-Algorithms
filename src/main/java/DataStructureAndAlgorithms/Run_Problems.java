@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Scanner;
 import DataStructureAndAlgorithms.utils.HelperMethods;
 
-public class App {
+public class Run_Problems {
     private static final Scanner scanner = new Scanner(System.in);
     private static Problem_Manager problemManager;
 

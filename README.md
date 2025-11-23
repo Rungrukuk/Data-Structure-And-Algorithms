@@ -1,37 +1,47 @@
-Data Structures & Algorithms Problem Runner
-A Java-based application that helps you practice and run various data structure and algorithm problems with an interactive menu system.
+# Data Structures & Algorithms Problem Runner
 
-Overview
-This project provides a flexible framework for:
+A Java-based console application designed to help you practice, organize, and run algorithm problems through an interactive menu-driven system.
 
-Organizing algorithm problems by category
+---
 
-Automatically discovering new problems using reflection
+## 🚀 Overview
 
-Running problems through an interactive console interface
+This project provides a structured and extensible framework for managing algorithm problems. It includes:
 
-Testing your solutions against expected outputs
+* Organized problem categories
+* Automatic problem discovery via reflection
+* Interactive console-based problem runner
+* Optional test case support
 
-Project Structure
-text
+---
+
+## 📁 Project Structure
+
+```
 src/main/java/DataStructureAndAlgorithms/
 ├── Base_Problem.java          # Base class for all problems
 ├── Base_Test.java             # Base class for tests (optional)
 ├── Problem.java               # Annotation for auto-discovery
-├── Problem_Manager.java       # Manages problem discovery and execution
-├── Run_Problems.java          # Main runner with interactive menu
-└── Problems/                  # Problem implementations
+├── Problem_Manager.java       # Handles scanning and execution
+├── Run_Problems.java          # Main entry point (interactive menu)
+└── Problems/                  # Your algorithm implementations
     ├── Binary_Search/
     │   ├── Binary_Search.java
     │   ├── First_Bad_Version.java
     │   └── Search_And_Insert.java
     └── Other_Categories/
         └── ...
-Quick Start
-1. Creating a New Problem
-Create a new Java class in the appropriate category package and annotate it with @Problem:
+```
 
-java
+---
+
+## ⚡ Quick Start
+
+### 1. Creating a New Problem
+
+Create a new Java class inside the appropriate category and annotate it using `@Problem`:
+
+```
 package DataStructureAndAlgorithms.Problems.Binary_Search;
 
 import DataStructureAndAlgorithms.Base_Problem;
@@ -39,15 +49,13 @@ import DataStructureAndAlgorithms.Problem;
 
 @Problem(name = "BinarySearch", category = "Binary Search")
 public class Binary_Search extends Base_Problem<Integer> {
-    // Problem data
-    public final int nums[] = new int[] { -1, 0, 3, 5, 9, 12 };
+
+    public final int[] nums = { -1, 0, 3, 5, 9, 12 };
     public final int target = 5;
 
     @Override
     protected Integer solve() {
-        // Your solution implementation
-        int left = 0;
-        int right = nums.length - 1;
+        int left = 0, right = nums.length - 1;
         while (left <= right) {
             int mid = left + (right - left) / 2;
             if (nums[mid] == target) return mid;
@@ -57,19 +65,27 @@ public class Binary_Search extends Base_Problem<Integer> {
         return -1;
     }
 }
-2. Running the Application
-Run the Run_Problems class:
+```
 
-bash
+### 2. Running the Application
+
+Compile and run:
+
+```
 cd src/main/java
 javac DataStructureAndAlgorithms/Run_Problems.java
 java DataStructureAndAlgorithms.Run_Problems
-Or run through your IDE by executing the Run_Problems class.
+```
 
-Using the Interactive Menu
-When you run the application, you'll see:
+Or simply run `Run_Problems` from your IDE.
 
-text
+---
+
+## 🧭 Using the Interactive Menu
+
+When started, the program displays:
+
+```
 =========================================
     DATA STRUCTURES & ALGORITHMS
           PROBLEM RUNNER
@@ -80,28 +96,27 @@ text
 2. List problems by category
 3. Run a specific problem
 4. Exit
-Option 1: List All Problems
-Shows all available problems in a numbered list with their categories:
+```
 
-text
+### Option 1: List All Problems
+
+Displays every discovered problem:
+
+```
 === ALL PROBLEMS ===
  1. BinarySearch              [Binary Search]
  2. FirstBadVersion           [Binary Search]
  3. SearchInsert              [Binary Search]
  4. TwoSum                    [Arrays]
+```
 
-Enter problem number to run (0 to go back): 1
+Selecting a problem runs it immediately.
 
-=== Running Binary Search ===
-Answer: 3
+### Option 2: List Problems by Category
 
-Press Enter to continue...
-Option 2: List Problems by Category
-Groups problems by their categories for better organization:
+Groups problems for easier browsing:
 
-text
-=== PROBLEMS BY CATEGORY ===
-
+```
 --- Binary Search ---
  1. BinarySearch
  2. FirstBadVersion
@@ -110,128 +125,132 @@ text
 --- Arrays ---
  4. TwoSum
  5. ContainerWithMostWater
-Option 3: Run Specific Problem
-Run a problem by entering its name (flexible input supported):
+```
 
-Supported Input Formats:
+### Option 3: Run Specific Problem
 
-binarysearch
+You can enter variations like:
 
-BiNaryseaRCH
-
-binary search
-
-Binary Search
-
-binary-search
-
-binary_search
+* `binarysearch`
+* `binary search`
+* `BinarySearch`
+* `binary-search`
+* `binary_search`
 
 Example:
 
-text
+```
 === RUN SPECIFIC PROBLEM ===
 Enter problem name: binary search
 
 === Running Binary Search ===
 Answer: 3
+```
 
-Press Enter to continue...
-If the problem name isn't found, you'll see available options:
+If not found:
 
-text
+```
 ❌ Problem not found: binariserch
 
 📋 Available problems:
    1. Binary Search
    2. First Bad Version
    3. Search And Insert
+```
 
-🔍 Quick reference: Binary Search, First Bad Version, Search And Insert
-Creating Test Cases (Optional)
-You can create test classes to verify your solutions:
+---
 
-java
+## 🧪 Creating Tests (Optional)
+
+If you want test cases:
+
+```
 @Problem(name = "BinarySearchTest", category = "Tests")
 public class Binary_Search_Test extends Base_Test<Integer, Integer> {
-    
+
     @Override
     protected Integer test() {
-        // Your test implementation
         return yourSolution();
     }
-    
+
     @Override
     protected Integer expected() {
-        // Expected result
         return 3;
     }
-    
+
     @Override
     protected boolean compare() {
         return test().equals(expected());
     }
 }
-Problem Annotation Options
-The @Problem annotation supports:
+```
 
-java
+---
+
+## 🏷️ Problem Annotation Reference
+
+```
 @Problem(
-    name = "MeaningfulName",        // Required: Problem identifier
-    category = "Algorithm Category", // Required: Organizes problems
-    description = "Optional description" // Optional: Problem description
+    name = "MeaningfulName",         // Required: unique identifier
+    category = "Algorithm Category", // Required: used for grouping
+    description = "Optional details" // Optional
 )
-Adding New Problem Categories
-Create a new package under DataStructureAndAlgorithms.Problems/
+```
 
-Add your problem classes in that package
+---
 
-Annotate with @Problem and appropriate category
+## ➕ Adding New Categories
 
-The system will automatically discover it on next run
+1. Create a new folder under `DataStructureAndAlgorithms.Problems/`
+2. Add your problem classes inside it
+3. Annotate them with `@Problem`
+4. They will be automatically discovered at runtime
 
-Features
-Auto-Discovery: No manual registration needed - just annotate and run
+---
 
-Flexible Input: Accepts various naming formats (camelCase, spaced, etc.)
+## 🌟 Features
 
-Category Organization: Problems are grouped by algorithm type
+* **Auto-Discovery** — Just annotate and run
+* **Flexible Input Matching** — Supports many naming formats
+* **Category Grouping** — Clean, organized structure
+* **Interactive UI** — Easy console navigation
+* **Helpful Error Messages** — Fix problems quickly
+* **Extensible Architecture** — Add problems and tests easily
 
-Interactive Interface: Easy-to-use console menu
+---
 
-Error Handling: Clear error messages with suggestions
+## 🧩 Dependencies
 
-Extensible: Easy to add new problems and categories
+* Java **8+**
+* Reflections library (configured in Maven)
 
-Dependencies
-Java 8 or higher
+---
 
-Reflections library (included in Maven pom.xml)
+## ❗ Troubleshooting
 
-Troubleshooting
-No problems found?
+### No problems are found?
 
-Ensure your class is in DataStructureAndAlgorithms.Problems package or subpackage
+* Ensure they are inside the `Problems` package
+* Check the `@Problem` annotation
+* Confirm the class extends `Base_Problem`
 
-Verify the @Problem annotation is present
+### Compilation errors?
 
-Check that the class extends Base_Problem
+* Check classpath and dependencies
+* Ensure package declarations match folder structure
 
-Compilation issues?
+---
 
-Verify all dependencies are in classpath
+## 🤝 Contributing
 
-Check package declarations match directory structure
-
-Contributing
 To add new problems:
 
-Create a new class in appropriate category package
+1. Create a new class in a category
+2. Extend `Base_Problem`
+3. Implement `solve()`
+4. Add a `@Problem` annotation
+5. Test your solution
 
-Extend Base_Problem and implement solve() method
-
-Annotate with @Problem with unique name and category
-
-Test your implementation
+---
 
 Happy coding! 🚀
