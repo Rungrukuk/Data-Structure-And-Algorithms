@@ -8,4 +8,6 @@ public @interface Problem {
     String name();
 
     String category() default "General";
+
+    String description() default "";
 }
