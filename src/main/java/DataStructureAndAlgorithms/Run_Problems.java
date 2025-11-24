@@ -75,7 +75,7 @@ public class Run_Problems {
         for (int i = 0; i < problems.size(); i++) {
             String problemName = problems.get(i);
             String category = problemManager.getProblemCategories().get(problemName);
-            System.out.printf("%2d. %-25s [%s]%n", i + 1,
+            System.out.printf("%2d. %-50s [%s]%n", i + 1,
                     HelperMethods.formatProblemName(problemName), category);
         }
 
