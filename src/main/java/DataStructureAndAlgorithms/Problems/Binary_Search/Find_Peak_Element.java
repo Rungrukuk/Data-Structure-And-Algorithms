@@ -1,4 +1,4 @@
-package DataStructureAndAlgorithms.Problems.BinarySearch;
+package DataStructureAndAlgorithms.Problems.Binary_Search;
 
 import DataStructureAndAlgorithms.Base_Problem;
 import DataStructureAndAlgorithms.Problem;
