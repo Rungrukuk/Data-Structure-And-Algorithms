@@ -125,7 +125,7 @@ java DataStructureAndAlgorithms.Utils.Problem_Class_Creator
 
 ```
 Enter problem name: splitArrayLargestSum
-Enter category: dynamicProgramming
+Enter category: Binary Search
 Enter return type: int
 
 ✓ Converted to: Integer
@@ -136,7 +136,7 @@ Enter return type: int
 **Generated file (simplified):**
 
 ```java
-@Problem(name = "Split Array Largest Sum", category = "Dynamic Programming")
+@Problem(name = "Split Array Largest Sum", category = "Binary Search")
 public class Split_Array_Largest_Sum extends Base_Problem<Integer> {
     @Override
     protected Integer solve() {
@@ -316,3 +316,4 @@ The system discovers and loads everything automatically.
 
 This system is built to make algorithm mastery **systematic**, **repeatable**, and **fun**.
 Keep practicing and leveling up! 🚀
+
