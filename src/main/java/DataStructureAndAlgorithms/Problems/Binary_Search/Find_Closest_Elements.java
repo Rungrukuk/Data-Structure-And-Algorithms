@@ -1,4 +1,4 @@
-package DataStructureAndAlgorithms.Problems.BinarySearch;
+package DataStructureAndAlgorithms.Problems.Binary_Search;
 
 import java.util.ArrayList;
 import java.util.List;

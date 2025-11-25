@@ -2,7 +2,7 @@ package DataStructureAndAlgorithms.Practices.BinarySearch;
 
 import DataStructureAndAlgorithms.Base_Practice;
 import DataStructureAndAlgorithms.Practice;
-import DataStructureAndAlgorithms.Problems.BinarySearch.Search_Insert_Position;
+import DataStructureAndAlgorithms.Problems.Binary_Search.Search_Insert_Position;
 
 @Practice(problemName = "Search Insert Position", category = "Binary Search")
 public class Search_Insert_Position_Practice extends Base_Practice<Integer, Search_Insert_Position> {
