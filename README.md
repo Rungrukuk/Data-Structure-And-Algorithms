@@ -1,53 +1,49 @@
-# Data Structures & Algorithms — Problem & Practice Runner
-A Java-based console application to **solve, practice, and verify algorithm problems** through an interactive menu. Problems and practice implementations are automatically discovered using reflection, enabling efficient learning and tracking of your mastery.
+# Data Structures & Algorithms — Problem & Practice Framework
 
----
-
-## 🚀 Overview
-This project provides a clean and extensible framework for algorithm learning:
-
-- **Organized problem categories**
-- **Automatic discovery** of problems and practices via reflection
-- **Interactive console runner**
-- **Practice system** for memory-based reimplementation
-- **Automatic comparison** between your practice solution and the reference solution
+A lightweight framework for **learning**, **practicing**, and **mastering** Data Structures & Algorithms through interactive problem execution and automatic practice validation.
 
 ---
 
 ## 📁 Project Structure
+
 ```
 src/main/java/DataStructureAndAlgorithms/
-├── Base_Problem.java        # Base class for problems
-├── Base_Practice.java       # Base class for practice implementations
-├── Problem.java             # Annotation for problem auto-discovery
-├── Practice.java            # Annotation for practice auto-discovery
-├── Problem_Manager.java     # Handles scanning and execution
-├── Run_Problems.java        # Main interactive entry point
+├── Base_Problem.java               # Base class for reference solutions
+├── Base_Practice.java              # Base class for practice attempts
+├── Problem.java                    # Annotation for problem auto-discovery
+├── Practice.java                   # Annotation for practice auto-discovery
+├── Problem_Manager.java            # Scans and manages problems/practices
+├── Run_Problems.java               # Main interactive console app
+├── Problem_Class_Creator.java      # Auto-generates problem templates
 │
-├── Problems/                # Reference solutions
+├── Problems/                       # Reference solutions
 │   ├── Binary_Search/
 │   │   ├── Binary_Search.java
 │   │   ├── First_Bad_Version.java
 │   │   └── Search_And_Insert.java
-│   └── Other_Categories/
-│       └── ...
+│   └── Other_Categories/...
 │
-└── Practices/               # Practice implementations
-    ├── Binary_Search/
-    │   └── Binary_Search_Practice.java
-    └── Other_Categories/
-        └── ...
+├── Practices/                      # Practice re-implementations
+│   ├── Binary_Search/
+│   │   └── Binary_Search_Practice.java
+│   └── Other_Categories/...
+│
+└── Utils/
+    └── HelperMethods.java
 ```
 
 ---
 
 ## ⚡ Quick Start
 
-### 1. Creating a New Problem
-Add a class under `Problems/<Category>` and annotate it with `@Problem`:
+### 1. Create a New Problem
+
+Place the class under `Problems/<Category>` and annotate with `@Problem`:
+
 ```java
 @Problem(name = "Binary Search", category = "Binary Search")
 public class Binary_Search extends Base_Problem<Integer> {
+
     public final int[] nums = { -1, 0, 3, 5, 9, 12 };
     public final int target = 5;
 
@@ -65,10 +61,16 @@ public class Binary_Search extends Base_Problem<Integer> {
 }
 ```
 
-### 2. Creating a Practice Implementation
-Practice classes allow you to **re-implement the solution from memory** and automatically compare your output to the reference. Annotate with `@Practice`:
+### 2. Create a Practice Implementation
+
+Practice classes allow you to **re-implement the solution from memory**, then automatically compare your output against the reference:
+
 ```java
-@Practice(name = "Binary Search", category = "Binary Search")
+@Practice(
+    problemName = "Binary Search",
+    category = "Binary Search",
+    description = "Practice implementation for binary search"
+)
 public class Binary_Search_Practice extends Base_Practice<Integer, Binary_Search> {
 
     public Binary_Search_Practice(Binary_Search problem) {
@@ -89,29 +91,78 @@ public class Binary_Search_Practice extends Base_Practice<Integer, Binary_Search
 }
 ```
 
-**Key Annotation Fields:**
-- `problemName`: Must match the corresponding `@Problem` name
-- `category`: Organizes practices in the menu
-- `description`: Optional details
+**Key annotation fields:**
 
-### 3. Running the Application
+* `problemName` — must match the @Problem name **exactly**
+* `category` — organizes items in menus
+* `description` — optional
+
+---
+
+## ▶️ Running the Application
+
 ```bash
 cd src/main/java
 javac DataStructureAndAlgorithms/Run_Problems.java
 java DataStructureAndAlgorithms.Run_Problems
 ```
+
 Or run `Run_Problems` directly from your IDE.
 
 ---
 
+## 🛠️ Problem Class Creator (Recommended)
+
+Generate problem templates with automatic naming, formatting, and validation:
+
+```bash
+cd src/main/java
+javac DataStructureAndAlgorithms/Utils/Problem_Class_Creator.java
+java DataStructureAndAlgorithms.Utils.Problem_Class_Creator
+```
+
+**Example Output:**
+
+```
+Enter problem name: splitArrayLargestSum
+Enter category: dynamicProgramming
+Enter return type: int
+
+✓ Converted to: Integer
+✅ Problem class created successfully!
+📁 Location: Problems/Dynamic_Programming/Split_Array_Largest_Sum.java
+```
+
+**Generated file (simplified):**
+
+```java
+@Problem(name = "Split Array Largest Sum", category = "Dynamic Programming")
+public class Split_Array_Largest_Sum extends Base_Problem<Integer> {
+    @Override
+    protected Integer solve() {
+        throw new UnsupportedOperationException("Unimplemented method");
+    }
+}
+```
+
+**Creator Highlights:**
+
+* Accepts flexible naming (`split-array`, `splitArray`, etc.)
+* Auto-formats class names & display names
+* Creates missing category folders
+* Converts primitives to wrapper types
+* Adds necessary imports automatically
+
+---
+
 ## 🧭 Interactive Menu Overview
+
 ```
 =========================================
     DATA STRUCTURES & ALGORITHMS
        PROBLEM & PRACTICE RUNNER
 =========================================
 
-=== MAIN MENU ===
 1. List all problems
 2. List problems by category
 3. Run a specific problem
@@ -121,99 +172,52 @@ Or run `Run_Problems` directly from your IDE.
 7. Exit
 ```
 
-### Problems vs Practices
-**Problems:**
-- Reference solution implementations
-- Annotated with `@Problem`
-- Learn correct algorithmic approaches
+### Problems
 
-**Practices:**
-- Re-implement from memory
-- Annotated with `@Practice` to link to the corresponding problem
-- Automatically compared with the reference solution
-- Reinforces retention and mastery
+* Reference solutions
+* Annotated with `@Problem`
+* Used for learning correct algorithms
 
----
+### Practices
 
-### Problem Management (Options 1–3)
-**List All Problems:**
-```
-=== ALL PROBLEMS ===
- 1. BinarySearch              [Binary Search]
- 2. FirstBadVersion           [Binary Search]
- 3. SearchInsert              [Binary Search]
- 4. TwoSum                    [Arrays]
-```
+* Your own re-implementation
+* Annotated with `@Practice`
+* Automatically compared to the problem result
 
-**List by Category:**
-```
---- Binary Search ---
- 1. BinarySearch
- 2. FirstBadVersion
- 3. SearchInsert
-```
+**Example:**
 
-**Run Specific Problem:**
-Supports flexible input:
-```
-binarysearch | binary search | BinarySearch | binary-search | binary_search
-```
-
-Example:
 ```
 === Running Binary Search ===
 Solution: 3
 ```
 
----
+**Practice attempt:**
 
-### Practice Management (Options 4–6)
-**List All Practices:**
 ```
-=== ALL PRACTICES ===
- 1. BinarySearch              [Binary Search]
- 2. FirstBadVersion           [Binary Search]
-```
-
-**List Practices by Category:**
-```
---- Binary Search ---
- 1. BinarySearch
- 2. FirstBadVersion
-
---- Arrays ---
- 3. TwoSum
-```
-
-**Run a Practice:**
-```
-=== Practicing Binary Search ===
 Your answer: 3
 Expected answer: 3
 Result: ✅ CORRECT
-```
-Incorrect output:
-```
-Your answer: 2
-Expected answer: 3
-Result: ❌ INCORRECT
 ```
 
 ---
 
 ## 🏷️ Annotation Reference
-**Problem:**
+
+### Problem
+
 ```java
 @Problem(
-    name = "MeaningfulName",
+    name = "Meaningful Name",
     category = "Algorithm Category",
     description = "Optional details"
 )
 ```
-**Practice:**
+
+### Practice
+
 ```java
 @Practice(
-    problemName = "BinarySearch",
+    problemName = "Binary Search",
     category = "Binary Search",
     description = "Optional details"
 )
@@ -221,66 +225,94 @@ Result: ❌ INCORRECT
 
 ---
 
-## ➕ Adding New Content
-- Create a new package under `Problems/`
-- Add problem classes annotated with `@Problem`
-- Create corresponding practice classes in `Practices/` annotated with `@Practice`
-- Ensure `problemName` matches exactly
-- The system auto-discovers everything at runtime
+## ➕ Adding New Problems & Practices
+
+### **Method 1 (Recommended):** Problem Class Creator
+
+Automatically generates a ready-to-implement template.
+
+### **Method 2:** Manual Creation
+
+1. Add class in `Problems/<Category>/`
+2. Add practice class in `Practices/<Category>/`
+3. Ensure:
+
+   * `@Problem` and `@Practice` annotations are correct
+   * `problemName` **matches exactly**
+
+The system discovers and loads everything automatically.
 
 ---
 
 ## 🌟 Features
-- Automatic discovery via reflection
-- Annotation-based problem-practice linking
-- Flexible input matching
-- Clean category organization
-- Interactive console interface
-- Knowledge verification in Practice mode
-- Instant feedback (✅ / ❌)
-- Extensible architecture
+
+* 🚀 **Automatic reflection-based discovery**
+* 🧠 **Practice mode with correctness verification**
+* ✨ **Flexible name matching**
+  (`BinarySearch`, `binary-search`, `binary search`, etc.)
+* 📂 **Automatic category organization**
+* 🔧 **Smart problem class generator**
+* 📘 **Type validation & automatic primitive conversion**
+* 🧹 **Import management for collection types**
+* 💬 **Instant feedback (correct/incorrect)**
 
 ---
 
-## 🧩 Dependencies
-- Java 8+
-- Reflections library (Maven managed)
+## 🔧 Supported Return Types
+
+* Primitive wrappers: `Integer`, `Boolean`, `Double`
+* Arrays: `Integer[]`, `String[]`, …
+* Collections:
+
+  * `List<Integer>`, `Map<String, Integer>`
+  * Nested: `List<List<Integer>>`, `Map<String, List<Boolean>>`
 
 ---
 
 ## ❗ Troubleshooting
-**Problems not found?**
-- Ensure they exist in `Problems/`
-- Verify `@Problem` annotation
-- Confirm the class extends `Base_Problem`
 
-**Practices not found?**
-- Ensure they exist in `Practices/`
-- Verify `@Practice` annotation
-- Check `problemName` matches the problem
-- Confirm class extends `Base_Practice`
+### Problems not detected?
 
-**Compilation errors?**
-- Check package structure
-- Verify dependencies and classpath
+* Ensure class is inside `Problems/`
+* Must extend `Base_Problem`
+* Must use `@Problem`
+
+### Practices not detected?
+
+* Must extend `Base_Practice`
+* Must use `@Practice`
+* `problemName` **must match** the problem
+
+### Class Creator problems?
+
+* Only valid Java types allowed
+* Primitives automatically converted
+* Category folders are created automatically
 
 ---
 
 ## 🤝 Contributing
-1. Add a new problem in `Problems/<Category>/`
-2. Annotate with `@Problem` and implement `solve()`
-3. Add a corresponding practice class in `Practices/<Category>/`
-4. Annotate with `@Practice` linking to the problem
-5. Implement `practice()` method
-6. Test both implementations
+
+1. Generate a new problem (via Creator or manually)
+2. Implement solution in `solve()`
+3. Create a matching practice class
+4. Add annotations properly
+5. Test with the interactive menu
 
 ---
 
 ## 🎯 Learning Strategy
-1. **Study:** Review the reference solution in `Problems/`
-2. **Practice:** Implement your own solution in `Practices/`
-3. **Verify:** Use Practice mode to compare your result
-4. **Repeat:** Reinforce long-term mastery
-5. **Track:** Monitor progress via practice results
 
-Happy coding! 🚀
+1. **Study** the reference implementation
+2. **Practice** by writing your own version
+3. **Verify** with automatic comparison
+4. **Analyze** differences
+5. **Repeat** regularly
+6. Track your progress through results
+
+---
+
+## 🎉 Happy Coding!
+
+This system is built to make algorithm mastery **systematic**, **repeatable**, and **fun**.
+Keep practicing and leveling up! 🚀
