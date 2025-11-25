@@ -1,4 +1,4 @@
-package DataStructureAndAlgorithms.Practices.BinarySearch;
+package DataStructureAndAlgorithms.Practices.Binary_Search;
 
 import DataStructureAndAlgorithms.Base_Practice;
 import DataStructureAndAlgorithms.Practice;
