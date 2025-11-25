@@ -3,9 +3,9 @@ package DataStructureAndAlgorithms.Problems.BinarySearch;
 import DataStructureAndAlgorithms.Base_Problem;
 import DataStructureAndAlgorithms.Problem;
 
-@Problem(name = "Minimum Time To Complete Trips")
+@Problem(name = "Minimum Time To Complete Trips", category = "Binary Search")
 public class Minimum_Time_To_Complete_Trips extends Base_Problem<Long> {
-    public final int[] time = new int[] { 39855, 21385, 86948, 57163, 24158, 85790, 95497, 9931, 31399, 15301, 30502,
+    public final int[] time = new int[]{39855, 21385, 86948, 57163, 24158, 85790, 95497, 9931, 31399, 15301, 30502,
             9864, 90569, 76768, 76558, 25520, 53221, 54640, 8598, 93891, 4852, 32387, 44867, 47670, 23128, 75389, 1345,
             80398, 7141, 85691, 7859, 34310, 39572, 26067, 5289, 2419, 88745, 17092, 19382, 97383, 47924, 49297, 61875,
             83213, 78446, 20280, 54103, 5988, 44138, 98014, 70068, 40629, 27668, 69614, 767, 5102, 57281, 30718, 62090,
@@ -217,7 +217,7 @@ public class Minimum_Time_To_Complete_Trips extends Base_Problem<Long> {
             59716, 65063, 69647, 72957, 17303, 91865, 40972, 49771, 3248, 49146, 60107, 44197, 514, 14567, 10060, 34777,
             14398, 82656, 3250, 57723, 80189, 9791, 99149, 43443, 77270, 4125, 22684, 92216, 8685, 78608, 27706, 83089,
             85276, 36780, 25938, 51785, 60795, 84668, 93220, 43284, 6459, 965, 71214, 90482, 59897, 35791, 11349, 99301,
-            84149, 39064, 55437, 30237, 96353, 64337, 14510, 10098, 56153, 32091, 64350, 54082, 23321 };
+            84149, 39064, 55437, 30237, 96353, 64337, 14510, 10098, 56153, 32091, 64350, 54082, 23321};
 
     public final int totalTrips = 1448315;
 
