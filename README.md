@@ -15,6 +15,7 @@ src/main/java/DataStructureAndAlgorithms/
 ├── Problem_Manager.java            # Scans and manages problems/practices
 ├── Run_Problems.java               # Main interactive console app
 ├── Problem_Class_Creator.java      # Auto-generates problem templates
+├── Practice_Class_Creator.java      # Auto-generates practice templates
 │
 ├── Problems/                       # Reference solutions
 │   ├── Binary_Search/
