@@ -1,8 +1,8 @@
 package DataStructureAndAlgorithms.Practices.Binary_Search;
 
-import DataStructureAndAlgorithms.Base_Practice;
-import DataStructureAndAlgorithms.Practice;
 import DataStructureAndAlgorithms.Problems.Binary_Search.Binary_Search;
+import DataStructureAndAlgorithms.core.Base_Practice;
+import DataStructureAndAlgorithms.core.Practice;
 
 @Practice(problemName = "Binary Search", category = "Binary Search")
 public class Binary_Search_Practice extends Base_Practice<Integer, Binary_Search> {

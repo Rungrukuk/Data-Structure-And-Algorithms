@@ -1,7 +1,7 @@
 package DataStructureAndAlgorithms.Problems.Binary_Search;
 
-import DataStructureAndAlgorithms.Base_Problem;
-import DataStructureAndAlgorithms.Problem;
+import DataStructureAndAlgorithms.core.Base_Problem;
+import DataStructureAndAlgorithms.core.Problem;
 
 @Problem(name = "Search Insert Position", category = "Binary Search")
 public class Search_Insert_Position extends Base_Problem<Integer> {

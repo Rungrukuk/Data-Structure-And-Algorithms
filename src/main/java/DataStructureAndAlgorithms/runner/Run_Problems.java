@@ -1,7 +1,8 @@
-package DataStructureAndAlgorithms;
+package DataStructureAndAlgorithms.runner;
 
 import java.util.*;
 
+import DataStructureAndAlgorithms.core.Problem_Manager;
 import DataStructureAndAlgorithms.utils.HelperMethods;
 
 public class Run_Problems {

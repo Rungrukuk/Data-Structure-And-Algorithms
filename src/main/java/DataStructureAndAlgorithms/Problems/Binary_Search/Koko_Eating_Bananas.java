@@ -1,7 +1,7 @@
 package DataStructureAndAlgorithms.Problems.Binary_Search;
 
-import DataStructureAndAlgorithms.Base_Problem;
-import DataStructureAndAlgorithms.Problem;
+import DataStructureAndAlgorithms.core.Base_Problem;
+import DataStructureAndAlgorithms.core.Problem;
 
 @Problem(name = "Koko Eating Bananas", category = "Binary Search")
 public class Koko_Eating_Bananas extends Base_Problem<Integer> {

@@ -1,4 +1,4 @@
-package DataStructureAndAlgorithms;
+package DataStructureAndAlgorithms.core;
 
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;

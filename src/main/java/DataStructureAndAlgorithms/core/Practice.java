@@ -1,4 +1,4 @@
-package DataStructureAndAlgorithms;
+package DataStructureAndAlgorithms.core;
 
 import java.lang.annotation.*;
 

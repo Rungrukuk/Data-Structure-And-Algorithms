@@ -1,5 +1,7 @@
-package DataStructureAndAlgorithms;
+package DataStructureAndAlgorithms.creators;
 
+import DataStructureAndAlgorithms.core.Practice;
+import DataStructureAndAlgorithms.core.Problem;
 import DataStructureAndAlgorithms.utils.HelperMethods;
 // import DataStructureAndAlgorithms.Base_Problem;
 // import DataStructureAndAlgorithms.Base_Practice;

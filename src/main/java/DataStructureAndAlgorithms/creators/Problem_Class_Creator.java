@@ -1,4 +1,4 @@
-package DataStructureAndAlgorithms;
+package DataStructureAndAlgorithms.creators;
 
 import DataStructureAndAlgorithms.utils.HelperMethods;
 
