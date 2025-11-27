@@ -1,10 +1,10 @@
 package DataStructureAndAlgorithms.Problems.Binary_Search;
 
-import DataStructureAndAlgorithms.core.Base_Problem;
+import DataStructureAndAlgorithms.core.BaseProblem;
 import DataStructureAndAlgorithms.core.Problem;
 
 @Problem(name = "Find Peak Element", category = "Binary Search")
-public class Find_Peak_Element extends Base_Problem<Integer> {
+public class Find_Peak_Element extends BaseProblem<Integer> {
 
     public final int[] nums = new int[] { 1, 2, 1, 3, 5, 6, 4 };
 

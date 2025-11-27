@@ -2,10 +2,21 @@ package DataStructureAndAlgorithms.services;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
+
+import DataStructureAndAlgorithms.exceptions.IllegalInputException;
 
 public class InputService {
+    private Scanner scanner;
+
+    public InputService() {
+        scanner = new Scanner(System.in);
+    }
+
     public String getProblemName() {
-        return null;
+        String problemName = scanner.nextLine();
+        // TODO implement the input normalization with naming utils
+        return problemName;
     }
 
     public String getCategory() {
@@ -16,8 +27,21 @@ public class InputService {
         return null;
     }
 
-    public String selectFromList(List<String> options, String prompt) {
-        return null;
+    public String selectFromList(List<String> options) {
+        String line = scanner.nextLine();
+
+        int optionNumber;
+        try {
+            optionNumber = Integer.parseInt(line);
+        } catch (NumberFormatException e) {
+            throw new IllegalInputException("Input must be a number between 1 and " + options.size());
+        }
+
+        if (optionNumber < 1 || optionNumber > options.size()) {
+            throw new IllegalInputException("Input must be a number between 1 and " + options.size());
+        }
+
+        return options.get(optionNumber - 1);
     }
 
     public String selectFromCategory(Map<String, List<String>> categorizedOptions) {
@@ -26,5 +50,13 @@ public class InputService {
 
     public boolean getConfirmation(String message) {
         return false;
+    }
+
+    public void shutDownScanner() {
+        this.scanner.close();
+    }
+
+    public void continueTheProgram() {
+        scanner.nextLine();
     }
 }

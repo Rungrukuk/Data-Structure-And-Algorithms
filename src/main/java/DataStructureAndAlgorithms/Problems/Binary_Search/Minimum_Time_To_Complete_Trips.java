@@ -1,10 +1,10 @@
 package DataStructureAndAlgorithms.Problems.Binary_Search;
 
-import DataStructureAndAlgorithms.core.Base_Problem;
+import DataStructureAndAlgorithms.core.BaseProblem;
 import DataStructureAndAlgorithms.core.Problem;
 
 @Problem(name = "Minimum Time To Complete Trips", category = "Binary Search")
-public class Minimum_Time_To_Complete_Trips extends Base_Problem<Long> {
+public class Minimum_Time_To_Complete_Trips extends BaseProblem<Long> {
     public final int[] time = new int[] { 39855, 21385, 86948, 57163, 24158, 85790, 95497, 9931, 31399, 15301, 30502,
             9864, 90569, 76768, 76558, 25520, 53221, 54640, 8598, 93891, 4852, 32387, 44867, 47670, 23128, 75389, 1345,
             80398, 7141, 85691, 7859, 34310, 39572, 26067, 5289, 2419, 88745, 17092, 19382, 97383, 47924, 49297, 61875,

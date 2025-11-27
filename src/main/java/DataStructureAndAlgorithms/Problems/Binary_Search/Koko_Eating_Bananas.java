@@ -1,10 +1,10 @@
 package DataStructureAndAlgorithms.Problems.Binary_Search;
 
-import DataStructureAndAlgorithms.core.Base_Problem;
+import DataStructureAndAlgorithms.core.BaseProblem;
 import DataStructureAndAlgorithms.core.Problem;
 
 @Problem(name = "Koko Eating Bananas", category = "Binary Search")
-public class Koko_Eating_Bananas extends Base_Problem<Integer> {
+public class Koko_Eating_Bananas extends BaseProblem<Integer> {
     public final int[] piles = new int[] { 3, 6, 7, 11 };
     public final int h = 8;
 

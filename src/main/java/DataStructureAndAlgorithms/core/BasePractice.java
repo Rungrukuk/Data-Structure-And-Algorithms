@@ -1,6 +1,6 @@
 package DataStructureAndAlgorithms.core;
 
-public abstract class BasePractice<T, P extends Base_Problem<T>> {
+public abstract class BasePractice<T, P extends BaseProblem<T>> {
     protected P problem;
 
     public BasePractice(P problem) {

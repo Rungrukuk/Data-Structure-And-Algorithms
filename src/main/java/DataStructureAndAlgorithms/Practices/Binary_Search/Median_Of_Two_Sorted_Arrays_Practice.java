@@ -1,11 +1,11 @@
 package DataStructureAndAlgorithms.Practices.Binary_Search;
 
 import DataStructureAndAlgorithms.Problems.Binary_Search.Median_Of_Two_Sorted_Arrays;
-import DataStructureAndAlgorithms.core.Base_Practice;
+import DataStructureAndAlgorithms.core.BasePractice;
 import DataStructureAndAlgorithms.core.Practice;
 
 @Practice(problemName = "Median Of Two Sorted Arrays", category = "Binary Search")
-public class Median_Of_Two_Sorted_Arrays_Practice extends Base_Practice<Double, Median_Of_Two_Sorted_Arrays> {
+public class Median_Of_Two_Sorted_Arrays_Practice extends BasePractice<Double, Median_Of_Two_Sorted_Arrays> {
 
     public Median_Of_Two_Sorted_Arrays_Practice(Median_Of_Two_Sorted_Arrays problem) {
         super(problem);

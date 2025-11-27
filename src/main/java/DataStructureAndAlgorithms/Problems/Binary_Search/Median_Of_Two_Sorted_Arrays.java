@@ -1,10 +1,10 @@
 package DataStructureAndAlgorithms.Problems.Binary_Search;
 
-import DataStructureAndAlgorithms.core.Base_Problem;
+import DataStructureAndAlgorithms.core.BaseProblem;
 import DataStructureAndAlgorithms.core.Problem;
 
 @Problem(name = "Median Of Two Sorted Arrays", category = "Binary Search")
-public class Median_Of_Two_Sorted_Arrays extends Base_Problem<Double> {
+public class Median_Of_Two_Sorted_Arrays extends BaseProblem<Double> {
     public int[] nums1 = new int[] { 1, 2, 3, 4, 5 };
     public int[] nums2 = new int[] { 6, 7, 8, 9, 10, 11, 12 };
 

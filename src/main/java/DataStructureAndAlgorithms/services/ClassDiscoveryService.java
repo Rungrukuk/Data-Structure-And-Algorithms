@@ -3,6 +3,7 @@ package DataStructureAndAlgorithms.services;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,7 +22,8 @@ import DataStructureAndAlgorithms.utils.Constants;
 import DataStructureAndAlgorithms.utils.NamingUtils;
 
 public class ClassDiscoveryService {
-    private Map<String, ProblemInfo> problemsMap; // TODO Maybe need to be method variable
+    private Map<String, ProblemInfo> problemsMap = new HashMap<String, ProblemInfo>(); // TODO Maybe need to be method
+                                                                                       // variable
 
     public Map<String, ProblemInfo> discoverProblems() {
         for (Class<?> clazz : getSetOfClasses(Constants.PROBLEM_PACKAGE, Problem.class)) {

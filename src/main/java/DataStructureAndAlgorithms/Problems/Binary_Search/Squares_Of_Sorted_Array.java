@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import DataStructureAndAlgorithms.core.Base_Problem;
+import DataStructureAndAlgorithms.core.BaseProblem;
 import DataStructureAndAlgorithms.core.Problem;
 
 @Problem(name = "Squares Of Sorted Array", category = "Binary Search")
-public class Squares_Of_Sorted_Array extends Base_Problem<List<Integer>> {
+public class Squares_Of_Sorted_Array extends BaseProblem<List<Integer>> {
     public final int[] nums = new int[] { -4, -1, 0, 3, 10 };
 
     @Override

@@ -4,13 +4,13 @@ import java.util.Map;
 
 import DataStructureAndAlgorithms.exceptions.PracticeInstantiationException;
 import DataStructureAndAlgorithms.exceptions.ProblemInstantiationException;
+import DataStructureAndAlgorithms.exceptions.ProblemNotFoundException;
 import DataStructureAndAlgorithms.models.PracticeInfo;
 import DataStructureAndAlgorithms.models.PracticeResult;
 import DataStructureAndAlgorithms.models.ProblemInfo;
 import DataStructureAndAlgorithms.models.ProblemResult;
 import DataStructureAndAlgorithms.services.ClassDiscoveryService;
 import DataStructureAndAlgorithms.services.FileSystemService;
-import DataStructureAndAlgorithms.utils.Constants;
 
 public class ProblemManager {
     private final ClassDiscoveryService discoveryService;
@@ -26,7 +26,11 @@ public class ProblemManager {
     }
 
     public ProblemResult runProblem(String problemName) {
-        BaseProblem<?> problemInstance = instantiateProblem(problemInfoMap.get(problemName));
+        ProblemInfo problemInfo = problemInfoMap.get(problemName);
+        if (problemInfo == null) {
+            throw new ProblemNotFoundException("Could not find specified problem: " + problemName);
+        }
+        BaseProblem<?> problemInstance = instantiateProblem(problemInfo);
         Object result = problemInstance.solve();
         return new ProblemResult(problemName, result);
     }
