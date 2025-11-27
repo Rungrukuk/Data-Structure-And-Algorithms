@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
@@ -22,10 +23,9 @@ import DataStructureAndAlgorithms.utils.Constants;
 import DataStructureAndAlgorithms.utils.NamingUtils;
 
 public class ClassDiscoveryService {
-    private Map<String, ProblemInfo> problemsMap = new HashMap<String, ProblemInfo>(); // TODO Maybe need to be method
-                                                                                       // variable
 
     public Map<String, ProblemInfo> discoverProblems() {
+        Map<String, ProblemInfo> discoveredProblems = new HashMap<>();
         for (Class<?> clazz : getSetOfClasses(Constants.PROBLEM_PACKAGE, Problem.class)) {
 
             if (!BaseProblem.class.isAssignableFrom(clazz)) {
@@ -56,32 +56,33 @@ public class ClassDiscoveryService {
                     NamingUtils.generateCategoryFolderName(category) +
                     clazz.getSimpleName();
 
-            problemsMap.put(problemName,
+            discoveredProblems.put(problemName,
                     new ProblemInfo(problemName, category, clazz.getName(), returnType.getTypeName(), filePath));
         }
 
-        return problemsMap;
+        return discoveredProblems;
     }
 
     public Map<String, PracticeInfo> discoverPractices() {
         return null;
     }
 
-    public Map<String, List<ProblemInfo>> getProblemsByCategory() {
-        return null;
+    public Map<String, List<ProblemInfo>> getProblemsByCategory(Map<String, ProblemInfo> problems) {
+        return problems.values().stream()
+                .collect(Collectors.groupingBy(ProblemInfo::getCategory));
     }
 
     public Map<String, List<PracticeInfo>> getPracticesByCategory() {
         return null;
     }
 
-    public ProblemInfo findProblem(String problemName) {
-        return problemsMap.get(problemName);
-    }
+    // public ProblemInfo findProblem(String problemName) {
+    // return null;
+    // }
 
-    public PracticeInfo findPractice(String practiceName) {
-        return null;
-    }
+    // public PracticeInfo findPractice(String practiceName) {
+    // return null;
+    // }
 
     private Set<Class<?>> getSetOfClasses(String packageName, Class<? extends Annotation> annotation) {
         Reflections reflections = new Reflections(

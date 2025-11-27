@@ -4,7 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import DataStructureAndAlgorithms.exceptions.IllegalInputException;
+import DataStructureAndAlgorithms.exceptions.InvalidInputException;
+import DataStructureAndAlgorithms.utils.NamingUtils;
 
 public class InputService {
     private Scanner scanner;
@@ -15,7 +16,10 @@ public class InputService {
 
     public String getProblemName() {
         String problemName = scanner.nextLine();
-        // TODO implement the input normalization with naming utils
+        problemName = NamingUtils.formatProblemName(problemName);
+        if (problemName == null || problemName.isBlank()) {
+            throw new InvalidInputException("Problem name cannot be empty.");
+        }
         return problemName;
     }
 
@@ -34,11 +38,11 @@ public class InputService {
         try {
             optionNumber = Integer.parseInt(line);
         } catch (NumberFormatException e) {
-            throw new IllegalInputException("Input must be a number between 1 and " + options.size());
+            throw new InvalidInputException("Input must be a number between 1 and " + options.size());
         }
 
         if (optionNumber < 1 || optionNumber > options.size()) {
-            throw new IllegalInputException("Input must be a number between 1 and " + options.size());
+            throw new InvalidInputException("Input must be a number between 1 and " + options.size());
         }
 
         return options.get(optionNumber - 1);
