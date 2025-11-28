@@ -21,7 +21,7 @@ public class App {
 
         } catch (Exception e) {
             System.err.println("Failed to start application: " + e.getMessage());
-            e.printStackTrace();
+            // e.printStackTrace();
         }
     }
 }

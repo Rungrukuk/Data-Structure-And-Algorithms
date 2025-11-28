@@ -48,4 +48,12 @@ public final class NamingUtils {
         String formattedCategory = formatProblemName(category); // TODO check if there are any need to formatProblemName
         return formattedCategory.replace(" ", "");
     }
+
+    public static String convertId(String id) {
+        return id.replace(" ", "");
+    }
+
+    public static String convertClassNameToPath(String className) {
+        return className.replace(".", "/");
+    }
 }

@@ -8,8 +8,9 @@ public class Constants {
     // ========================= FILE PATHS =========================
     public static final String BASE_SOURCE_PATH = "src/main/java/";
     public static final String BASE_PACKAGE = "DataStructureAndAlgorithms";
-    public static final String PROBLEM_PACKAGE = BASE_PACKAGE + "." + "Problems";
-    public static final String PRACTICE_PACKAGE = BASE_PACKAGE + "." + "Practices";
+    public static final String SEPERATOR = ".";
+    public static final String PROBLEM_PACKAGE = BASE_PACKAGE + SEPERATOR + "Problems";
+    public static final String PRACTICE_PACKAGE = BASE_PACKAGE + SEPERATOR + "Practices";
 
     public static final String PRACTICE_CLASS_SUFFIX = "_Practice";
     public static final String JAVA_FILE_SUFFIX = ".java";

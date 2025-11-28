@@ -1,5 +1,7 @@
 package DataStructureAndAlgorithms.models;
 
+import DataStructureAndAlgorithms.utils.Constants;
+
 public class ProblemInfo {
 
     private String name;
@@ -58,5 +60,9 @@ public class ProblemInfo {
 
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    public String getUniqueId() {
+        return category + Constants.SEPERATOR + name;
     }
 }

@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.reflections.Reflections;
@@ -38,9 +39,7 @@ public class ClassDiscoveryService {
                 (clazz, annotation, genericTypes) -> {
 
                     String filePath = buildFilePath(
-                            Constants.PROBLEM_PACKAGE,
-                            annotation.category(),
-                            clazz.getSimpleName() + Constants.JAVA_FILE_SUFFIX);
+                            clazz.getName());
 
                     Type returnType = genericTypes[Constants.RETURN_TYPE_POSITION];
 
@@ -51,7 +50,10 @@ public class ClassDiscoveryService {
                             returnType.getTypeName(),
                             filePath);
                 },
-                Problem::name);
+                Problem::name,
+                ProblemInfo::getUniqueId,
+                ProblemInfo::getFilePath,
+                true);
     }
 
     // ========================= DISCOVER PRACTICES =========================
@@ -73,13 +75,14 @@ public class ClassDiscoveryService {
                                             ", category: " + annotation.category()));
 
                     String filePath = buildFilePath(
-                            Constants.PRACTICE_PACKAGE,
-                            annotation.category(),
-                            clazz.getSimpleName() + Constants.JAVA_FILE_SUFFIX);
+                            clazz.getName());
 
                     return new PracticeInfo(matchedProblem, clazz.getName(), filePath);
                 },
-                Practice::problemName);
+                Practice::problemName,
+                PracticeInfo::getUniqueId,
+                PracticeInfo::getFilePath,
+                false);
     }
 
     // ========================= HELPER: GENERIC DISCOVERY =========================
@@ -89,7 +92,10 @@ public class ClassDiscoveryService {
             Class<?> requiredSuperclass,
             int requiredGenerics,
             DiscoveryFactory<A, T> factory,
-            java.util.function.Function<A, String> keyExtractor) {
+            Function<A, String> keyExtractor,
+            Function<T, String> idExtractor,
+            Function<T, String> filePathExtractor,
+            boolean isProblem) {
 
         Map<String, List<T>> result = new HashMap<>();
 
@@ -102,6 +108,7 @@ public class ClassDiscoveryService {
             T info = factory.create(clazz, annotation, generics);
 
             String key = keyExtractor.apply(annotation);
+            validateDuplicate(result, key, info, isProblem, idExtractor, filePathExtractor);
             result.computeIfAbsent(key, k -> new ArrayList<>()).add(info);
         }
 
@@ -127,20 +134,41 @@ public class ClassDiscoveryService {
 
         Type[] typeArgs = parameterizedType.getActualTypeArguments();
 
-        if (typeArgs.length < requiredGenerics) {
+        if (typeArgs.length != requiredGenerics) {
             throw new ClassDiscoveryException(
-                    "Class " + clazz.getName() + " must declare at least " + requiredGenerics + " generic types");
+                    "Class " + clazz.getName() + " must declare " + requiredGenerics + " generic types");
         }
 
         return typeArgs;
     }
 
-    private String buildFilePath(String basePackage, String category, String fileName) {
+    private <T> void validateDuplicate(Map<String, List<T>> map, String key, T newInfo, boolean isProblem,
+            Function<T, String> idExtractor, Function<T, String> filePathExtractor) {
+        List<T> existing = map.get(key);
+        if (existing == null)
+            return;
+
+        String newId = idExtractor.apply(newInfo);
+
+        Optional<T> duplicate = existing.stream()
+                .filter(e -> idExtractor.apply(e).equals(newId))
+                .findFirst();
+
+        if (duplicate.isPresent()) {
+            String type = isProblem ? "Problem" : "Practice";
+            String existingPath = filePathExtractor.apply(duplicate.get());
+            String newPath = filePathExtractor.apply(newInfo);
+
+            throw new ClassDiscoveryException(
+                    "Duplicate " + type + " detected: " + NamingUtils.convertId(newId) + "\n" +
+                            "Existing file: " + existingPath + "\n" +
+                            "New file: " + newPath);
+        }
+    }
+
+    private String buildFilePath(String className) {
         return Constants.BASE_SOURCE_PATH +
-                Constants.BASE_PACKAGE +
-                basePackage +
-                NamingUtils.generateCategoryFolderName(category) +
-                fileName;
+                NamingUtils.convertClassNameToPath(className);
     }
 
     private Set<Class<?>> getAnnotatedClasses(String packageName, Class<? extends Annotation> annotation) {

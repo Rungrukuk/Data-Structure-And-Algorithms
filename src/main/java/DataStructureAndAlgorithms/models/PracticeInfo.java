@@ -1,5 +1,7 @@
 package DataStructureAndAlgorithms.models;
 
+import DataStructureAndAlgorithms.utils.Constants;
+
 public class PracticeInfo {
 
     private ProblemInfo problemInfo;
@@ -36,4 +38,7 @@ public class PracticeInfo {
         this.filePath = filePath;
     }
 
+    public String getUniqueId() {
+        return problemInfo.getCategory() + Constants.SEPERATOR + problemInfo.getName();
+    }
 }
