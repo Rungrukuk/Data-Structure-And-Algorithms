@@ -1,10 +1,6 @@
 package DataStructureAndAlgorithms.runner;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Supplier;
 
 import DataStructureAndAlgorithms.core.ProblemManager;
@@ -12,6 +8,7 @@ import DataStructureAndAlgorithms.exceptions.InvalidInputException;
 import DataStructureAndAlgorithms.menus.LabeledOption;
 import DataStructureAndAlgorithms.menus.implementations.MainMenuOptions;
 import DataStructureAndAlgorithms.menus.implementations.ProblemMenuOptions;
+import DataStructureAndAlgorithms.models.PracticeResult;
 import DataStructureAndAlgorithms.models.ProblemResult;
 import DataStructureAndAlgorithms.services.InputService;
 import DataStructureAndAlgorithms.utils.Constants;
@@ -52,7 +49,8 @@ public class ProblemRunner {
 
             switch (selectedOption) {
                 case RUN:
-                    handleProblemSelection();
+                    problemManager.initialize();
+                    showProblemMenu();
                     break;
                 case CREATE_PROBLEM:
                     // TODO
@@ -69,23 +67,32 @@ public class ProblemRunner {
     }
 
     // ========================= PROBLEM MENU =========================
-    private void handleProblemSelection() {
+    private void showProblemMenu() {
         while (true) {
             String selection = retryUntilSuccessNonEmpty(
                     () -> createMenuAndChooseOption(problemMenuOptions),
                     Constants.INCORRECT_OPTION);
 
-            ProblemMenuOptions selectedOption = LabeledOption.fromLabel(ProblemMenuOptions.class, selection);
+            ProblemMenuOptions option = LabeledOption.fromLabel(ProblemMenuOptions.class, selection);
 
-            switch (selectedOption) {
-                case RUN_SPECIFIC:
-                    runSpecificProblem();
+            switch (option) {
+                case RUN_SPECIFIC_PROBLEM:
+                    chooseAndRun(true);
                     break;
                 case LIST_PROBLEMS:
-                    listAllProblems();
+                    listAll(true);
                     break;
-                case LIST_BY_CATEGORY:
-                    listProblemsByCategory();
+                case LIST_PROBLEMS_BY_CATEGORY:
+                    listByCategory(true);
+                    break;
+                case RUN_SPECIFIC_PRACTICE:
+                    chooseAndRun(false);
+                    break;
+                case LIST_PRACTICES:
+                    listAll(false);
+                    break;
+                case LIST_PRACTICES_BY_CATEGORY:
+                    listByCategory(false);
                     break;
                 case RETURN:
                     return;
@@ -93,82 +100,111 @@ public class ProblemRunner {
         }
     }
 
-    private void handlePracticeSelection() {
-        // TODO implement the logic
-    }
-
-    private void runSpecificProblem() {
+    private void chooseAndRun(boolean isProblem) {
         while (true) {
-            Optional<String> optionalName = askProblemName();
-
-            if (optionalName.isEmpty()) {
-                System.out.println("Returning to Problem Menu...");
+            Optional<String> nameOptional = askName(isProblem);
+            if (nameOptional.isEmpty()) {
+                System.out.println("Returning...");
                 break;
             }
+            String name = nameOptional.get();
 
-            String problemName = optionalName.get();
-            runProblemByName(problemName);
+            List<String> variants = isProblem
+                    ? problemManager.getProblemVariants(name)
+                    : problemManager.getPracticeVariants(name);
+
+            String selectedVariant;
+            if (variants.size() == 1) {
+                selectedVariant = variants.get(0); // only one variant
+            } else {
+                selectedVariant = retryUntilSuccessNonEmpty(
+                        () -> createMenuAndChooseOption(variants),
+                        Constants.INCORRECT_OPTION);
+            }
+
+            if (isProblem)
+                runProblemByName(selectedVariant);
+            else
+                runPracticeByName(selectedVariant);
         }
     }
 
-    private void listAllProblems() {
-        List<String> availableProblems = problemManager.getAvailableProblems();
-        String problemName = retryUntilSuccessNonEmpty(
-                () -> createMenuAndChooseOption(availableProblems),
+    private void listAll(boolean isProblem) {
+        List<String> available = isProblem
+                ? problemManager.getAvailableProblems()
+                : problemManager.getAvailablePractices();
+
+        String selected = retryUntilSuccessNonEmpty(
+                () -> createMenuAndChooseOption(available),
                 Constants.INCORRECT_OPTION);
-        runProblemByName(problemName);
+
+        if (isProblem)
+            runProblemByName(selected);
+        else
+            runPracticeByName(selected);
     }
 
-    private void listProblemsByCategory() {
-        Map<String, List<String>> problemsByCategory = problemManager.getProblemsByCategory();
+    private void listByCategory(boolean isProblem) {
+        Map<String, List<String>> byCategory = isProblem
+                ? problemManager.getProblemsByCategory()
+                : problemManager.getPracticesByCategory();
 
-        List<String> categories = new ArrayList<>(problemsByCategory.keySet());
+        List<String> categories = new ArrayList<>(byCategory.keySet());
 
-        String categoryName = retryUntilSuccessNonEmpty(
+        String category = retryUntilSuccessNonEmpty(
                 () -> createMenuAndChooseOption(categories),
                 Constants.INCORRECT_OPTION);
 
-        List<String> problems = problemsByCategory.get(categoryName);
+        List<String> items = byCategory.get(category);
 
-        String problemName = retryUntilSuccessNonEmpty(
-                () -> createMenuAndChooseOption(problems),
+        String selected = retryUntilSuccessNonEmpty(
+                () -> createMenuAndChooseOption(items),
                 Constants.INCORRECT_OPTION);
 
-        runProblemByName(problemName);
+        if (isProblem)
+            runProblemByName(selected);
+        else
+            runPracticeByName(selected);
     }
 
-    private void runProblemByName(String problemName) {
-        Optional<ProblemResult> problemResult = problemManager.runProblem(problemName);
-
-        problemResult.ifPresentOrElse(result -> {
-            System.out.println(Constants.ANSI_GREEN + result.getProblemName() + " Problem Run Successfully ✅");
-            System.out.println("Result: " + result.getResult() + Constants.ANSI_RESET);
+    // ========================= RUNNERS =========================
+    private void runProblemByName(String name) {
+        Optional<ProblemResult> result = problemManager.runProblem(name);
+        result.ifPresentOrElse(r -> {
+            System.out.println(Constants.ANSI_GREEN + r.getProblemName() + " Problem Run Successfully ✅");
+            System.out.println("Result: " + r.getResult() + Constants.ANSI_RESET);
             waitForEnter();
-        }, () -> showErrorMessage(Constants.DIDNOT_FIND_PROBLEM_NAME + problemName));
+        }, () -> showErrorMessage(Constants.DIDNOT_FIND_PROBLEM_NAME + name));
     }
 
-    // ========================= INPUT METHODS =========================
-    private Optional<String> askProblemName() {
-        return retryUntilSuccess(
-                () -> {
-                    System.out.print(Constants.ENTER_PROBLEM_NAME);
-                    String userInput = inputService.getProblemName();
+    private void runPracticeByName(String name) {
+        Optional<PracticeResult> result = problemManager.runPractice(name);
+        result.ifPresentOrElse(r -> {
+            System.out.println("Practice Answer: " + r.getPracticeResult());
+            System.out.println("Expected Answer: " + r.getExpectedResult());
+            System.out.println("Result: "
+                    + (r.isCorrect() ? Constants.ANSI_GREEN + "✅ CORRECT" : Constants.ANSI_RED + "❌ INCORRECT")
+                    + Constants.ANSI_RESET);
+            waitForEnter();
+        }, () -> showErrorMessage(Constants.DIDNOT_FIND_PROBLEM_NAME + name));
+    }
 
-                    if (userInput.equals(String.valueOf(Constants.RETURN_BACK))) {
-                        return Optional.empty();// usig empty to return back
-                    }
+    // ========================= INPUT & MENU =========================
+    private Optional<String> askName(boolean isProblem) {
+        return retryUntilSuccess(() -> {
+            System.out.print(isProblem ? Constants.ENTER_PROBLEM_NAME : Constants.ENTER_PRACTICE_NAME);
+            String input = inputService.getProblemOrPracticeName();
 
-                    return Optional.of(userInput);
-                },
-                Constants.INCORRECT_PROBLEM_NAME);
+            if (input.equals(String.valueOf(Constants.RETURN_BACK)))
+                return Optional.empty();
+            return Optional.of(input);
+        }, isProblem ? Constants.INCORRECT_PROBLEM_NAME : Constants.INCORRECT_PRACTICE_NAME);
     }
 
     private String createMenuAndChooseOption(List<String> options) {
-        for (int i = 0; i < options.size(); i++) {
+        for (int i = 0; i < options.size(); i++)
             System.out.println((i + 1) + ". " + options.get(i));
-        }
         System.out.printf(Constants.CHOOSE_OPTION, options.size());
-
         return inputService.selectFromList(options);
     }
 
@@ -198,8 +234,7 @@ public class ProblemRunner {
         System.out.println("=========================================");
         System.out.println("    DATA STRUCTURES & ALGORITHMS");
         System.out.println("       PROBLEM & PRACTICE RUNNER");
-        System.out.println("=========================================");
-        System.out.println();
+        System.out.println("=========================================\n");
     }
 
     private void showErrorMessage(String message, Exception e) {
@@ -215,4 +250,5 @@ public class ProblemRunner {
         System.out.print("\nPress Enter to continue...");
         inputService.continueTheProgram();
     }
+
 }

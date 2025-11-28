@@ -8,25 +8,37 @@ import DataStructureAndAlgorithms.exceptions.PracticeInstantiationException;
 import DataStructureAndAlgorithms.exceptions.ProblemInstantiationException;
 import DataStructureAndAlgorithms.models.*;
 import DataStructureAndAlgorithms.services.ClassDiscoveryService;
-import DataStructureAndAlgorithms.services.FileSystemService;
 
 public class ProblemManager {
 
     private final ClassDiscoveryService discoveryService;
-    private final FileSystemService fileSystemService;
 
-    private final Map<String, ProblemInfo> problemInfoMap;
-    private final Map<String, PracticeInfo> practiceInfoMap;
+    private List<ProblemInfo> problemInfoList;
+    private List<PracticeInfo> practiceInfoList;
 
-    public ProblemManager(ClassDiscoveryService discoveryService, FileSystemService fileSystemService) {
+    public ProblemManager(ClassDiscoveryService discoveryService) {
         this.discoveryService = discoveryService;
-        this.fileSystemService = fileSystemService;
-        this.problemInfoMap = discoveryService.discoverProblems();
-        this.practiceInfoMap = discoveryService.discoverPractices();
     }
 
-    public Optional<ProblemResult> runProblem(String problemName) {
-        ProblemInfo info = problemInfoMap.get(problemName);
+    public void initialize() {
+        Map<String, List<ProblemInfo>> problemMap = discoveryService.discoverProblems();
+        problemInfoList = problemMap.values().stream()
+                .flatMap(List::stream)
+                .toList();
+
+        Map<String, List<PracticeInfo>> practiceInfoMap = discoveryService.discoverPractices(problemMap);
+        practiceInfoList = practiceInfoMap.values().stream()
+                .flatMap(List::stream)
+                .toList();
+    }
+
+    // ========================= RUN PROBLEM/PRACTICE =========================
+    public Optional<ProblemResult> runProblem(String uniqueKey) {
+        ProblemInfo info = problemInfoList.stream()
+                .filter(p -> generateUniqueKey(p).equals(uniqueKey))
+                .findFirst()
+                .orElse(null);
+
         if (info == null)
             return Optional.empty();
 
@@ -36,13 +48,17 @@ public class ProblemManager {
         return Optional.of(new ProblemResult(info.getName(), result));
     }
 
-    public Optional<PracticeResult> runPractice(String practiceName) {
-        PracticeInfo practiceInfo = practiceInfoMap.get(practiceName);
-        if (practiceInfo == null)
+    public Optional<PracticeResult> runPractice(String uniqueKey) {
+        PracticeInfo info = practiceInfoList.stream()
+                .filter(p -> generateUniqueKey(p).equals(uniqueKey))
+                .findFirst()
+                .orElse(null);
+
+        if (info == null)
             return Optional.empty();
 
-        BaseProblem<?> problem = instantiateProblem(practiceInfo.getProblemInfo());
-        BasePractice<?, ?> practice = instantiatePractice(practiceInfo, problem);
+        BaseProblem<?> problem = instantiateProblem(info.getProblemInfo());
+        BasePractice<?, ?> practice = instantiatePractice(info, problem);
 
         Object practiceResult = practice.practice();
         Object solutionResult = problem.solve();
@@ -50,29 +66,63 @@ public class ProblemManager {
 
         return Optional.of(
                 new PracticeResult(
-                        practiceInfo.getProblemInfo().getName(),
+                        info.getProblemInfo().getName(),
                         practiceResult,
                         solutionResult,
                         isCorrect));
     }
 
+    // ========================= LISTING / VARIANTS =========================
     public List<String> getAvailableProblems() {
-        return new ArrayList<>(problemInfoMap.keySet());
+        return problemInfoList.stream()
+                .map(this::generateUniqueKey)
+                .sorted()
+                .toList();
+    }
+
+    public List<String> getAvailablePractices() {
+        return practiceInfoList.stream()
+                .map(this::generateUniqueKey)
+                .sorted()
+                .toList();
     }
 
     public Map<String, List<String>> getProblemsByCategory() {
-        return discoveryService.getProblemsByCategory(problemInfoMap).entrySet().stream()
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        e -> e.getValue().stream()
-                                .map(ProblemInfo::getName)
-                                .sorted()
-                                .toList()));
+        return problemInfoList.stream()
+                .collect(Collectors.groupingBy(ProblemInfo::getCategory,
+                        Collectors.mapping(this::generateUniqueKey, Collectors.toList())));
     }
 
     public Map<String, List<String>> getPracticesByCategory() {
-        // TODO Implement this
-        return null;
+        return practiceInfoList.stream()
+                .collect(Collectors.groupingBy(p -> p.getProblemInfo().getCategory(),
+                        Collectors.mapping(this::generateUniqueKey, Collectors.toList())));
+    }
+
+    // ========================= DUPLICATE HANDLING =========================
+    public List<String> getProblemVariants(String name) {
+        return problemInfoList.stream()
+                .filter(p -> p.getName().equals(name))
+                .map(this::generateUniqueKey)
+                .sorted()
+                .toList();
+    }
+
+    public List<String> getPracticeVariants(String name) {
+        return practiceInfoList.stream()
+                .filter(p -> p.getProblemInfo().getName().equals(name))
+                .map(this::generateUniqueKey)
+                .sorted()
+                .toList();
+    }
+
+    // ========================= HELPERS =========================
+    private String generateUniqueKey(ProblemInfo info) {
+        return info.getName() + " [" + info.getCategory() + "]";
+    }
+
+    private String generateUniqueKey(PracticeInfo info) {
+        return info.getProblemInfo().getName() + " [" + info.getProblemInfo().getCategory() + "]";
     }
 
     private BaseProblem<?> instantiateProblem(ProblemInfo info) {
@@ -89,7 +139,7 @@ public class ProblemManager {
     private BasePractice<?, ?> instantiatePractice(PracticeInfo info, BaseProblem<?> problem) {
         try {
             Class<?> clazz = Class.forName(info.getPracticeClassName());
-            Constructor<?> ctor = clazz.getDeclaredConstructor(BaseProblem.class);
+            Constructor<?> ctor = clazz.getDeclaredConstructor(problem.getClass());
             ctor.setAccessible(true);
             return (BasePractice<?, ?>) ctor.newInstance(problem);
         } catch (Exception e) {

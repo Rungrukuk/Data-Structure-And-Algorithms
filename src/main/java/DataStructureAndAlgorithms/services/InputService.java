@@ -14,11 +14,11 @@ public class InputService {
         scanner = new Scanner(System.in);
     }
 
-    public String getProblemName() {
+    public String getProblemOrPracticeName() {
         String problemName = scanner.nextLine();
         problemName = NamingUtils.formatProblemName(problemName);
         if (problemName == null || problemName.isBlank()) {
-            throw new InvalidInputException("Problem name cannot be empty.");
+            throw new InvalidInputException("Name cannot be empty.");
         }
         return problemName;
     }
