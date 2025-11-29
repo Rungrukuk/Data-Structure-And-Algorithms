@@ -4,12 +4,9 @@ public final class NamingUtils {
     private NamingUtils() {
     }
 
-    public static String formatProblemName(String problemName) {
-        if (problemName == null || problemName.isEmpty()) {
-            return problemName;
-        }
+    private static String formatInput(String input) {
 
-        String withSpaces = problemName.replaceAll("[_-]", " ");
+        String withSpaces = input.replaceAll("[_-]", " ");
 
         String[] words = withSpaces.split("\\s+");
         StringBuilder formatted = new StringBuilder();
@@ -44,9 +41,12 @@ public final class NamingUtils {
         return word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase();
     }
 
-    public static String generateCategoryFolderName(String category) {
-        String formattedCategory = formatProblemName(category); // TODO check if there are any need to formatProblemName
-        return formattedCategory.replace(" ", "");
+    public static String generateFormattedCategoryName(String category) {
+        return formatInput(category);
+    }
+
+    public static String generateFormattedProblemName(String problemName) {
+        return formatInput(problemName);
     }
 
     public static String convertId(String id) {
@@ -55,5 +55,21 @@ public final class NamingUtils {
 
     public static String convertClassNameToPath(String className) {
         return className.replace(".", "/");
+    }
+
+    public static String generateSimpleClassName(String problemName) {
+        String formattedName = formatInput(problemName);
+        return formattedName.replace(" ", "");
+    }
+
+    public static String generateCategoryFolderName(String category) {
+        String formattedCategory = formatInput(category);
+        return formattedCategory.replace(" ", "");
+    }
+
+    public static String generateClassName(String problemOrPracticeName, String category,
+            String problemOrPracticePackage) {
+        return problemOrPracticePackage + Constants.DOT_SEPERATOR + generateCategoryFolderName(category)
+                + Constants.DOT_SEPERATOR + generateSimpleClassName(problemOrPracticeName);
     }
 }

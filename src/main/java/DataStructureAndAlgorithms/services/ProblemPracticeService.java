@@ -20,18 +20,34 @@ public class ProblemPracticeService {
     // ============ INITIALIZATION / REFRESH ============
     public final void initialize() {
         Map<String, List<ProblemInfo>> problemMap = discoveryService.discoverProblems();
-        problemInfoList = problemMap.values().stream()
+        problemInfoList = new ArrayList<>(problemMap.values().stream()
                 .flatMap(List::stream)
-                .toList();
+                .toList());
 
         Map<String, List<PracticeInfo>> practiceMap = discoveryService.discoverPractices(problemMap);
-        practiceInfoList = practiceMap.values().stream()
+        practiceInfoList = new ArrayList<>(practiceMap.values().stream()
                 .flatMap(List::stream)
-                .toList();
+                .toList());
     }
 
     public void refresh() {
         initialize();
+    }
+
+    public void addCreatedProblem(ProblemInfo problemInfo) {
+        problemInfoList.add(problemInfo);
+    }
+
+    public void removeCreatedProblem(ProblemInfo problemInfo) {
+        problemInfoList.remove(problemInfo);
+    }
+
+    public void addCreatedPractice(PracticeInfo practiceInfo) {
+        practiceInfoList.add(practiceInfo);
+    }
+
+    public void removeCreatedPractice(PracticeInfo practiceInfo) {
+        practiceInfoList.remove(practiceInfo);
     }
 
     // ============ GETTERS (SHALLOW COPY TO PROTECT INTERNAL STATE) ============

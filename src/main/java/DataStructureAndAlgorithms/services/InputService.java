@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import DataStructureAndAlgorithms.exceptions.InvalidInputException;
 import DataStructureAndAlgorithms.utils.NamingUtils;
+import DataStructureAndAlgorithms.utils.ReturnTypeUtils;
 
 public class InputService {
     private Scanner scanner;
@@ -15,20 +16,39 @@ public class InputService {
     }
 
     public String getProblemOrPracticeName() {
-        String problemName = scanner.nextLine();
-        problemName = NamingUtils.formatProblemName(problemName);
-        if (problemName == null || problemName.isBlank()) {
+        String problemName = scanner.nextLine().trim();
+        if (problemName == null || problemName.isEmpty()) {
             throw new InvalidInputException("Name cannot be empty.");
         }
+        problemName = NamingUtils.generateFormattedProblemName(problemName);
         return problemName;
     }
 
     public String getCategory() {
-        return null;
+        String category = scanner.nextLine().trim();
+        if (category == null || category.isEmpty()) {
+            throw new InvalidInputException("Category cannot be empty.");
+        }
+        category = NamingUtils.generateFormattedCategoryName(category);
+        return category;
     }
 
     public String getReturnType() {
-        return null;
+        String input = scanner.nextLine().trim();
+
+        if (input == null || input.isEmpty()) {
+            throw new InvalidInputException("Return type cannot be empty.");
+        }
+
+        if (!ReturnTypeUtils.isValidJavaType(input)) {
+            throw new InvalidInputException("Invalid return type format.");
+        }
+        String convertedType = ReturnTypeUtils.convertToWrapperType(input);
+        if (!ReturnTypeUtils.isValidJavaType(convertedType)) {
+            throw new InvalidInputException("Invalid Java type after conversion: '" + convertedType
+                    + "'. Please enter a different type.");
+        }
+        return convertedType;
     }
 
     public String selectFromList(List<String> options) {

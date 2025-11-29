@@ -39,6 +39,6 @@ public class PracticeInfo {
     }
 
     public String getUniqueId() {
-        return problemInfo.getCategory() + Constants.SEPERATOR + problemInfo.getName();
+        return problemInfo.getCategory() + Constants.DOT_SEPERATOR + problemInfo.getName();
     }
 }

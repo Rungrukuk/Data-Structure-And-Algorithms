@@ -63,6 +63,6 @@ public class ProblemInfo {
     }
 
     public String getUniqueId() {
-        return category + Constants.SEPERATOR + name;
+        return category + Constants.DOT_SEPERATOR + name;
     }
 }

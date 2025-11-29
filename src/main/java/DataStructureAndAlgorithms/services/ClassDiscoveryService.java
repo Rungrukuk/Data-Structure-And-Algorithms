@@ -168,7 +168,7 @@ public class ClassDiscoveryService {
 
     private String buildFilePath(String className) {
         return Constants.BASE_SOURCE_PATH +
-                NamingUtils.convertClassNameToPath(className);
+                NamingUtils.convertClassNameToPath(className) + Constants.JAVA_FILE_SUFFIX;
     }
 
     private Set<Class<?>> getAnnotatedClasses(String packageName, Class<? extends Annotation> annotation) {

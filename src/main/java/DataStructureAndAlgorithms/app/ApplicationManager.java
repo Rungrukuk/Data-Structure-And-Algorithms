@@ -7,26 +7,34 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import DataStructureAndAlgorithms.creators.ProblemCreator;
 import DataStructureAndAlgorithms.exceptions.InvalidInputException;
 import DataStructureAndAlgorithms.menus.LabeledOption;
 import DataStructureAndAlgorithms.menus.implementations.MainMenuOptions;
 import DataStructureAndAlgorithms.menus.implementations.ProblemMenuOptions;
 import DataStructureAndAlgorithms.models.PracticeResult;
+import DataStructureAndAlgorithms.models.ProblemInfo;
 import DataStructureAndAlgorithms.models.ProblemResult;
 import DataStructureAndAlgorithms.runner.ProblemRunner;
 import DataStructureAndAlgorithms.services.InputService;
 import DataStructureAndAlgorithms.utils.Constants;
 
 public class ApplicationManager {
+    private static final Logger log = LogManager.getLogger(App.class);
 
     private final ProblemRunner problemRunner;
     private final InputService inputService;
     private final List<String> mainMenuOptions;
     private final List<String> problemMenuOptions;
+    private final ProblemCreator problemCreator;
 
-    public ApplicationManager(ProblemRunner problemRunner, InputService inputService) {
+    public ApplicationManager(ProblemRunner problemRunner, InputService inputService, ProblemCreator problemCreator) {
         this.problemRunner = problemRunner;
         this.inputService = inputService;
+        this.problemCreator = problemCreator;
         this.mainMenuOptions = Arrays.stream(MainMenuOptions.values())
                 .map(MainMenuOptions::getLabel)
                 .toList();
@@ -56,7 +64,7 @@ public class ApplicationManager {
                     showProblemMenu();
                     break;
                 case CREATE_PROBLEM:
-                    // TODO
+                    handleCreateProblemMenu();
                     break;
                 case MANAGE_PRACTICES:
                     // TODO
@@ -101,6 +109,46 @@ public class ApplicationManager {
                     return;
             }
         }
+    }
+
+    private void handleCreateProblemMenu() {
+        System.out.println("=== CREATE NEW PROBLEM ===");
+        String problemName = retryUntilSuccessNonEmpty(
+                () -> {
+                    System.out.print("Enter problem name: ");
+                    String input = inputService.getProblemOrPracticeName();
+                    return input;
+                },
+                Constants.INVALID_PROBLEM_NAME);
+
+        String category = retryUntilSuccessNonEmpty(
+                () -> {
+                    System.out.print("Enter problem category: ");
+                    String input = inputService.getCategory();
+                    return input;
+                },
+                Constants.INVALID_CATEGORY_NAME);
+
+        String returnType = retryUntilSuccessNonEmpty(
+                () -> {
+                    System.out.print("Enter return type (e.g., Integer, List<String>): ");
+                    String input = inputService.getReturnType();
+                    return input;
+                },
+                Constants.INVALID_RETURN_TYPE);
+        ProblemInfo info = new ProblemInfo(problemName, category, null, returnType, null);
+
+        try {
+            problemCreator.createProblem(info);
+            System.out.println(Constants.ANSI_GREEN + "✅ Problem created successfully!" + Constants.ANSI_RESET);
+
+        } catch (Exception e) {
+            showErrorMessage("Error occured in creation of file", e.getMessage() != null ? e.getMessage() : "");
+            log.error(e);
+        }
+
+        waitForEnter();
+
     }
 
     private void chooseAndRun(boolean isProblem) {
@@ -217,7 +265,7 @@ public class ApplicationManager {
             try {
                 return supplier.get();
             } catch (InvalidInputException e) {
-                showErrorMessage(errorMessage, e);
+                showErrorMessage(errorMessage, e.getMessage());
             }
         }
     }
@@ -227,7 +275,7 @@ public class ApplicationManager {
             try {
                 return supplier.get();
             } catch (InvalidInputException e) {
-                showErrorMessage(errorMessage, e);
+                showErrorMessage(errorMessage, e.getMessage());
             }
         }
     }
@@ -240,9 +288,9 @@ public class ApplicationManager {
         System.out.println("=========================================\n");
     }
 
-    private void showErrorMessage(String message, Exception e) {
+    private void showErrorMessage(String message, String cause) {
         System.out.println(Constants.ANSI_RED + message + " ❌");
-        System.out.println(e.getMessage() + Constants.ANSI_RESET);
+        System.out.println(cause + Constants.ANSI_RESET);
     }
 
     private void showErrorMessage(String message) {
