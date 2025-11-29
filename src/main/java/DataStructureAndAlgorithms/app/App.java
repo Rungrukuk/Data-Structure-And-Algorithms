@@ -3,6 +3,7 @@ package DataStructureAndAlgorithms.app;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import DataStructureAndAlgorithms.creators.PracticeCreator;
 import DataStructureAndAlgorithms.creators.ProblemCreator;
 import DataStructureAndAlgorithms.runner.ProblemRunner;
 import DataStructureAndAlgorithms.services.ClassDiscoveryService;
@@ -22,7 +23,9 @@ public class App {
             ProblemPracticeService problemManager = new ProblemPracticeService(discoveryService);
             ProblemRunner problemRunner = new ProblemRunner(problemManager);
             ProblemCreator problemCreator = new ProblemCreator(fileSystemService, problemManager);
-            ApplicationManager applicationManager = new ApplicationManager(problemRunner, inputService, problemCreator);
+            PracticeCreator practiceCreator = new PracticeCreator(fileSystemService, problemManager);
+            ApplicationManager applicationManager = new ApplicationManager(problemRunner, inputService, problemCreator,
+                    practiceCreator);
             applicationManager.start();
 
         } catch (Exception e) {

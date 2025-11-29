@@ -1,25 +1,74 @@
 package DataStructureAndAlgorithms.creators;
 
-import DataStructureAndAlgorithms.models.ProblemInfo;
 import DataStructureAndAlgorithms.services.FileSystemService;
 import DataStructureAndAlgorithms.services.ProblemPracticeService;
+import DataStructureAndAlgorithms.utils.Constants;
+import DataStructureAndAlgorithms.utils.NamingUtils;
 
-public class BaseClassCreator {
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
+public abstract class BaseClassCreator {
+
     protected final FileSystemService fileSystemService;
     protected final ProblemPracticeService problemPracticeService;
 
-    public BaseClassCreator(FileSystemService fileSystemService, ProblemPracticeService problemPracticeService) {
+    protected BaseClassCreator(FileSystemService fileSystemService,
+            ProblemPracticeService problemPracticeService) {
         this.fileSystemService = fileSystemService;
         this.problemPracticeService = problemPracticeService;
     }
 
-    protected String generateClassContent(ProblemInfo problemInfo, String template) {
-        return null;
+    protected void executeAtomicCreate(
+            Runnable registryAdder,
+            Runnable registryRemover,
+            String filePath,
+            String content,
+            String uniqueId) {
+
+        try {
+            registryAdder.run();
+            try {
+                fileSystemService.createFile(filePath, content);
+            } catch (Exception e) {
+                registryRemover.run();
+                throw new RuntimeException("Failed to create file for: " + uniqueId, e);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create: " + uniqueId, e);
+        }
     }
 
-    protected void showSuccessMessage(String className, String filePath) {
+    // ------------------------- IMPORT HELPERS -------------------------
+
+    protected String generateCommonImports(String returnType) {
+        Set<String> imports = new TreeSet<>();
+
+        for (Map.Entry<String, String> entry : Constants.IMPORT_MAPPINGS.entrySet()) {
+            if (returnType.matches(".*\\b" + entry.getKey() + "\\b.*")) {
+                imports.add(entry.getValue());
+            }
+        }
+
+        StringBuilder builder = new StringBuilder();
+        for (String imp : imports) {
+            builder.append(Constants.IMPORT)
+                    .append(imp)
+                    .append(";\n");
+        }
+
+        return builder.toString();
     }
 
-    protected void showErrorMessage(String message) {
+    // ---------------------- PACKAGE + CLASS NAME HELPERS ----------------------
+
+    protected String buildPackage(String root, String category) {
+        return root + Constants.DOT_SEPERATOR +
+                NamingUtils.generateCategoryFolderName(category);
+    }
+
+    protected String simpleName(String problemName) {
+        return NamingUtils.generateSimpleClassName(problemName);
     }
 }

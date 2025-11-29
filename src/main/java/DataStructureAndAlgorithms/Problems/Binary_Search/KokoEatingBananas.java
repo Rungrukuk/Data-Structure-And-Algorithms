@@ -4,7 +4,7 @@ import DataStructureAndAlgorithms.core.BaseProblem;
 import DataStructureAndAlgorithms.core.Problem;
 
 @Problem(name = "Koko Eating Bananas", category = "Binary Search")
-public class Koko_Eating_Bananas extends BaseProblem<Integer> {
+public class KokoEatingBananas extends BaseProblem<Integer> {
     public final int[] piles = new int[] { 3, 6, 7, 11 };
     public final int h = 8;
 

@@ -1,5 +1,6 @@
 package DataStructureAndAlgorithms.creators;
 
+
 import DataStructureAndAlgorithms.exceptions.ProblemCreationException;
 import DataStructureAndAlgorithms.models.ProblemInfo;
 import DataStructureAndAlgorithms.services.FileSystemService;
@@ -7,53 +8,50 @@ import DataStructureAndAlgorithms.services.ProblemPracticeService;
 import DataStructureAndAlgorithms.utils.Constants;
 import DataStructureAndAlgorithms.utils.NamingUtils;
 
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
 public class ProblemCreator extends BaseClassCreator {
 
-    public ProblemCreator(FileSystemService fileSystemService, ProblemPracticeService problemPracticeService) {
+    public ProblemCreator(FileSystemService fileSystemService,
+            ProblemPracticeService problemPracticeService) {
         super(fileSystemService, problemPracticeService);
     }
 
-    public void createProblem(ProblemInfo info) {
-        // TODO Update the error messages
-        String problemName = info.getName();
-        String category = info.getCategory();
-        if (problemPracticeService.problemExists(problemName, category)) {
-            throw new ProblemCreationException("Problem already exists: " + info.getUniqueId());
+
+
+    public void createProblem(ProblemInfo problemInfo) {
+        String name = problemInfo.getName();
+        String category = problemInfo.getCategory();
+
+        if (problemPracticeService.problemExists(name, category)) {
+            throw new ProblemCreationException("Problem already exists: " + problemInfo.getUniqueId());
         }
 
-        String classContent = generateProblemTemplate(info);
-        String filePath = fileSystemService.getProblemFilePath(info);
-        String className = NamingUtils.generateClassName(problemName, category, Constants.PROBLEM_PACKAGE);
-        info.setFilePath(filePath);
-        info.setClassName(className);
-        try {
-            problemPracticeService.addCreatedProblem(info);
-            try {
-                fileSystemService.createFile(filePath, classContent);
-                info.setFilePath(filePath);
-                info.setClassName(className);
-            } catch (Exception e) {
-                problemPracticeService.removeCreatedProblem(info);
-                throw new ProblemCreationException(
-                        "Failed to create problem file for: " + info.getUniqueId());
-            }
+        String filePath = fileSystemService.getProblemFilePath(problemInfo);
+        String className = NamingUtils.generateClassName(name, category, Constants.PROBLEM_PACKAGE);
+        String content = generateProblemTemplate(problemInfo);
 
-        } catch (Exception e) {
-            throw new ProblemCreationException("Failed to create problem: " + info.getUniqueId());
+        problemInfo.setFilePath(filePath);
+        problemInfo.setClassName(className);
+
+        try {
+            executeAtomicCreate(
+                    () -> problemPracticeService.addCreatedProblem(problemInfo),
+                    () -> problemPracticeService.removeCreatedProblem(problemInfo),
+                    filePath,
+                    content,
+                    problemInfo.getUniqueId());
+        } catch (RuntimeException e) {
+            throw new ProblemCreationException(e.getMessage());
         }
     }
 
     private String generateProblemTemplate(ProblemInfo info) {
-        String simpleClassName = NamingUtils.generateSimpleClassName(info.getName());
-        String packageName = Constants.PROBLEM_PACKAGE + Constants.DOT_SEPERATOR +
-                NamingUtils.generateCategoryFolderName(info.getCategory());
+        String simpleClassName = simpleName(info.getName());
+        String packageName = buildPackage(Constants.PROBLEM_PACKAGE, info.getCategory());
         String returnType = info.getReturnType();
 
-        String imports = generateImports(returnType);
+        String imports = Constants.BASE_PROBLEM_IMPORT +
+                Constants.PROBLEM_IMPORT +
+                generateCommonImports(returnType);
 
         return String.format(
                 "package %s;\n\n" +
@@ -64,26 +62,14 @@ public class ProblemCreator extends BaseClassCreator {
                         "    public %s solve() {\n" +
                         "        // TODO: Implement solution\n" +
                         "        throw new UnsupportedOperationException(\"Unimplemented method 'solve'\");\n" +
-                        "    }\n\n" +
+                        "    }\n" +
                         "}",
-                packageName, imports, info.getName(), info.getCategory(), simpleClassName, returnType, returnType);
-    }
-
-    private String generateImports(String returnType) {
-        Set<String> imports = new TreeSet<>();
-        for (Map.Entry<String, String> entry : Constants.IMPORT_MAPPINGS.entrySet()) {
-            if (returnType.matches(".*\\b" + entry.getKey() + "\\b.*")) {
-                imports.add(entry.getValue());
-            }
-        }
-
-        StringBuilder builder = new StringBuilder();
-        builder.append(Constants.BASE_PROBLEM_IMPORT);
-        builder.append(Constants.PROBLEM_IMPORT);
-        for (String imp : imports) {
-            builder.append(Constants.IMPORT).append(imp).append(";\n");
-        }
-
-        return builder.toString();
+                packageName,
+                imports,
+                info.getName(),
+                info.getCategory(),
+                simpleClassName,
+                returnType,
+                returnType);
     }
 }

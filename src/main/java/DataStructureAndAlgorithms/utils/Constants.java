@@ -65,6 +65,8 @@ public class Constants {
     }
     public static final String IMPORT = "import ";
     public static final String BASE_PROBLEM_IMPORT = IMPORT + "DataStructureAndAlgorithms.core.BaseProblem;\n";
+    public static final String BASE_PRACTICE_IMPORT = IMPORT + "DataStructureAndAlgorithms.core.BasePractice;\n";
+    public static final String PRACTICE_IMPORT = IMPORT + "DataStructureAndAlgorithms.core.Practice;\n";
     public static final String PROBLEM_IMPORT = IMPORT + "DataStructureAndAlgorithms.core.Problem;\n";
 
 }
