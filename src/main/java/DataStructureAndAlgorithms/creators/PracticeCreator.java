@@ -1,15 +1,12 @@
 package DataStructureAndAlgorithms.creators;
 
 import DataStructureAndAlgorithms.models.PracticeInfo;
-import DataStructureAndAlgorithms.services.ClassDiscoveryService;
 import DataStructureAndAlgorithms.services.FileSystemService;
-import DataStructureAndAlgorithms.services.InputService;
-import DataStructureAndAlgorithms.utils.NamingUtils;
+import DataStructureAndAlgorithms.services.ProblemPracticeService;
 
 public class PracticeCreator extends BaseClassCreator {
-    public PracticeCreator(InputService inputService, FileSystemService fileSystemService,
-            ClassDiscoveryService discoveryService, NamingUtils namingUtils) {
-        super(inputService, fileSystemService, discoveryService, namingUtils);
+    public PracticeCreator(FileSystemService fileSystemService, ProblemPracticeService problemPracticeService) {
+        super(fileSystemService, problemPracticeService);
     }
 
     public void createNewPractice() {

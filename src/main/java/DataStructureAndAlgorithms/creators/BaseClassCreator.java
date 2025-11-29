@@ -1,23 +1,16 @@
 package DataStructureAndAlgorithms.creators;
 
 import DataStructureAndAlgorithms.models.ProblemInfo;
-import DataStructureAndAlgorithms.services.ClassDiscoveryService;
 import DataStructureAndAlgorithms.services.FileSystemService;
-import DataStructureAndAlgorithms.services.InputService;
-import DataStructureAndAlgorithms.utils.NamingUtils;
+import DataStructureAndAlgorithms.services.ProblemPracticeService;
 
 public class BaseClassCreator {
-    protected final InputService inputService;
     protected final FileSystemService fileSystemService;
-    protected final ClassDiscoveryService discoveryService;
-    protected final NamingUtils namingUtils;
+    protected final ProblemPracticeService problemPracticeService;
 
-    public BaseClassCreator(InputService inputService, FileSystemService fileSystemService,
-            ClassDiscoveryService discoveryService, NamingUtils namingUtils) {
-        this.inputService = inputService;
+    public BaseClassCreator(FileSystemService fileSystemService, ProblemPracticeService problemPracticeService) {
         this.fileSystemService = fileSystemService;
-        this.discoveryService = discoveryService;
-        this.namingUtils = namingUtils;
+        this.problemPracticeService = problemPracticeService;
     }
 
     protected String generateClassContent(ProblemInfo problemInfo, String template) {

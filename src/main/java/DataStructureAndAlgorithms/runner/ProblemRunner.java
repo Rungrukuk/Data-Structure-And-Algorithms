@@ -8,39 +8,39 @@ import java.util.stream.Collectors;
 
 import DataStructureAndAlgorithms.core.BasePractice;
 import DataStructureAndAlgorithms.core.BaseProblem;
-import DataStructureAndAlgorithms.core.ProblemManager;
 import DataStructureAndAlgorithms.exceptions.PracticeInstantiationException;
 import DataStructureAndAlgorithms.exceptions.ProblemInstantiationException;
 import DataStructureAndAlgorithms.models.PracticeInfo;
 import DataStructureAndAlgorithms.models.PracticeResult;
 import DataStructureAndAlgorithms.models.ProblemInfo;
 import DataStructureAndAlgorithms.models.ProblemResult;
+import DataStructureAndAlgorithms.services.ProblemPracticeService;
 
 public class ProblemRunner {
 
-    private final ProblemManager problemManager;
+    private final ProblemPracticeService problemPracticeService;
 
-    public ProblemRunner(ProblemManager problemManager) {
-        this.problemManager = problemManager;
+    public ProblemRunner(ProblemPracticeService problemPracticeService) {
+        this.problemPracticeService = problemPracticeService;
     }
 
     // ========================= LISTING / VARIANTS =========================
     public List<String> getAvailableProblems() {
-        return problemManager.getProblemInfoList().stream()
+        return problemPracticeService.getProblemInfoList().stream()
                 .map(ProblemInfo::getUniqueId)
                 .sorted()
                 .toList();
     }
 
     public List<String> getAvailablePractices() {
-        return problemManager.getPracticeInfoList().stream()
+        return problemPracticeService.getPracticeInfoList().stream()
                 .map(PracticeInfo::getUniqueId)
                 .sorted()
                 .toList();
     }
 
     public Map<String, List<String>> getProblemsByCategory() {
-        return problemManager.groupProblemsByCategory().entrySet().stream()
+        return problemPracticeService.groupProblemsByCategory().entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         e -> e.getValue().stream()
@@ -50,7 +50,7 @@ public class ProblemRunner {
     }
 
     public Map<String, List<String>> getPracticesByCategory() {
-        return problemManager.groupPracticesByCategory().entrySet().stream()
+        return problemPracticeService.groupPracticesByCategory().entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         e -> e.getValue().stream()
@@ -61,7 +61,7 @@ public class ProblemRunner {
 
     // ========================= RUN PROBLEM/PRACTICE =========================
     public Optional<ProblemResult> runProblem(String uniqueId) {
-        return problemManager.findProblemByUniqueId(uniqueId).map(info -> {
+        return problemPracticeService.findProblemByUniqueId(uniqueId).map(info -> {
             BaseProblem<?> instance = instantiateProblem(info);
             Object result = instance.solve();
             return new ProblemResult(info.getName(), result);
@@ -69,7 +69,7 @@ public class ProblemRunner {
     }
 
     public Optional<PracticeResult> runPractice(String uniqueId) {
-        return problemManager.findPracticeByUniqueId(uniqueId).map(info -> {
+        return problemPracticeService.findPracticeByUniqueId(uniqueId).map(info -> {
             BaseProblem<?> problemInstance = instantiateProblem(info.getProblemInfo());
             BasePractice<?, ?> practiceInstance = instantiatePractice(info, problemInstance);
 
@@ -110,14 +110,14 @@ public class ProblemRunner {
     // ========================= DUPLICATE HANDLING / VARIANTS
     // =========================
     public List<String> getProblemVariants(String name) {
-        return problemManager.findProblemsByName(name).stream()
+        return problemPracticeService.findProblemsByName(name).stream()
                 .map(ProblemInfo::getUniqueId)
                 .sorted()
                 .toList();
     }
 
     public List<String> getPracticeVariants(String name) {
-        return problemManager.findPracticesByName(name).stream()
+        return problemPracticeService.findPracticesByName(name).stream()
                 .map(PracticeInfo::getUniqueId)
                 .sorted()
                 .toList();

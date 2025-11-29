@@ -1,10 +1,10 @@
 package DataStructureAndAlgorithms.app;
 
-import DataStructureAndAlgorithms.core.ProblemManager;
 import DataStructureAndAlgorithms.runner.ProblemRunner;
 import DataStructureAndAlgorithms.services.ClassDiscoveryService;
 // import DataStructureAndAlgorithms.services.FileSystemService;
 import DataStructureAndAlgorithms.services.InputService;
+import DataStructureAndAlgorithms.services.ProblemPracticeService;
 
 public class App {
 
@@ -14,7 +14,7 @@ public class App {
             // FileSystemService fileSystemService = new FileSystemService();
             InputService inputService = new InputService();
 
-            ProblemManager problemManager = new ProblemManager(discoveryService);
+            ProblemPracticeService problemManager = new ProblemPracticeService(discoveryService);
             ProblemRunner problemRunner = new ProblemRunner(problemManager);
             ApplicationManager applicationManager = new ApplicationManager(problemRunner, inputService);
             applicationManager.start();

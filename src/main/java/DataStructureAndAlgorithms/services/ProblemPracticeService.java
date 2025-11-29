@@ -1,19 +1,18 @@
-package DataStructureAndAlgorithms.core;
+package DataStructureAndAlgorithms.services;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 import DataStructureAndAlgorithms.models.*;
-import DataStructureAndAlgorithms.services.ClassDiscoveryService;
 
-public class ProblemManager {
+public class ProblemPracticeService {
 
     private final ClassDiscoveryService discoveryService;
 
     private List<ProblemInfo> problemInfoList = new ArrayList<>();
     private List<PracticeInfo> practiceInfoList = new ArrayList<>();
 
-    public ProblemManager(ClassDiscoveryService discoveryService) {
+    public ProblemPracticeService(ClassDiscoveryService discoveryService) {
         this.discoveryService = discoveryService;
         initialize();
     }
