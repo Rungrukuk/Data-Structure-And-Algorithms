@@ -12,7 +12,7 @@ public class Squares_Of_Sorted_Array extends BaseProblem<List<Integer>> {
     public final int[] nums = new int[] { -4, -1, 0, 3, 10 };
 
     @Override
-    protected List<Integer> solve() {
+    public List<Integer> solve() {
         int left = 0;
         int right = nums.length - 1;
         Stack<Integer> stack = new Stack<>();

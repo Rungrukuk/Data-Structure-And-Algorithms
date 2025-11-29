@@ -12,7 +12,7 @@ public class Binary_Search_Practice extends BasePractice<Integer, Binary_Search>
     }
 
     @Override
-    protected Integer practice() {
+    public Integer practice() {
         int right = problem.nums.length - 1;
         int left = 0;
         while (left <= right) {

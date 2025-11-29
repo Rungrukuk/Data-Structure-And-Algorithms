@@ -9,7 +9,7 @@ public class Median_Of_Two_Sorted_Arrays extends BaseProblem<Double> {
     public int[] nums2 = new int[] { 6, 7, 8, 9, 10, 11, 12 };
 
     @Override
-    protected Double solve() {
+    public Double solve() {
         if (nums1.length > nums2.length) {
             int[] temp;
             temp = nums1;

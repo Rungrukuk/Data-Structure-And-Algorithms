@@ -222,7 +222,7 @@ public class Minimum_Time_To_Complete_Trips extends BaseProblem<Long> {
     public final int totalTrips = 1448315;
 
     @Override
-    protected Long solve() {
+    public Long solve() {
         long left = 1;
         long right = 0;
         for (int i : time) {

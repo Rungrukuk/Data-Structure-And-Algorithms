@@ -9,7 +9,7 @@ public class Guess_Number_Higher_Or_Lower extends BaseProblem<Integer> {
     private final int pick = 6;
 
     @Override
-    protected Integer solve() {
+    public Integer solve() {
         int left = 0;
         int right = n;
         while (left <= right) {

@@ -12,7 +12,7 @@ public class Median_Of_Two_Sorted_Arrays_Practice extends BasePractice<Double, M
     }
 
     @Override
-    protected Double practice() {
+    public Double practice() {
         if (problem.nums1.length > problem.nums2.length) {
             int[] temp = problem.nums1;
             problem.nums1 = problem.nums2;

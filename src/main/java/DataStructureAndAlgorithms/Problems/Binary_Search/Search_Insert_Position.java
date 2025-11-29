@@ -10,7 +10,7 @@ public class Search_Insert_Position extends BaseProblem<Integer> {
     public final int target = 0;
 
     @Override
-    protected Integer solve() {
+    public Integer solve() {
         int right = nums.length - 1;
         int left = 0;
         while (left <= right) {

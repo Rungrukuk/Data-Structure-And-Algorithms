@@ -4,7 +4,7 @@ import DataStructureAndAlgorithms.Problems.other.Binary_Search;
 import DataStructureAndAlgorithms.core.BasePractice;
 import DataStructureAndAlgorithms.core.Practice;
 
-@Practice(problemName = "Binary Search", category = "Binary Search")
+@Practice(problemName = "Binary Search", category = "other")
 public class Binary_Search_Practice extends BasePractice<Integer, Binary_Search> {
 
     public Binary_Search_Practice(Binary_Search problem) {
@@ -12,7 +12,7 @@ public class Binary_Search_Practice extends BasePractice<Integer, Binary_Search>
     }
 
     @Override
-    protected Integer practice() {
+    public Integer practice() {
         int right = problem.nums.length - 1;
         int left = 0;
         while (left <= right) {

@@ -1,254 +1,126 @@
 package DataStructureAndAlgorithms.runner;
 
-import java.util.*;
-import java.util.function.Supplier;
+import java.lang.reflect.Constructor;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
+import DataStructureAndAlgorithms.core.BasePractice;
+import DataStructureAndAlgorithms.core.BaseProblem;
 import DataStructureAndAlgorithms.core.ProblemManager;
-import DataStructureAndAlgorithms.exceptions.InvalidInputException;
-import DataStructureAndAlgorithms.menus.LabeledOption;
-import DataStructureAndAlgorithms.menus.implementations.MainMenuOptions;
-import DataStructureAndAlgorithms.menus.implementations.ProblemMenuOptions;
+import DataStructureAndAlgorithms.exceptions.PracticeInstantiationException;
+import DataStructureAndAlgorithms.exceptions.ProblemInstantiationException;
+import DataStructureAndAlgorithms.models.PracticeInfo;
 import DataStructureAndAlgorithms.models.PracticeResult;
+import DataStructureAndAlgorithms.models.ProblemInfo;
 import DataStructureAndAlgorithms.models.ProblemResult;
-import DataStructureAndAlgorithms.services.InputService;
-import DataStructureAndAlgorithms.utils.Constants;
 
 public class ProblemRunner {
 
     private final ProblemManager problemManager;
-    private final InputService inputService;
-    private final List<String> mainMenuOptions;
-    private final List<String> problemMenuOptions;
 
-    public ProblemRunner(ProblemManager problemManager, InputService inputService) {
+    public ProblemRunner(ProblemManager problemManager) {
         this.problemManager = problemManager;
-        this.inputService = inputService;
-        this.mainMenuOptions = Arrays.stream(MainMenuOptions.values())
-                .map(MainMenuOptions::getLabel)
+    }
+
+    // ========================= LISTING / VARIANTS =========================
+    public List<String> getAvailableProblems() {
+        return problemManager.getProblemInfoList().stream()
+                .map(ProblemInfo::getUniqueId)
+                .sorted()
                 .toList();
-        this.problemMenuOptions = Arrays.stream(ProblemMenuOptions.values())
-                .map(ProblemMenuOptions::getLabel)
+    }
+
+    public List<String> getAvailablePractices() {
+        return problemManager.getPracticeInfoList().stream()
+                .map(PracticeInfo::getUniqueId)
+                .sorted()
                 .toList();
     }
 
-    public void start() {
-        showWelcomeMessage();
-        showMainMenu();
+    public Map<String, List<String>> getProblemsByCategory() {
+        return problemManager.groupProblemsByCategory().entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        e -> e.getValue().stream()
+                                .map(ProblemInfo::getUniqueId)
+                                .sorted()
+                                .toList()));
     }
 
-    // ========================= MAIN MENU =========================
-    private void showMainMenu() {
-        while (true) {
-            System.out.println("=== MAIN MENU ===");
+    public Map<String, List<String>> getPracticesByCategory() {
+        return problemManager.groupPracticesByCategory().entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        e -> e.getValue().stream()
+                                .map(PracticeInfo::getUniqueId)
+                                .sorted()
+                                .toList()));
+    }
 
-            String selection = retryUntilSuccessNonEmpty(
-                    () -> createMenuAndChooseOption(mainMenuOptions),
-                    Constants.INCORRECT_OPTION);
+    // ========================= RUN PROBLEM/PRACTICE =========================
+    public Optional<ProblemResult> runProblem(String uniqueId) {
+        return problemManager.findProblemByUniqueId(uniqueId).map(info -> {
+            BaseProblem<?> instance = instantiateProblem(info);
+            Object result = instance.solve();
+            return new ProblemResult(info.getName(), result);
+        });
+    }
 
-            MainMenuOptions selectedOption = LabeledOption.fromLabel(MainMenuOptions.class, selection);
+    public Optional<PracticeResult> runPractice(String uniqueId) {
+        return problemManager.findPracticeByUniqueId(uniqueId).map(info -> {
+            BaseProblem<?> problemInstance = instantiateProblem(info.getProblemInfo());
+            BasePractice<?, ?> practiceInstance = instantiatePractice(info, problemInstance);
 
-            switch (selectedOption) {
-                case RUN:
-                    problemManager.initialize();
-                    showProblemMenu();
-                    break;
-                case CREATE_PROBLEM:
-                    // TODO
-                    break;
-                case MANAGE_PRACTICES:
-                    // TODO
-                    break;
-                case EXIT:
-                    inputService.shutDownScanner();
-                    System.out.println("Exiting...");
-                    return;
-            }
+            Object practiceResult = practiceInstance.practice();
+            Object solutionResult = problemInstance.solve();
+            boolean isCorrect = practiceInstance.compare();
+
+            return new PracticeResult(
+                    info.getProblemInfo().getName(),
+                    practiceResult,
+                    solutionResult,
+                    isCorrect);
+        });
+    }
+
+    private BaseProblem<?> instantiateProblem(ProblemInfo info) {
+        try {
+            Class<?> clazz = Class.forName(info.getClassName());
+            Constructor<?> ctor = clazz.getDeclaredConstructor();
+            ctor.setAccessible(true);
+            return (BaseProblem<?>) ctor.newInstance();
+        } catch (Exception e) {
+            throw new ProblemInstantiationException(info.getClassName(), e);
         }
     }
 
-    // ========================= PROBLEM MENU =========================
-    private void showProblemMenu() {
-        while (true) {
-            String selection = retryUntilSuccessNonEmpty(
-                    () -> createMenuAndChooseOption(problemMenuOptions),
-                    Constants.INCORRECT_OPTION);
-
-            ProblemMenuOptions option = LabeledOption.fromLabel(ProblemMenuOptions.class, selection);
-
-            switch (option) {
-                case RUN_SPECIFIC_PROBLEM:
-                    chooseAndRun(true);
-                    break;
-                case LIST_PROBLEMS:
-                    listAll(true);
-                    break;
-                case LIST_PROBLEMS_BY_CATEGORY:
-                    listByCategory(true);
-                    break;
-                case RUN_SPECIFIC_PRACTICE:
-                    chooseAndRun(false);
-                    break;
-                case LIST_PRACTICES:
-                    listAll(false);
-                    break;
-                case LIST_PRACTICES_BY_CATEGORY:
-                    listByCategory(false);
-                    break;
-                case RETURN:
-                    return;
-            }
+    private BasePractice<?, ?> instantiatePractice(PracticeInfo info, BaseProblem<?> problem) {
+        try {
+            Class<?> clazz = Class.forName(info.getPracticeClassName());
+            Constructor<?> ctor = clazz.getDeclaredConstructor(problem.getClass());
+            ctor.setAccessible(true);
+            return (BasePractice<?, ?>) ctor.newInstance(problem);
+        } catch (Exception e) {
+            throw new PracticeInstantiationException(info.getPracticeClassName(), e);
         }
     }
 
-    private void chooseAndRun(boolean isProblem) {
-        while (true) {
-            Optional<String> nameOptional = askName(isProblem);
-            if (nameOptional.isEmpty()) {
-                System.out.println("Returning...");
-                break;
-            }
-            String name = nameOptional.get();
-
-            List<String> variants = isProblem
-                    ? problemManager.getProblemVariants(name)
-                    : problemManager.getPracticeVariants(name);
-
-            String selectedVariant;
-            if (variants.size() == 1) {
-                selectedVariant = variants.get(0); // only one variant
-            } else {
-                selectedVariant = retryUntilSuccessNonEmpty(
-                        () -> createMenuAndChooseOption(variants),
-                        Constants.INCORRECT_OPTION);
-            }
-
-            if (isProblem)
-                runProblemByName(selectedVariant);
-            else
-                runPracticeByName(selectedVariant);
-        }
+    // ========================= DUPLICATE HANDLING / VARIANTS
+    // =========================
+    public List<String> getProblemVariants(String name) {
+        return problemManager.findProblemsByName(name).stream()
+                .map(ProblemInfo::getUniqueId)
+                .sorted()
+                .toList();
     }
 
-    private void listAll(boolean isProblem) {
-        List<String> available = isProblem
-                ? problemManager.getAvailableProblems()
-                : problemManager.getAvailablePractices();
-
-        String selected = retryUntilSuccessNonEmpty(
-                () -> createMenuAndChooseOption(available),
-                Constants.INCORRECT_OPTION);
-
-        if (isProblem)
-            runProblemByName(selected);
-        else
-            runPracticeByName(selected);
-    }
-
-    private void listByCategory(boolean isProblem) {
-        Map<String, List<String>> byCategory = isProblem
-                ? problemManager.getProblemsByCategory()
-                : problemManager.getPracticesByCategory();
-
-        List<String> categories = new ArrayList<>(byCategory.keySet());
-
-        String category = retryUntilSuccessNonEmpty(
-                () -> createMenuAndChooseOption(categories),
-                Constants.INCORRECT_OPTION);
-
-        List<String> items = byCategory.get(category);
-
-        String selected = retryUntilSuccessNonEmpty(
-                () -> createMenuAndChooseOption(items),
-                Constants.INCORRECT_OPTION);
-
-        if (isProblem)
-            runProblemByName(selected);
-        else
-            runPracticeByName(selected);
-    }
-
-    // ========================= RUNNERS =========================
-    private void runProblemByName(String name) {
-        Optional<ProblemResult> result = problemManager.runProblem(name);
-        result.ifPresentOrElse(r -> {
-            System.out.println(Constants.ANSI_GREEN + r.getProblemName() + " Problem Run Successfully ✅");
-            System.out.println("Result: " + r.getResult() + Constants.ANSI_RESET);
-            waitForEnter();
-        }, () -> showErrorMessage(Constants.DIDNOT_FIND_PROBLEM_NAME + name));
-    }
-
-    private void runPracticeByName(String name) {
-        Optional<PracticeResult> result = problemManager.runPractice(name);
-        result.ifPresentOrElse(r -> {
-            System.out.println("Practice Answer: " + r.getPracticeResult());
-            System.out.println("Expected Answer: " + r.getExpectedResult());
-            System.out.println("Result: "
-                    + (r.isCorrect() ? Constants.ANSI_GREEN + "✅ CORRECT" : Constants.ANSI_RED + "❌ INCORRECT")
-                    + Constants.ANSI_RESET);
-            waitForEnter();
-        }, () -> showErrorMessage(Constants.DIDNOT_FIND_PROBLEM_NAME + name));
-    }
-
-    // ========================= INPUT & MENU =========================
-    private Optional<String> askName(boolean isProblem) {
-        return retryUntilSuccess(() -> {
-            System.out.print(isProblem ? Constants.ENTER_PROBLEM_NAME : Constants.ENTER_PRACTICE_NAME);
-            String input = inputService.getProblemOrPracticeName();
-
-            if (input.equals(String.valueOf(Constants.RETURN_BACK)))
-                return Optional.empty();
-            return Optional.of(input);
-        }, isProblem ? Constants.INCORRECT_PROBLEM_NAME : Constants.INCORRECT_PRACTICE_NAME);
-    }
-
-    private String createMenuAndChooseOption(List<String> options) {
-        for (int i = 0; i < options.size(); i++)
-            System.out.println((i + 1) + ". " + options.get(i));
-        System.out.printf(Constants.CHOOSE_OPTION, options.size());
-        return inputService.selectFromList(options);
-    }
-
-    // ========================= RETRY HELPERS =========================
-    private <T> T retryUntilSuccessNonEmpty(Supplier<T> supplier, String errorMessage) {
-        while (true) {
-            try {
-                return supplier.get();
-            } catch (InvalidInputException e) {
-                showErrorMessage(errorMessage, e);
-            }
-        }
-    }
-
-    private <T> Optional<T> retryUntilSuccess(Supplier<Optional<T>> supplier, String errorMessage) {
-        while (true) {
-            try {
-                return supplier.get();
-            } catch (InvalidInputException e) {
-                showErrorMessage(errorMessage, e);
-            }
-        }
-    }
-
-    // ========================= UI HELPERS =========================
-    private void showWelcomeMessage() {
-        System.out.println("=========================================");
-        System.out.println("    DATA STRUCTURES & ALGORITHMS");
-        System.out.println("       PROBLEM & PRACTICE RUNNER");
-        System.out.println("=========================================\n");
-    }
-
-    private void showErrorMessage(String message, Exception e) {
-        System.out.println(Constants.ANSI_RED + message + " ❌");
-        System.out.println(e.getMessage() + Constants.ANSI_RESET);
-    }
-
-    private void showErrorMessage(String message) {
-        System.out.println(Constants.ANSI_RED + message + " ❌" + Constants.ANSI_RESET);
-    }
-
-    private void waitForEnter() {
-        System.out.print("\nPress Enter to continue...");
-        inputService.continueTheProgram();
+    public List<String> getPracticeVariants(String name) {
+        return problemManager.findPracticesByName(name).stream()
+                .map(PracticeInfo::getUniqueId)
+                .sorted()
+                .toList();
     }
 
 }

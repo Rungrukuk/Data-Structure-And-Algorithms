@@ -1,4 +1,4 @@
-package DataStructureAndAlgorithms;
+package DataStructureAndAlgorithms.app;
 
 import DataStructureAndAlgorithms.core.ProblemManager;
 import DataStructureAndAlgorithms.runner.ProblemRunner;
@@ -15,9 +15,9 @@ public class App {
             InputService inputService = new InputService();
 
             ProblemManager problemManager = new ProblemManager(discoveryService);
-
-            ProblemRunner runner = new ProblemRunner(problemManager, inputService);
-            runner.start();
+            ProblemRunner problemRunner = new ProblemRunner(problemManager);
+            ApplicationManager applicationManager = new ApplicationManager(problemRunner, inputService);
+            applicationManager.start();
 
         } catch (Exception e) {
             System.err.println("Failed to start application: " + e.getMessage());

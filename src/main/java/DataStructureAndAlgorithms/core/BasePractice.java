@@ -21,5 +21,5 @@ public abstract class BasePractice<T, P extends BaseProblem<T>> {
         return practice();
     }
 
-    protected abstract T practice();
+    public abstract T practice();
 }

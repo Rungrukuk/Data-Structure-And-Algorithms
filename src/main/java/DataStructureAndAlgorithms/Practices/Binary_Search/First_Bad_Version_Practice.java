@@ -12,7 +12,7 @@ public class First_Bad_Version_Practice extends BasePractice<Integer, First_Bad_
     }
 
     @Override
-    protected Integer practice() {
+    public Integer practice() {
 
         int left = 0;
         int right = problem.n;

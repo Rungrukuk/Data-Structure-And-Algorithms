@@ -9,7 +9,7 @@ public class Find_Peak_Element extends BaseProblem<Integer> {
     public final int[] nums = new int[] { 1, 2, 1, 3, 5, 6, 4 };
 
     @Override
-    protected Integer solve() {
+    public Integer solve() {
         int left = 0;
         int right = nums.length - 1;
         while (left < right) {

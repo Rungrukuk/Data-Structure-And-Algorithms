@@ -9,7 +9,7 @@ public class First_Bad_Version extends BaseProblem<Integer> {
     public final int badVersion = 4;
 
     @Override
-    protected Integer solve() {
+    public Integer solve() {
         int left = 0;
         int right = n;
         while (left <= right) {

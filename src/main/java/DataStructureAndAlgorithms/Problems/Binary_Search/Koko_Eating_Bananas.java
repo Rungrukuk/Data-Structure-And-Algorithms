@@ -9,7 +9,7 @@ public class Koko_Eating_Bananas extends BaseProblem<Integer> {
     public final int h = 8;
 
     @Override
-    protected Integer solve() {
+    public Integer solve() {
         int n = piles.length;
         long total = 0;
         for (int p : piles)

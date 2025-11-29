@@ -1,11 +1,8 @@
 package DataStructureAndAlgorithms.core;
 
-import java.lang.reflect.Constructor;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import DataStructureAndAlgorithms.exceptions.PracticeInstantiationException;
-import DataStructureAndAlgorithms.exceptions.ProblemInstantiationException;
 import DataStructureAndAlgorithms.models.*;
 import DataStructureAndAlgorithms.services.ClassDiscoveryService;
 
@@ -13,137 +10,109 @@ public class ProblemManager {
 
     private final ClassDiscoveryService discoveryService;
 
-    private List<ProblemInfo> problemInfoList;
-    private List<PracticeInfo> practiceInfoList;
+    private List<ProblemInfo> problemInfoList = new ArrayList<>();
+    private List<PracticeInfo> practiceInfoList = new ArrayList<>();
 
     public ProblemManager(ClassDiscoveryService discoveryService) {
         this.discoveryService = discoveryService;
+        initialize();
     }
 
-    public void initialize() {
+    // ============ INITIALIZATION / REFRESH ============
+    public final void initialize() {
         Map<String, List<ProblemInfo>> problemMap = discoveryService.discoverProblems();
         problemInfoList = problemMap.values().stream()
                 .flatMap(List::stream)
                 .toList();
 
-        Map<String, List<PracticeInfo>> practiceInfoMap = discoveryService.discoverPractices(problemMap);
-        practiceInfoList = practiceInfoMap.values().stream()
+        Map<String, List<PracticeInfo>> practiceMap = discoveryService.discoverPractices(problemMap);
+        practiceInfoList = practiceMap.values().stream()
                 .flatMap(List::stream)
                 .toList();
     }
 
-    // ========================= RUN PROBLEM/PRACTICE =========================
-    public Optional<ProblemResult> runProblem(String uniqueKey) {
-        ProblemInfo info = problemInfoList.stream()
-                .filter(p -> generateUniqueKey(p).equals(uniqueKey))
-                .findFirst()
-                .orElse(null);
-
-        if (info == null)
-            return Optional.empty();
-
-        BaseProblem<?> instance = instantiateProblem(info);
-        Object result = instance.solve();
-
-        return Optional.of(new ProblemResult(info.getName(), result));
+    public void refresh() {
+        initialize();
     }
 
-    public Optional<PracticeResult> runPractice(String uniqueKey) {
-        PracticeInfo info = practiceInfoList.stream()
-                .filter(p -> generateUniqueKey(p).equals(uniqueKey))
-                .findFirst()
-                .orElse(null);
-
-        if (info == null)
-            return Optional.empty();
-
-        BaseProblem<?> problem = instantiateProblem(info.getProblemInfo());
-        BasePractice<?, ?> practice = instantiatePractice(info, problem);
-
-        Object practiceResult = practice.practice();
-        Object solutionResult = problem.solve();
-        boolean isCorrect = practice.compare();
-
-        return Optional.of(
-                new PracticeResult(
-                        info.getProblemInfo().getName(),
-                        practiceResult,
-                        solutionResult,
-                        isCorrect));
+    // ============ GETTERS (SHALLOW COPY TO PROTECT INTERNAL STATE) ============
+    public List<ProblemInfo> getProblemInfoList() {
+        return new ArrayList<>(problemInfoList);
     }
 
-    // ========================= LISTING / VARIANTS =========================
-    public List<String> getAvailableProblems() {
+    public List<PracticeInfo> getPracticeInfoList() {
+        return new ArrayList<>(practiceInfoList);
+    }
+
+    // ============ EXISTENCE CHECKS (FOR CREATORS) ============
+    public boolean problemExists(String name, String category) {
         return problemInfoList.stream()
-                .map(this::generateUniqueKey)
-                .sorted()
-                .toList();
+                .anyMatch(p -> p.getName().equals(name) &&
+                        p.getCategory().equals(category));
     }
 
-    public List<String> getAvailablePractices() {
+    public boolean practiceExists(String name, String category) {
         return practiceInfoList.stream()
-                .map(this::generateUniqueKey)
-                .sorted()
-                .toList();
+                .anyMatch(p -> {
+                    ProblemInfo problem = p.getProblemInfo();
+                    return problem.getName().equals(name) &&
+                            problem.getCategory().equals(category);
+                });
     }
 
-    public Map<String, List<String>> getProblemsByCategory() {
+    // ============ FINDING PROBLEM / PRACTICE BY NAME & CATEGORY ============
+    public Optional<ProblemInfo> findProblem(String name, String category) {
         return problemInfoList.stream()
-                .collect(Collectors.groupingBy(ProblemInfo::getCategory,
-                        Collectors.mapping(this::generateUniqueKey, Collectors.toList())));
+                .filter(p -> p.getName().equals(name) &&
+                        p.getCategory().equals(category))
+                .findFirst();
     }
 
-    public Map<String, List<String>> getPracticesByCategory() {
+    public Optional<PracticeInfo> findPractice(String name, String category) {
         return practiceInfoList.stream()
-                .collect(Collectors.groupingBy(p -> p.getProblemInfo().getCategory(),
-                        Collectors.mapping(this::generateUniqueKey, Collectors.toList())));
+                .filter(p -> {
+                    ProblemInfo problem = p.getProblemInfo();
+                    return problem.getName().equals(name) &&
+                            problem.getCategory().equals(category);
+                })
+                .findFirst();
     }
 
-    // ========================= DUPLICATE HANDLING =========================
-    public List<String> getProblemVariants(String name) {
+    // ============ FINDING BY UNIQUE ID ============
+    public Optional<ProblemInfo> findProblemByUniqueId(String uniqueId) {
+        return problemInfoList.stream()
+                .filter(p -> p.getUniqueId().equals(uniqueId))
+                .findFirst();
+    }
+
+    public Optional<PracticeInfo> findPracticeByUniqueId(String uniqueId) {
+        return practiceInfoList.stream()
+                .filter(p -> p.getUniqueId().equals(uniqueId))
+                .findFirst();
+    }
+
+    // ============ FIND MULTIPLE VARIANTS (BY NAME ONLY) ============
+    public List<ProblemInfo> findProblemsByName(String name) {
         return problemInfoList.stream()
                 .filter(p -> p.getName().equals(name))
-                .map(this::generateUniqueKey)
-                .sorted()
                 .toList();
     }
 
-    public List<String> getPracticeVariants(String name) {
+    public List<PracticeInfo> findPracticesByName(String name) {
         return practiceInfoList.stream()
                 .filter(p -> p.getProblemInfo().getName().equals(name))
-                .map(this::generateUniqueKey)
-                .sorted()
                 .toList();
     }
 
-    // ========================= HELPERS =========================
-    private String generateUniqueKey(ProblemInfo info) {
-        return info.getName() + " [" + info.getCategory() + "]";
+    // ============ GROUP BY CATEGORY ============
+    public Map<String, List<ProblemInfo>> groupProblemsByCategory() {
+        return problemInfoList.stream()
+                .collect(Collectors.groupingBy(ProblemInfo::getCategory));
     }
 
-    private String generateUniqueKey(PracticeInfo info) {
-        return info.getProblemInfo().getName() + " [" + info.getProblemInfo().getCategory() + "]";
-    }
-
-    private BaseProblem<?> instantiateProblem(ProblemInfo info) {
-        try {
-            Class<?> clazz = Class.forName(info.getClassName());
-            Constructor<?> ctor = clazz.getDeclaredConstructor();
-            ctor.setAccessible(true);
-            return (BaseProblem<?>) ctor.newInstance();
-        } catch (Exception e) {
-            throw new ProblemInstantiationException(info.getClassName(), e);
-        }
-    }
-
-    private BasePractice<?, ?> instantiatePractice(PracticeInfo info, BaseProblem<?> problem) {
-        try {
-            Class<?> clazz = Class.forName(info.getPracticeClassName());
-            Constructor<?> ctor = clazz.getDeclaredConstructor(problem.getClass());
-            ctor.setAccessible(true);
-            return (BasePractice<?, ?>) ctor.newInstance(problem);
-        } catch (Exception e) {
-            throw new PracticeInstantiationException(info.getPracticeClassName(), e);
-        }
+    public Map<String, List<PracticeInfo>> groupPracticesByCategory() {
+        return practiceInfoList.stream()
+                .collect(Collectors.groupingBy(
+                        p -> p.getProblemInfo().getCategory()));
     }
 }

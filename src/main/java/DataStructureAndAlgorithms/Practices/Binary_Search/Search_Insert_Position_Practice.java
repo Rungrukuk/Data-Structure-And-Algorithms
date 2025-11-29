@@ -12,7 +12,7 @@ public class Search_Insert_Position_Practice extends BasePractice<Integer, Searc
     }
 
     @Override
-    protected Integer practice() {
+    public Integer practice() {
         int right = problem.nums.length - 1;
         int left = 0;
         while (left <= right) {

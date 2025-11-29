@@ -9,7 +9,7 @@ public class Binary_Search extends BaseProblem<Integer> {
     public final int target = 5;
 
     @Override
-    protected Integer solve() {
+    public Integer solve() {
         int right = nums.length - 1;
         int left = 0;
         int answer = -1;

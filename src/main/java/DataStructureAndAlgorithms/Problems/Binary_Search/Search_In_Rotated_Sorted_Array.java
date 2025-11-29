@@ -9,7 +9,7 @@ public class Search_In_Rotated_Sorted_Array extends BaseProblem<Integer> {
     public final int target = 3;
 
     @Override
-    protected Integer solve() {
+    public Integer solve() {
         int left = 0;
         int right = nums.length - 1;
 

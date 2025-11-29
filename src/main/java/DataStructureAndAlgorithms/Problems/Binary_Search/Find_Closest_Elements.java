@@ -13,7 +13,7 @@ public class Find_Closest_Elements extends BaseProblem<List<Integer>> {
     public final int x = 9;
 
     @Override
-    protected List<Integer> solve() {
+    public List<Integer> solve() {
         int left = 0;
         int right = arr.length - k;
 
