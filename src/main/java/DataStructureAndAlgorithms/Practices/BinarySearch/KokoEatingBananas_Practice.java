@@ -1,7 +1,7 @@
 package DataStructureAndAlgorithms.Practices.BinarySearch;
 
-import DataStructureAndAlgorithms.core.BasePractice;
-import DataStructureAndAlgorithms.core.Practice;
+import DataStructureAndAlgorithms.core.annotations.Practice;
+import DataStructureAndAlgorithms.core.base.BasePractice;
 import DataStructureAndAlgorithms.Problems.Binary_Search.KokoEatingBananas;
 
 @Practice(problemName = "Koko Eating Bananas", category = "Binary Search")

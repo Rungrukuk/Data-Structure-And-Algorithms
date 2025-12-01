@@ -3,8 +3,8 @@ package DataStructureAndAlgorithms.Problems.Binary_Search;
 import java.util.ArrayList;
 import java.util.List;
 
-import DataStructureAndAlgorithms.core.BaseProblem;
-import DataStructureAndAlgorithms.core.Problem;
+import DataStructureAndAlgorithms.core.annotations.Problem;
+import DataStructureAndAlgorithms.core.base.BaseProblem;
 
 @Problem(name = "Find Closest Elements", category = "Binary Search")
 public class Find_Closest_Elements extends BaseProblem<List<Integer>> {

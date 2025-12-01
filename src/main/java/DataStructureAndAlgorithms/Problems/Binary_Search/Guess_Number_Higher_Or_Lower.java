@@ -1,7 +1,7 @@
 package DataStructureAndAlgorithms.Problems.Binary_Search;
 
-import DataStructureAndAlgorithms.core.BaseProblem;
-import DataStructureAndAlgorithms.core.Problem;
+import DataStructureAndAlgorithms.core.annotations.Problem;
+import DataStructureAndAlgorithms.core.base.BaseProblem;
 
 @Problem(name = "Guess Number Higher Or Lower", category = "Binary Search")
 public class Guess_Number_Higher_Or_Lower extends BaseProblem<Integer> {

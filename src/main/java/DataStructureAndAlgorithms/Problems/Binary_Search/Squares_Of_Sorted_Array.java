@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import DataStructureAndAlgorithms.core.BaseProblem;
-import DataStructureAndAlgorithms.core.Problem;
+import DataStructureAndAlgorithms.core.annotations.Problem;
+import DataStructureAndAlgorithms.core.base.BaseProblem;
 
 @Problem(name = "Squares Of Sorted Array", category = "Binary Search")
 public class Squares_Of_Sorted_Array extends BaseProblem<List<Integer>> {

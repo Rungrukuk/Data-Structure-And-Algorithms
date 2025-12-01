@@ -1,7 +1,7 @@
 package DataStructureAndAlgorithms.Problems.Binary_Search;
 
-import DataStructureAndAlgorithms.core.BaseProblem;
-import DataStructureAndAlgorithms.core.Problem;
+import DataStructureAndAlgorithms.core.annotations.Problem;
+import DataStructureAndAlgorithms.core.base.BaseProblem;
 
 @Problem(name = "Search In Rotated Sorted Array", category = "Binary Search")
 public class Search_In_Rotated_Sorted_Array extends BaseProblem<Integer> {

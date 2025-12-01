@@ -1,7 +1,7 @@
 package DataStructureAndAlgorithms.Problems.Binary_Search;
 
-import DataStructureAndAlgorithms.core.BaseProblem;
-import DataStructureAndAlgorithms.core.Problem;
+import DataStructureAndAlgorithms.core.annotations.Problem;
+import DataStructureAndAlgorithms.core.base.BaseProblem;
 
 @Problem(name = "Find Peak Element", category = "Binary Search")
 public class Find_Peak_Element extends BaseProblem<Integer> {

@@ -1,8 +1,8 @@
 package DataStructureAndAlgorithms.Practices.Binary_Search;
 
 import DataStructureAndAlgorithms.Problems.Binary_Search.First_Bad_Version;
-import DataStructureAndAlgorithms.core.BasePractice;
-import DataStructureAndAlgorithms.core.Practice;
+import DataStructureAndAlgorithms.core.annotations.Practice;
+import DataStructureAndAlgorithms.core.base.BasePractice;
 
 @Practice(problemName = "First Bad Version", category = "Binary Search")
 public class First_Bad_Version_Practice extends BasePractice<Integer, First_Bad_Version> {
