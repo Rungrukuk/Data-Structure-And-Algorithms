@@ -116,18 +116,26 @@ public class ApplicationController {
 
     private void handleCreateProblem() {
         try {
-            String[] details = prompter.promptForProblemDetails();
-            String name = details[0];
-            String category = details[1];
-            String returnType = details[2];
+            Optional<String> name = prompter.promptForProblemNameOptional();
+            if (name.isEmpty()) {
+                return;
+            }
+            Optional<String> category = prompter.promptForCategoryNameOptional();
+            if (category.isEmpty()) {
+                return;
+            }
+            Optional<String> returnType = prompter.promptForReturnTypeOptional();
+            if (returnType.isEmpty()) {
+                return;
+            }
 
-            if (problemOrchestrator.problemExists(name, category)) {
+            if (problemOrchestrator.problemExists(name.get(), category.get())) {
                 uiManager.showError("A problem with this name and category already exists.");
                 uiManager.waitForEnter();
                 return;
             }
 
-            problemOrchestrator.createNewProblem(name, category, returnType);
+            problemOrchestrator.createNewProblem(name.get(), category.get(), returnType.get());
             uiManager.showSuccess("Problem created successfully!");
 
         } catch (ValidationException e) {
@@ -137,6 +145,7 @@ public class ApplicationController {
         }
 
         uiManager.waitForEnter();
+        // TODO wrap this with loop so that input is wrong it asks again
     }
 
     private void handleManagePractices() {
@@ -217,7 +226,7 @@ public class ApplicationController {
         Optional<String> selectedDisplay = selectionHandler.selectItem(
                 problemDisplays,
                 "Select Problem to Run",
-                display -> display);
+                display -> display); // TODO fix this
 
         selectedDisplay.ifPresent(display -> {
             problemOrchestrator.runProblemByDisplay(display)
@@ -276,8 +285,7 @@ public class ApplicationController {
     }
 
     private void runSelectedProblemByName() {
-        Optional<String> nameOptional = prompter.promptForProblemNameOptional(
-                ApplicationConstants.ENTER_PROBLEM_NAME);
+        Optional<String> nameOptional = prompter.promptForProblemNameOptional();
 
         if (nameOptional.isEmpty()) {
             return;
@@ -399,8 +407,7 @@ public class ApplicationController {
     }
 
     private void runSelectedPracticeByName() {
-        Optional<String> nameOptional = prompter.promptForPracticeNameOptional(
-                ApplicationConstants.ENTER_PRACTICE_NAME);
+        Optional<String> nameOptional = prompter.promptForPracticeNameOptional();
 
         if (nameOptional.isEmpty()) {
             return;
@@ -505,8 +512,7 @@ public class ApplicationController {
     }
 
     private void createPracticeByName() {
-        Optional<String> nameOptional = prompter.promptForProblemNameOptional(
-                "Enter problem name: ");
+        Optional<String> nameOptional = prompter.promptForProblemNameOptional();
 
         if (nameOptional.isEmpty()) {
             return;

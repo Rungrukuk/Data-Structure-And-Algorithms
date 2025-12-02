@@ -46,10 +46,9 @@ public class ProblemSelector {
     }
 
     private String formatProblemDisplay(ProblemInfo problem) {
-        return String.format("%s [Category: %s, Type: %s]",
+        return String.format("%-35s [%s]",
                 problem.getName(),
-                problem.getCategory(),
-                problem.getReturnType());
+                problem.getCategory());
     }
 
     public List<String> getAllCategories() {

@@ -3,9 +3,9 @@ package DataStructureAndAlgorithms.infrastructure.input;
 import DataStructureAndAlgorithms.utils.naming.NameFormatter;
 import DataStructureAndAlgorithms.core.exceptions.ValidationException;
 import DataStructureAndAlgorithms.utils.TypeResolver.TypeResolver;
+import DataStructureAndAlgorithms.utils.constants.ApplicationConstants;
 
 import java.util.Scanner;
-import java.util.function.Supplier;
 
 public class InputHandler {
     private final Scanner scanner;
@@ -19,28 +19,6 @@ public class InputHandler {
     private String readLine() {
         return scanner.nextLine().trim();
     }
-
-    public String readValidatedInput(Supplier<String> validator) {
-        String result = validator.get();
-        if (result == null || result.trim().isEmpty()) {
-            throw new ValidationException("Input cannot be empty");
-        }
-        return result;
-    }
-
-    public <T> T readValidatedInputWithRetry(Supplier<T> validator,
-            Supplier<String> errorMessageSupplier) {
-        while (true) {
-            try {
-                return validator.get();
-            } catch (ValidationException e) {
-                throw new ValidationException(errorMessageSupplier.get() + ": " + e.getMessage());
-            } catch (Exception e) {
-                throw new ValidationException(errorMessageSupplier.get());
-            }
-        }
-    }
-
     // ========================= SPECIFIC VALIDATORS =========================
 
     public String readName() {
@@ -55,6 +33,9 @@ public class InputHandler {
         String input = readLine();
         if (input == null || input.isEmpty()) {
             throw new ValidationException("Return type cannot be empty.");
+        }
+        if (input.equals(ApplicationConstants.RETURN_BACK)) {
+            return input;
         }
 
         if (!TypeResolver.isValidJavaType(input)) {

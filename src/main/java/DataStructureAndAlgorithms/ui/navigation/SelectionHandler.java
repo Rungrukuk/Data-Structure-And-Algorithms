@@ -27,17 +27,15 @@ public class SelectionHandler {
             return Optional.empty();
         }
 
-        uiManager.showMenuOptions(options, title);
-        return selectFromOptions(options, title);
-    }
+        // uiManager.showMenuOptions(options, title);
 
-    public Optional<String> selectFromOptions(List<String> options, String prompt) {
-        return selectFromOptions(options, prompt, "Select an option");
+        return selectItem(options, title, s -> s);
     }
 
     public Optional<String> selectFromOptions(List<String> options, String prompt, String errorMessage) {
         while (true) {
             try {
+                uiManager.showMenuOptions(options);
                 uiManager.showSelectionPrompt(options.size());
                 int choice = inputHandler.readInt();
 
@@ -66,7 +64,6 @@ public class SelectionHandler {
                 .toList();
 
         uiManager.showSectionTitle(prompt);
-        uiManager.showMenuOptions(displayStrings);
 
         Optional<String> selectedDisplay = selectFromOptions(displayStrings, prompt, "Invalid selection");
 

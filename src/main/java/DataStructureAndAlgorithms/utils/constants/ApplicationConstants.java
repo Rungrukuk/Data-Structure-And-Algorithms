@@ -39,6 +39,8 @@ public class ApplicationConstants {
     public static final String INCORRECT_PRACTICE_NAME = "Incorrect practice name";
     public static final String CHOOSE_OPTION = "Choose an option between 1 - %d: ";
     public static final String ENTER_PROBLEM_NAME = "Enter a problem name (0 to return): ";
+    public static final String ENTER_CATEGORY_NAME = "Enter a category name (0 to return): ";
+    public static final String ENTER_RETURN_TYPE = "Enter return type {e.g.,Integer, List<String>}(0 to return): ";
     public static final String ENTER_PRACTICE_NAME = "Enter a practice name (0 to return): ";
     public static final String DIDNOT_FIND_PROBLEM_NAME = "Could not find specified problem: ";
     public static final String DIDNOT_FIND_PRACTICE_NAME = "Could not find specified practice: ";

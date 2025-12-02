@@ -17,61 +17,46 @@ public class Prompter {
 
     // ========================= PROBLEM METHODS =========================
 
-    public String promptForName(String message, String errorMessage) {
-        while (true) {
-            uiManager.showPrompt(message);
-            try {
-                return inputHandler.readValidatedInput(() -> inputHandler.readName());
-            } catch (Exception e) {
-                uiManager.showError(errorMessage);
-            }
-        }
-    }
-
-    public Optional<String> promptForNameOptional(String message, String errorMessage, String exitKeyword) {
+    private Optional<String> promptForName(String message, String errorMessage) {
         uiManager.showPrompt(message);
         try {
-            return Optional.of(inputHandler.readValidatedInput(() -> inputHandler.readName()));
+            String input = inputHandler.readName();
+            if (input.equals(ApplicationConstants.RETURN_BACK)) {
+                return Optional.empty();
+            }
+            return Optional.of(input);
         } catch (Exception e) {
             uiManager.showError(errorMessage);
             return Optional.empty();
         }
     }
 
-    public String promptForReturnType(String message, String errorMessage) {
-        while (true) {
-            uiManager.showPrompt(message);
-            try {
-                return inputHandler.readValidatedInput(() -> inputHandler.readReturnType());
-            } catch (Exception e) {
-                uiManager.showError(errorMessage);
+    public Optional<String> promptForReturnTypeOptional() {
+        uiManager.showPrompt(ApplicationConstants.ENTER_RETURN_TYPE);
+        try {
+            String input = inputHandler.readReturnType();
+            if (input.equals(ApplicationConstants.RETURN_BACK)) {
+                return Optional.empty();
             }
+            return Optional.of(input);
+        } catch (Exception e) {
+            uiManager.showError(ApplicationConstants.INVALID_RETURN_TYPE);
+            return Optional.empty();
         }
     }
 
-    public String[] promptForProblemDetails() {
-        uiManager.showSectionTitle("CREATE NEW PROBLEM");
-
-        String name = promptForName("Enter problem name: ", ApplicationConstants.INVALID_PROBLEM_NAME);
-        String category = promptForName("Enter problem category: ", ApplicationConstants.INVALID_CATEGORY_NAME);
-        String returnType = promptForReturnType("Enter return type (e.g., Integer, List<String>): ",
-                ApplicationConstants.INVALID_RETURN_TYPE);
-        // TODO change return type to map
-        return new String[] { name, category, returnType };
+    public Optional<String> promptForProblemNameOptional() {
+        return promptForName(ApplicationConstants.ENTER_PROBLEM_NAME,
+                ApplicationConstants.INVALID_PROBLEM_NAME);
     }
 
-    public Optional<String> promptForProblemNameOptional(String message) {
-        return promptForNameOptional(message,
-                ApplicationConstants.INVALID_PROBLEM_NAME,
-                ApplicationConstants.RETURN_BACK);
+    public Optional<String> promptForPracticeNameOptional() {
+        return promptForName(ApplicationConstants.ENTER_PRACTICE_NAME,
+                ApplicationConstants.INVALID_PRACTICE_NAME);
     }
 
-    // ========================= PRACTICE NAME SPECIFIC =========================
-
-    public Optional<String> promptForPracticeNameOptional(String message) {
-        return promptForNameOptional(message,
-                ApplicationConstants.INVALID_PRACTICE_NAME,
-                ApplicationConstants.RETURN_BACK);
+    public Optional<String> promptForCategoryNameOptional() {
+        return promptForName(ApplicationConstants.ENTER_CATEGORY_NAME, ApplicationConstants.INVALID_CATEGORY_NAME);
     }
 
 }
