@@ -7,6 +7,7 @@ import java.util.Optional;
 import DataStructureAndAlgorithms.core.models.PracticeInfo;
 import DataStructureAndAlgorithms.core.models.ProblemInfo;
 import DataStructureAndAlgorithms.ui.UIService_OLD;
+import DataStructureAndAlgorithms.utils.constants.ApplicationConstants;
 
 public class SelectionService {
     private final UIService_OLD uiService;
@@ -209,13 +210,13 @@ public class SelectionService {
     private Optional<String> askProblemName() {
         return uiService.getValidatedOptionalInput(
                 () -> uiService.getOptionalNameInputWithPrompt("Enter problem name: "),
-                "Invalid problem name");
+                ApplicationConstants.INVALID_PROBLEM_NAME);
     }
 
     private Optional<String> askPracticeName() {
         return uiService.getValidatedOptionalInput(
                 () -> uiService.getOptionalNameInputWithPrompt("Enter practice name: "),
-                "Invalid practice name");
+                ApplicationConstants.INVALID_PRACTICE_NAME);
     }
 
     private <T> Optional<T> selectVariant(List<T> variants, String type) {

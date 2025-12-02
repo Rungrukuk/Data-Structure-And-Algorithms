@@ -7,7 +7,7 @@ import DataStructureAndAlgorithms.menus.MenuOption;
 import DataStructureAndAlgorithms.ui.UIManager;
 import DataStructureAndAlgorithms.ui.navigation.MenuNavigator;
 import DataStructureAndAlgorithms.ui.navigation.SelectionHandler;
-import DataStructureAndAlgorithms.ui.prompts.ProblemPrompter;
+import DataStructureAndAlgorithms.ui.prompts.Prompter;
 import DataStructureAndAlgorithms.utils.constants.ApplicationConstants;
 
 import java.util.List;
@@ -18,20 +18,20 @@ public class ApplicationController {
     private final UIManager uiManager;
     private final MenuNavigator menuNavigator;
     private final SelectionHandler selectionHandler;
-    private final ProblemPrompter problemPrompter;
+    private final Prompter prompter;
     private final ProblemOrchestrator problemOrchestrator;
     private final PracticeOrchestrator practiceOrchestrator;
 
     public ApplicationController(UIManager uiManager,
             MenuNavigator menuNavigator,
             SelectionHandler selectionHandler,
-            ProblemPrompter problemPrompter,
+            Prompter prompter,
             ProblemOrchestrator problemOrchestrator,
             PracticeOrchestrator practiceOrchestrator) {
         this.uiManager = uiManager;
         this.menuNavigator = menuNavigator;
         this.selectionHandler = selectionHandler;
-        this.problemPrompter = problemPrompter;
+        this.prompter = prompter;
         this.problemOrchestrator = problemOrchestrator;
         this.practiceOrchestrator = practiceOrchestrator;
     }
@@ -116,7 +116,7 @@ public class ApplicationController {
 
     private void handleCreateProblem() {
         try {
-            String[] details = problemPrompter.promptForProblemDetails();
+            String[] details = prompter.promptForProblemDetails();
             String name = details[0];
             String category = details[1];
             String returnType = details[2];
@@ -276,7 +276,7 @@ public class ApplicationController {
     }
 
     private void runSelectedProblemByName() {
-        Optional<String> nameOptional = problemPrompter.promptForProblemNameOptional(
+        Optional<String> nameOptional = prompter.promptForProblemNameOptional(
                 ApplicationConstants.ENTER_PROBLEM_NAME);
 
         if (nameOptional.isEmpty()) {
@@ -288,7 +288,7 @@ public class ApplicationController {
 
         if (variants.isEmpty()) {
             uiManager.showError(ApplicationConstants.DIDNOT_FIND_PROBLEM_NAME + name);
-            uiManager.showSimilarSuggestions(name, problemOrchestrator.listAllProblems());
+            selectionHandler.showSimilarSuggestions(name, problemOrchestrator.listAllProblems());
             uiManager.waitForEnter();
             return;
         }
@@ -399,7 +399,7 @@ public class ApplicationController {
     }
 
     private void runSelectedPracticeByName() {
-        Optional<String> nameOptional = problemPrompter.promptForProblemNameOptional(
+        Optional<String> nameOptional = prompter.promptForPracticeNameOptional(
                 ApplicationConstants.ENTER_PRACTICE_NAME);
 
         if (nameOptional.isEmpty()) {
@@ -505,7 +505,7 @@ public class ApplicationController {
     }
 
     private void createPracticeByName() {
-        Optional<String> nameOptional = problemPrompter.promptForProblemNameOptional(
+        Optional<String> nameOptional = prompter.promptForProblemNameOptional(
                 "Enter problem name: ");
 
         if (nameOptional.isEmpty()) {
@@ -517,6 +517,7 @@ public class ApplicationController {
 
         if (variants.isEmpty()) {
             uiManager.showError("No problems found with name: " + name);
+            // Already using selectionHandler here (no change needed)
             selectionHandler.showSimilarSuggestions(name, problemOrchestrator.listAllProblems());
             uiManager.waitForEnter();
             return;
@@ -543,7 +544,7 @@ public class ApplicationController {
     private void shutdown() {
         try {
             uiManager.showInfo("Exiting application...");
-            uiManager.shutdown();
+            // TODO close the input handler
         } catch (Exception e) {
             System.err.println("Error during shutdown: " + e.getMessage());
         }

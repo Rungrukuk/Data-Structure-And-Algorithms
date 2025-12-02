@@ -12,14 +12,11 @@ import DataStructureAndAlgorithms.ui.UIFactory;
 import DataStructureAndAlgorithms.ui.UIManager;
 import DataStructureAndAlgorithms.ui.navigation.MenuNavigator;
 import DataStructureAndAlgorithms.ui.navigation.SelectionHandler;
-import DataStructureAndAlgorithms.ui.prompts.ProblemPrompter;
+import DataStructureAndAlgorithms.ui.prompts.Prompter;
 import DataStructureAndAlgorithms.utils.constants.ApplicationConstants;
 
 public class DependencyContainer {
 
-    /**
-     * Create the complete application with all dependencies wired together
-     */
     public static ApplicationController createApplication() {
         // ========================= INFRASTRUCTURE LAYER =========================
         InputHandler inputHandler = UIFactory.createInputHandler();
@@ -28,18 +25,16 @@ public class DependencyContainer {
         CodeRunner codeRunner = new CodeRunner();
 
         // ========================= UI LAYER =========================
-        UIManager uiManager = UIFactory.createUIManager();
-        MenuNavigator menuNavigator = UIFactory.createMenuNavigator(uiManager);
-        SelectionHandler selectionHandler = UIFactory.createSelectionHandler(uiManager);
-        ProblemPrompter problemPrompter = UIFactory.createProblemPrompter(inputHandler, uiManager);
+        UIManager uiManager = UIFactory.createUIManager(inputHandler);
+        SelectionHandler selectionHandler = UIFactory.createSelectionHandler(inputHandler, uiManager);
+        MenuNavigator menuNavigator = UIFactory.createMenuNavigator(selectionHandler);
+        Prompter prompter = UIFactory.createPrompter(inputHandler, uiManager);
 
-        // ========================= DOMAIN LAYER - REPOSITORIES
-        // =========================
+        // ================ DOMAIN LAYER - REPOSITORIES ================
         ProblemRepository problemRepository = new ProblemRepositoryImpl(classScanner);
         PracticeRepository practiceRepository = new PracticeRepositoryImpl(classScanner, problemRepository);
 
-        // ========================= DOMAIN LAYER - SELECTORS & EXECUTORS
-        // =========================
+        // ================ DOMAIN LAYER - SELECTORS & EXECUTORS ================
         ProblemSelector problemSelector = new ProblemSelector(problemRepository);
         ProblemExecutor problemExecutor = new ProblemExecutor(codeRunner);
         PracticeSelector practiceSelector = new PracticeSelector(practiceRepository);
@@ -49,8 +44,7 @@ public class DependencyContainer {
         ProblemGenerator problemGenerator = new ProblemGenerator(fileManager);
         PracticeGenerator practiceGenerator = new PracticeGenerator(fileManager);
 
-        // ========================= DOMAIN LAYER - ORCHESTRATORS
-        // =========================
+        // ================ DOMAIN LAYER - ORCHESTRATORS ================
         ProblemOrchestrator problemOrchestrator = new ProblemOrchestrator(
                 problemRepository,
                 problemSelector,
@@ -69,16 +63,12 @@ public class DependencyContainer {
                 uiManager,
                 menuNavigator,
                 selectionHandler,
-                problemPrompter,
+                prompter,
                 problemOrchestrator,
                 practiceOrchestrator);
     }
 
-    /**
-     * Create a simplified application for testing
-     */
     public static ApplicationController createTestApplication() {
-        // Use the same method for now - we can create mocks/stubs later if needed
         return createApplication();
     }
 }

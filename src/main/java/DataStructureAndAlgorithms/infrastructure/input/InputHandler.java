@@ -4,8 +4,8 @@ import DataStructureAndAlgorithms.utils.naming.NameFormatter;
 import DataStructureAndAlgorithms.core.exceptions.ValidationException;
 import DataStructureAndAlgorithms.utils.TypeResolver.TypeResolver;
 
-import java.util.List;
 import java.util.Scanner;
+import java.util.function.Supplier;
 
 public class InputHandler {
     private final Scanner scanner;
@@ -14,24 +14,41 @@ public class InputHandler {
         this.scanner = new Scanner(System.in);
     }
 
-    public String readLine() {
+    // ========================= CORE INPUT METHODS =========================
+
+    private String readLine() {
         return scanner.nextLine().trim();
     }
 
-    public String readProblemName() {
-        String name = readLine();
-        if (name == null || name.isEmpty()) {
-            throw new ValidationException("Name cannot be empty.");
+    public String readValidatedInput(Supplier<String> validator) {
+        String result = validator.get();
+        if (result == null || result.trim().isEmpty()) {
+            throw new ValidationException("Input cannot be empty");
         }
-        return NameFormatter.generateFormattedProblemName(name);
+        return result;
     }
 
-    public String readCategory() {
-        String category = readLine();
-        if (category == null || category.isEmpty()) {
-            throw new ValidationException("Category cannot be empty.");
+    public <T> T readValidatedInputWithRetry(Supplier<T> validator,
+            Supplier<String> errorMessageSupplier) {
+        while (true) {
+            try {
+                return validator.get();
+            } catch (ValidationException e) {
+                throw new ValidationException(errorMessageSupplier.get() + ": " + e.getMessage());
+            } catch (Exception e) {
+                throw new ValidationException(errorMessageSupplier.get());
+            }
         }
-        return NameFormatter.generateFormattedCategoryName(category);
+    }
+
+    // ========================= SPECIFIC VALIDATORS =========================
+
+    public String readName() {
+        String name = readLine();
+        if (name == null || name.isBlank()) {
+            throw new ValidationException("Input cannot be empty.");
+        }
+        return NameFormatter.formatInput(name);
     }
 
     public String readReturnType() {
@@ -46,27 +63,18 @@ public class InputHandler {
 
         String convertedType = TypeResolver.convertToWrapperType(input);
         if (!TypeResolver.isValidJavaType(convertedType)) {
-            throw new ValidationException(
-                    "Invalid Java type after conversion: '" + convertedType + "'. Please enter a different type.");
+            throw new ValidationException("Invalid Java type after conversion");
         }
         return convertedType;
     }
 
-    public String selectFromList(List<String> options) {
+    public int readInt() {
         String line = readLine();
-
-        int optionNumber;
         try {
-            optionNumber = Integer.parseInt(line);
+            return Integer.parseInt(line);
         } catch (NumberFormatException e) {
-            throw new ValidationException("Input must be a number between 1 and " + options.size());
+            throw new ValidationException("Input must be a valid number");
         }
-
-        if (optionNumber < 1 || optionNumber > options.size()) {
-            throw new ValidationException("Input must be a number between 1 and " + options.size());
-        }
-
-        return options.get(optionNumber - 1);
     }
 
     public void waitForEnter() {

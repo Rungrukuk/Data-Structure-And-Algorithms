@@ -2,6 +2,7 @@ package DataStructureAndAlgorithms.ui.navigation;
 
 import DataStructureAndAlgorithms.core.models.PracticeInfo;
 import DataStructureAndAlgorithms.core.models.ProblemInfo;
+import DataStructureAndAlgorithms.infrastructure.input.InputHandler;
 import DataStructureAndAlgorithms.ui.UIManager;
 import DataStructureAndAlgorithms.utils.helpers.TextHelper;
 import DataStructureAndAlgorithms.utils.constants.ApplicationConstants;
@@ -10,11 +11,49 @@ import java.util.List;
 import java.util.Optional;
 
 public class SelectionHandler {
+    private final InputHandler inputHandler;
     private final UIManager uiManager;
 
-    public SelectionHandler(UIManager uiManager) {
+    public SelectionHandler(InputHandler inputHandler, UIManager uiManager) {
+        this.inputHandler = inputHandler;
         this.uiManager = uiManager;
     }
+
+    // ========================= MENU SELECTION =========================
+
+    public Optional<String> selectFromMenu(List<String> options, String title) {
+        if (options == null || options.isEmpty()) {
+            uiManager.showError("No options available.");
+            return Optional.empty();
+        }
+
+        uiManager.showMenuOptions(options, title);
+        return selectFromOptions(options, title);
+    }
+
+    public Optional<String> selectFromOptions(List<String> options, String prompt) {
+        return selectFromOptions(options, prompt, "Select an option");
+    }
+
+    public Optional<String> selectFromOptions(List<String> options, String prompt, String errorMessage) {
+        while (true) {
+            try {
+                uiManager.showSelectionPrompt(options.size());
+                int choice = inputHandler.readInt();
+
+                if (choice < 1 || choice > options.size()) {
+                    uiManager.showError(errorMessage + ". Please enter a number between 1 and " + options.size());
+                    continue;
+                }
+
+                return Optional.of(options.get(choice - 1));
+            } catch (Exception e) {
+                uiManager.showError(errorMessage + ". Please enter a valid number.");
+            }
+        }
+    }
+
+    // ========================= ITEM SELECTION =========================
 
     public <T> Optional<T> selectItem(List<T> items, String prompt, ItemFormatter<T> formatter) {
         if (items == null || items.isEmpty()) {
@@ -26,23 +65,19 @@ public class SelectionHandler {
                 .map(formatter::format)
                 .toList();
 
-        String selectedDisplay = uiManager.getValidatedInput(
-                () -> {
-                    return uiManager.selectFromList(displayStrings, prompt);
-                },
-                "Invalid selection");
+        uiManager.showSectionTitle(prompt);
+        uiManager.showMenuOptions(displayStrings);
 
-        if (selectedDisplay == null) {
-            return Optional.empty();
-        }
+        Optional<String> selectedDisplay = selectFromOptions(displayStrings, prompt, "Invalid selection");
 
-        for (int i = 0; i < items.size(); i++) {
-            if (displayStrings.get(i).equals(selectedDisplay)) {
-                return Optional.of(items.get(i));
+        return selectedDisplay.flatMap(display -> {
+            for (int i = 0; i < items.size(); i++) {
+                if (displayStrings.get(i).equals(display)) {
+                    return Optional.of(items.get(i));
+                }
             }
-        }
-
-        return Optional.empty();
+            return Optional.empty();
+        });
     }
 
     public Optional<ProblemInfo> selectProblem(List<ProblemInfo> problems, String prompt) {
@@ -59,17 +94,15 @@ public class SelectionHandler {
             return Optional.empty();
         }
 
-        String selected = uiManager.getValidatedInput(
-                () -> uiManager.selectFromCollection(categories, prompt),
-                "Invalid category selection");
-
-        return Optional.ofNullable(selected);
+        return selectFromOptions(categories, prompt, "Invalid category selection");
     }
+
+    // ========================= SUGGESTIONS =========================
 
     public void showSimilarSuggestions(String input, List<String> allOptions) {
         List<String> similar = findSimilarOptions(input, allOptions);
         if (!similar.isEmpty()) {
-            uiManager.showInfo("💡 Did you mean:");
+            uiManager.showInfo("Did you mean:");
             similar.forEach(name -> System.out.println("   - " + name));
         }
     }
@@ -87,6 +120,8 @@ public class SelectionHandler {
                 .limit(3)
                 .toList();
     }
+
+    // ========================= FORMATTERS =========================
 
     private String formatProblem(ProblemInfo problem) {
         return String.format("%s [Category: %s, Type: %s]",
