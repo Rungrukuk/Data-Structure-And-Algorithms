@@ -21,9 +21,6 @@ public class Prompter {
         uiManager.showPrompt(message);
         try {
             String input = inputHandler.readName();
-            if (input.equals(ApplicationConstants.RETURN_BACK)) {
-                return Optional.empty();
-            }
             return Optional.of(input);
         } catch (Exception e) {
             uiManager.showError(errorMessage);
@@ -57,6 +54,10 @@ public class Prompter {
 
     public Optional<String> promptForCategoryNameOptional() {
         return promptForName(ApplicationConstants.ENTER_CATEGORY_NAME, ApplicationConstants.INVALID_CATEGORY_NAME);
+    }
+
+    public Optional<Integer> promptForChoiceOptional(String prompt) {
+        return Optional.of(inputHandler.readInt());
     }
 
 }

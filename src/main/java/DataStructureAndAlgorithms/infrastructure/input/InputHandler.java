@@ -51,6 +51,9 @@ public class InputHandler {
 
     public int readInt() {
         String line = readLine();
+        if (line == null || line.isBlank()) {
+            throw new ValidationException("Input cannot be empty.");
+        }
         try {
             return Integer.parseInt(line);
         } catch (NumberFormatException e) {

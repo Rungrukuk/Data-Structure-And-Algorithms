@@ -2,8 +2,8 @@ package DataStructureAndAlgorithms.ui.navigation;
 
 import DataStructureAndAlgorithms.core.models.PracticeInfo;
 import DataStructureAndAlgorithms.core.models.ProblemInfo;
-import DataStructureAndAlgorithms.infrastructure.input.InputHandler;
 import DataStructureAndAlgorithms.ui.UIManager;
+import DataStructureAndAlgorithms.ui.prompts.Prompter;
 import DataStructureAndAlgorithms.utils.helpers.TextHelper;
 import DataStructureAndAlgorithms.utils.constants.ApplicationConstants;
 
@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.Optional;
 
 public class SelectionHandler {
-    private final InputHandler inputHandler;
+    private final Prompter prompter;
     private final UIManager uiManager;
 
-    public SelectionHandler(InputHandler inputHandler, UIManager uiManager) {
-        this.inputHandler = inputHandler;
+    public SelectionHandler(Prompter prompter, UIManager uiManager) {
         this.uiManager = uiManager;
+        this.prompter = prompter;
     }
 
     // ========================= MENU SELECTION =========================
@@ -27,33 +27,31 @@ public class SelectionHandler {
             return Optional.empty();
         }
 
-        // uiManager.showMenuOptions(options, title);
-
         return selectItem(options, title, s -> s);
     }
 
-    public Optional<String> selectFromOptions(List<String> options, String prompt, String errorMessage) {
+    public Optional<String> selectFromOptions(List<String> options, String prompt) {
         while (true) {
             try {
                 uiManager.showMenuOptions(options);
                 uiManager.showSelectionPrompt(options.size());
-                int choice = inputHandler.readInt();
+                Optional<Integer> choice = prompter.promptForChoiceOptional(prompt);
 
-                if (choice < 1 || choice > options.size()) {
-                    uiManager.showError(errorMessage + ". Please enter a number between 1 and " + options.size());
+                if (choice.get() < 1 || choice.get() > options.size()) {
+                    uiManager.showError("Invalid selection. Please enter a number between 1 and " + options.size());
                     continue;
                 }
 
-                return Optional.of(options.get(choice - 1));
+                return Optional.of(options.get(choice.get() - 1));
             } catch (Exception e) {
-                uiManager.showError(errorMessage + ". Please enter a valid number.");
+                uiManager.showError(e.getMessage());
             }
         }
     }
 
     // ========================= ITEM SELECTION =========================
 
-    public <T> Optional<T> selectItem(List<T> items, String prompt, ItemFormatter<T> formatter) {
+    private <T> Optional<T> selectItem(List<T> items, String prompt, ItemFormatter<T> formatter) {
         if (items == null || items.isEmpty()) {
             uiManager.showError("No items available.");
             return Optional.empty();
@@ -65,7 +63,7 @@ public class SelectionHandler {
 
         uiManager.showSectionTitle(prompt);
 
-        Optional<String> selectedDisplay = selectFromOptions(displayStrings, prompt, "Invalid selection");
+        Optional<String> selectedDisplay = selectFromOptions(displayStrings, prompt);
 
         return selectedDisplay.flatMap(display -> {
             for (int i = 0; i < items.size(); i++) {
@@ -91,13 +89,14 @@ public class SelectionHandler {
             return Optional.empty();
         }
 
-        return selectFromOptions(categories, prompt, "Invalid category selection");
+        return selectFromOptions(categories, prompt);
     }
 
     // ========================= SUGGESTIONS =========================
 
-    public void showSimilarSuggestions(String input, List<String> allOptions) {
-        List<String> similar = findSimilarOptions(input, allOptions);
+    public void showSimilarSuggestions(String input, List<ProblemInfo> allOptions) {
+        List<String> problemNames = allOptions.stream().map(ProblemInfo::getName).toList();
+        List<String> similar = findSimilarOptions(input, problemNames);
         if (!similar.isEmpty()) {
             uiManager.showInfo("Did you mean:");
             similar.forEach(name -> System.out.println("   - " + name));

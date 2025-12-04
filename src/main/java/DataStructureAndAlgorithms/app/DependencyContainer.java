@@ -26,18 +26,16 @@ public class DependencyContainer {
 
         // ========================= UI LAYER =========================
         UIManager uiManager = UIFactory.createUIManager(inputHandler);
-        SelectionHandler selectionHandler = UIFactory.createSelectionHandler(inputHandler, uiManager);
-        MenuNavigator menuNavigator = UIFactory.createMenuNavigator(selectionHandler);
         Prompter prompter = UIFactory.createPrompter(inputHandler, uiManager);
+        SelectionHandler selectionHandler = UIFactory.createSelectionHandler(prompter, uiManager);
+        MenuNavigator menuNavigator = UIFactory.createMenuNavigator(selectionHandler);
 
         // ================ DOMAIN LAYER - REPOSITORIES ================
         ProblemRepository problemRepository = new ProblemRepositoryImpl(classScanner);
         PracticeRepository practiceRepository = new PracticeRepositoryImpl(classScanner, problemRepository);
 
         // ================ DOMAIN LAYER - SELECTORS & EXECUTORS ================
-        ProblemSelector problemSelector = new ProblemSelector(problemRepository);
         ProblemExecutor problemExecutor = new ProblemExecutor(codeRunner);
-        PracticeSelector practiceSelector = new PracticeSelector(practiceRepository);
         PracticeExecutor practiceExecutor = new PracticeExecutor(codeRunner);
 
         // ========================= DOMAIN LAYER - GENERATORS =========================
@@ -47,13 +45,11 @@ public class DependencyContainer {
         // ================ DOMAIN LAYER - ORCHESTRATORS ================
         ProblemOrchestrator problemOrchestrator = new ProblemOrchestrator(
                 problemRepository,
-                problemSelector,
                 problemExecutor,
                 problemGenerator);
 
         PracticeOrchestrator practiceOrchestrator = new PracticeOrchestrator(
                 practiceRepository,
-                practiceSelector,
                 practiceExecutor,
                 practiceGenerator,
                 problemRepository);

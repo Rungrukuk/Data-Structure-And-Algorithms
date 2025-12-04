@@ -18,11 +18,6 @@ public class PracticeExecutor {
         return codeRunner.runPractice(practiceInfo);
     }
 
-    public Optional<PracticeResult> runPracticeByDisplay(String displayString, PracticeSelector selector) {
-        return selector.findPracticeByDisplay(displayString)
-                .flatMap(this::runPractice);
-    }
-
     public String formatResult(PracticeResult result) {
         StringBuilder sb = new StringBuilder();
 

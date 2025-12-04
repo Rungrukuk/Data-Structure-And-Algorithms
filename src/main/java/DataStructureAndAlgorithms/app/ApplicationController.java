@@ -1,6 +1,8 @@
 package DataStructureAndAlgorithms.app;
 
 import DataStructureAndAlgorithms.core.exceptions.ValidationException;
+import DataStructureAndAlgorithms.core.models.PracticeInfo;
+import DataStructureAndAlgorithms.core.models.ProblemInfo;
 import DataStructureAndAlgorithms.domain.problems.ProblemOrchestrator;
 import DataStructureAndAlgorithms.domain.practices.PracticeOrchestrator;
 import DataStructureAndAlgorithms.menus.MenuOption;
@@ -115,18 +117,19 @@ public class ApplicationController {
     }
 
     private void handleCreateProblem() {
+        uiManager.showSectionTitle("CREATE PROBLEM");
         try {
-            Optional<String> name = prompter.promptForProblemNameOptional();
-            if (name.isEmpty()) {
-                return;
+            Optional<String> name = Optional.empty();
+            Optional<String> category = Optional.empty();
+            Optional<String> returnType = Optional.empty();
+            while (name.isEmpty()) {
+                name = prompter.promptForProblemNameOptional();
             }
-            Optional<String> category = prompter.promptForCategoryNameOptional();
-            if (category.isEmpty()) {
-                return;
+            while (category.isEmpty()) {
+                category = prompter.promptForCategoryNameOptional();
             }
-            Optional<String> returnType = prompter.promptForReturnTypeOptional();
-            if (returnType.isEmpty()) {
-                return;
+            while (returnType.isEmpty()) {
+                returnType = prompter.promptForReturnTypeOptional();
             }
 
             if (problemOrchestrator.problemExists(name.get(), category.get())) {
@@ -143,9 +146,7 @@ public class ApplicationController {
         } catch (Exception e) {
             uiManager.showError("Failed to create problem: " + e.getMessage());
         }
-
         uiManager.waitForEnter();
-        // TODO wrap this with loop so that input is wrong it asks again
     }
 
     private void handleManagePractices() {
@@ -215,7 +216,7 @@ public class ApplicationController {
     // ========================= PROBLEM RUNNING METHODS =========================
 
     private void runSelectedProblemFromAll() {
-        List<String> problemDisplays = problemOrchestrator.listAllProblems();
+        List<ProblemInfo> problemDisplays = problemOrchestrator.listAllProblems();
 
         if (problemDisplays.isEmpty()) {
             uiManager.showError("No problems available.");
@@ -223,13 +224,12 @@ public class ApplicationController {
             return;
         }
 
-        Optional<String> selectedDisplay = selectionHandler.selectItem(
+        Optional<ProblemInfo> selectedDisplay = selectionHandler.selectProblem(
                 problemDisplays,
-                "Select Problem to Run",
-                display -> display); // TODO fix this
+                "Select Problem to Run");
 
         selectedDisplay.ifPresent(display -> {
-            problemOrchestrator.runProblemByDisplay(display)
+            problemOrchestrator.runProblem(display)
                     .ifPresentOrElse(
                             result -> {
                                 System.out.println(result);
@@ -243,7 +243,7 @@ public class ApplicationController {
     }
 
     private void runSelectedProblemByCategory() {
-        Map<String, List<String>> problemsByCategory = problemOrchestrator.listProblemsByCategory();
+        Map<String, List<ProblemInfo>> problemsByCategory = problemOrchestrator.listProblemsByCategory();
 
         if (problemsByCategory.isEmpty()) {
             uiManager.showError("No problems available.");
@@ -258,20 +258,19 @@ public class ApplicationController {
             return;
         }
 
-        List<String> problemsInCategory = problemsByCategory.get(selectedCategory.get());
+        List<ProblemInfo> problemsInCategory = problemsByCategory.get(selectedCategory.get());
         if (problemsInCategory == null || problemsInCategory.isEmpty()) {
             uiManager.showError("No problems found in category: " + selectedCategory.get());
             uiManager.waitForEnter();
             return;
         }
 
-        Optional<String> selectedDisplay = selectionHandler.selectItem(
+        Optional<ProblemInfo> selectedDisplay = selectionHandler.selectProblem(
                 problemsInCategory,
-                "Select Problem from " + selectedCategory.get(),
-                display -> display);
+                "Select Problem to Run");
 
         selectedDisplay.ifPresent(display -> {
-            problemOrchestrator.runProblemByDisplay(display)
+            problemOrchestrator.runProblem(display)
                     .ifPresentOrElse(
                             result -> {
                                 System.out.println(result);
@@ -287,12 +286,12 @@ public class ApplicationController {
     private void runSelectedProblemByName() {
         Optional<String> nameOptional = prompter.promptForProblemNameOptional();
 
-        if (nameOptional.isEmpty()) {
+        if (nameOptional.isEmpty() || nameOptional.get().equals(ApplicationConstants.RETURN_BACK)) {
             return;
         }
 
         String name = nameOptional.get();
-        List<String> variants = problemOrchestrator.listProblemVariants(name);
+        List<ProblemInfo> variants = problemOrchestrator.listProblemVariants(name);
 
         if (variants.isEmpty()) {
             uiManager.showError(ApplicationConstants.DIDNOT_FIND_PROBLEM_NAME + name);
@@ -302,7 +301,7 @@ public class ApplicationController {
         }
 
         if (variants.size() == 1) {
-            problemOrchestrator.runProblemByDisplay(variants.get(0))
+            problemOrchestrator.runProblem(variants.get(0))
                     .ifPresentOrElse(
                             result -> {
                                 System.out.println(result);
@@ -315,20 +314,18 @@ public class ApplicationController {
             return;
         }
 
-        Optional<String> selectedDisplay = selectionHandler.selectItem(
-                variants,
-                "Select Problem Variant",
-                display -> display);
+        Optional<ProblemInfo> selectedProblem = selectionHandler.selectProblem(
+                variants, "Select Problem Variant");
 
-        selectedDisplay.ifPresent(display -> {
-            problemOrchestrator.runProblemByDisplay(display)
+        selectedProblem.ifPresent(problem -> {
+            problemOrchestrator.runProblem(problem)
                     .ifPresentOrElse(
                             result -> {
                                 System.out.println(result);
                                 uiManager.waitForEnter();
                             },
                             () -> {
-                                uiManager.showError("Failed to run problem: " + display);
+                                uiManager.showError("Failed to run problem: " + problem);
                                 uiManager.waitForEnter();
                             });
         });
@@ -337,21 +334,20 @@ public class ApplicationController {
     // ========================= PRACTICE RUNNING METHODS =========================
 
     private void runSelectedPracticeFromAll() {
-        List<String> practiceDisplays = practiceOrchestrator.listAllPractices();
+        List<PracticeInfo> practices = practiceOrchestrator.listAllPractices();
 
-        if (practiceDisplays.isEmpty()) {
+        if (practices.isEmpty()) {
             uiManager.showError("No practices available.");
             uiManager.waitForEnter();
             return;
         }
 
-        Optional<String> selectedDisplay = selectionHandler.selectItem(
-                practiceDisplays,
-                "Select Practice to Run",
-                display -> display);
+        Optional<PracticeInfo> selectedDisplay = selectionHandler.selectPractice(
+                practices,
+                "Select Practice to Run");
 
         selectedDisplay.ifPresent(display -> {
-            practiceOrchestrator.runPracticeByDisplay(display)
+            practiceOrchestrator.runPractice(display)
                     .ifPresentOrElse(
                             result -> {
                                 System.out.println(result);
@@ -365,7 +361,7 @@ public class ApplicationController {
     }
 
     private void runSelectedPracticeByCategory() {
-        Map<String, List<String>> practicesByCategory = practiceOrchestrator.listPracticesByCategory();
+        Map<String, List<PracticeInfo>> practicesByCategory = practiceOrchestrator.listPracticesByCategory();
 
         if (practicesByCategory.isEmpty()) {
             uiManager.showError("No practices available.");
@@ -380,27 +376,26 @@ public class ApplicationController {
             return;
         }
 
-        List<String> practicesInCategory = practicesByCategory.get(selectedCategory.get());
+        List<PracticeInfo> practicesInCategory = practicesByCategory.get(selectedCategory.get());
         if (practicesInCategory == null || practicesInCategory.isEmpty()) {
             uiManager.showError("No practices found in category: " + selectedCategory.get());
             uiManager.waitForEnter();
             return;
         }
 
-        Optional<String> selectedDisplay = selectionHandler.selectItem(
+        Optional<PracticeInfo> selectedDisplay = selectionHandler.selectPractice(
                 practicesInCategory,
-                "Select Practice from " + selectedCategory.get(),
-                display -> display);
+                "Select Practice from " + selectedCategory.get());
 
-        selectedDisplay.ifPresent(display -> {
-            practiceOrchestrator.runPracticeByDisplay(display)
+        selectedDisplay.ifPresent(practice -> {
+            practiceOrchestrator.runPractice(practice)
                     .ifPresentOrElse(
                             result -> {
                                 System.out.println(result);
                                 uiManager.waitForEnter();
                             },
                             () -> {
-                                uiManager.showError("Failed to run practice: " + display);
+                                uiManager.showError("Failed to run practice: " + practice);
                                 uiManager.waitForEnter();
                             });
         });
@@ -409,12 +404,12 @@ public class ApplicationController {
     private void runSelectedPracticeByName() {
         Optional<String> nameOptional = prompter.promptForPracticeNameOptional();
 
-        if (nameOptional.isEmpty()) {
+        if (nameOptional.isEmpty() || nameOptional.get().equals(ApplicationConstants.RETURN_BACK)) {
             return;
         }
 
         String name = nameOptional.get();
-        List<String> variants = practiceOrchestrator.listPracticeVariants(name);
+        List<PracticeInfo> variants = practiceOrchestrator.listPracticeVariants(name);
 
         if (variants.isEmpty()) {
             uiManager.showError(ApplicationConstants.DIDNOT_FIND_PRACTICE_NAME + name);
@@ -423,7 +418,7 @@ public class ApplicationController {
         }
 
         if (variants.size() == 1) {
-            practiceOrchestrator.runPracticeByDisplay(variants.get(0))
+            practiceOrchestrator.runPractice(variants.get(0))
                     .ifPresentOrElse(
                             result -> {
                                 System.out.println(result);
@@ -436,20 +431,19 @@ public class ApplicationController {
             return;
         }
 
-        Optional<String> selectedDisplay = selectionHandler.selectItem(
+        Optional<PracticeInfo> selectedDisplay = selectionHandler.selectPractice(
                 variants,
-                "Select Practice Variant",
-                display -> display);
+                "Select Practice Variant");
 
-        selectedDisplay.ifPresent(display -> {
-            practiceOrchestrator.runPracticeByDisplay(display)
+        selectedDisplay.ifPresent(practice -> {
+            practiceOrchestrator.runPractice(practice)
                     .ifPresentOrElse(
                             result -> {
                                 System.out.println(result);
                                 uiManager.waitForEnter();
                             },
                             () -> {
-                                uiManager.showError("Failed to run practice: " + display);
+                                uiManager.showError("Failed to run practice: " + practice);
                                 uiManager.waitForEnter();
                             });
         });
@@ -458,7 +452,7 @@ public class ApplicationController {
     // ========================= PRACTICE CREATION METHODS =========================
 
     private void createPracticeFromAllProblems() {
-        List<String> problemDisplays = problemOrchestrator.listAllProblems();
+        List<ProblemInfo> problemDisplays = problemOrchestrator.listAllProblems();
 
         if (problemDisplays.isEmpty()) {
             uiManager.showError("No problems found. Please create a problem first.");
@@ -466,10 +460,9 @@ public class ApplicationController {
             return;
         }
 
-        Optional<String> selectedDisplay = selectionHandler.selectItem(
+        Optional<ProblemInfo> selectedDisplay = selectionHandler.selectProblem(
                 problemDisplays,
-                "Select Problem to Create Practice For",
-                display -> display);
+                "Select Problem to Create Practice For");
 
         selectedDisplay.ifPresent(display -> {
             uiManager.showError("Implementation note: Need to map display string back to ProblemInfo");
@@ -478,7 +471,7 @@ public class ApplicationController {
     }
 
     private void createPracticeByCategory() {
-        Map<String, List<String>> problemsByCategory = problemOrchestrator.listProblemsByCategory();
+        Map<String, List<ProblemInfo>> problemsByCategory = problemOrchestrator.listProblemsByCategory();
 
         if (problemsByCategory.isEmpty()) {
             uiManager.showError("No problems found. Please create a problem first.");
@@ -493,19 +486,18 @@ public class ApplicationController {
             return;
         }
 
-        List<String> problemsInCategory = problemsByCategory.get(selectedCategory.get());
+        List<ProblemInfo> problemsInCategory = problemsByCategory.get(selectedCategory.get());
         if (problemsInCategory == null || problemsInCategory.isEmpty()) {
             uiManager.showError("No problems found in category: " + selectedCategory.get());
             uiManager.waitForEnter();
             return;
         }
 
-        Optional<String> selectedDisplay = selectionHandler.selectItem(
+        Optional<ProblemInfo> selectedDisplay = selectionHandler.selectProblem(
                 problemsInCategory,
-                "Select Problem from " + selectedCategory.get(),
-                display -> display);
+                "Select Problem from " + selectedCategory.get());
 
-        selectedDisplay.ifPresent(display -> {
+        selectedDisplay.ifPresent(problem -> {
             uiManager.showError("Implementation note: Need to map display string back to ProblemInfo");
             uiManager.waitForEnter();
         });
@@ -519,11 +511,10 @@ public class ApplicationController {
         }
 
         String name = nameOptional.get();
-        List<String> variants = problemOrchestrator.listProblemVariants(name);
+        List<ProblemInfo> variants = problemOrchestrator.listProblemVariants(name);
 
         if (variants.isEmpty()) {
             uiManager.showError("No problems found with name: " + name);
-            // Already using selectionHandler here (no change needed)
             selectionHandler.showSimilarSuggestions(name, problemOrchestrator.listAllProblems());
             uiManager.waitForEnter();
             return;
@@ -536,10 +527,9 @@ public class ApplicationController {
             return;
         }
 
-        Optional<String> selectedDisplay = selectionHandler.selectItem(
+        Optional<ProblemInfo> selectedDisplay = selectionHandler.selectProblem(
                 variants,
-                "Multiple problems found",
-                display -> display);
+                "Multiple problems found");
 
         selectedDisplay.ifPresent(display -> {
             uiManager.showError("Implementation note: Need to map display string back to ProblemInfo");

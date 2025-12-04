@@ -11,18 +11,15 @@ import java.util.Optional;
 
 public class PracticeOrchestrator {
     private final PracticeRepository practiceRepository;
-    private final PracticeSelector practiceSelector;
     private final PracticeExecutor practiceExecutor;
     private final PracticeGenerator practiceGenerator;
     private final ProblemRepository problemRepository;
 
     public PracticeOrchestrator(PracticeRepository practiceRepository,
-            PracticeSelector practiceSelector,
             PracticeExecutor practiceExecutor,
             PracticeGenerator practiceGenerator,
             ProblemRepository problemRepository) {
         this.practiceRepository = practiceRepository;
-        this.practiceSelector = practiceSelector;
         this.practiceExecutor = practiceExecutor;
         this.practiceGenerator = practiceGenerator;
         this.problemRepository = problemRepository;
@@ -30,16 +27,16 @@ public class PracticeOrchestrator {
 
     // ========================= LISTING OPERATIONS =========================
 
-    public List<String> listAllPractices() {
-        return practiceSelector.getAllPracticeDisplays();
+    public List<PracticeInfo> listAllPractices() {
+        return practiceRepository.findAll();
     }
 
-    public Map<String, List<String>> listPracticesByCategory() {
-        return practiceSelector.getPracticesByCategoryDisplays();
+    public Map<String, List<PracticeInfo>> listPracticesByCategory() {
+        return practiceRepository.findAllGroupedByCategory();
     }
 
-    public List<String> listPracticeVariants(String name) {
-        return practiceSelector.findPracticeDisplaysByName(name);
+    public List<PracticeInfo> listPracticeVariants(String name) {
+        return practiceRepository.findByName(name);
     }
 
     // ========================= SELECTION OPERATIONS =========================
@@ -60,10 +57,10 @@ public class PracticeOrchestrator {
                 .map(practiceExecutor::formatResult);
     }
 
-    public Optional<String> runPracticeByDisplay(String displayString) {
-        return practiceSelector.findPracticeByDisplay(displayString)
-                .flatMap(this::runPractice);
-    }
+    // public Optional<String> runPracticeByDisplay(String displayString) {
+    // return practiceSelector.findPracticeByDisplay(displayString)
+    // .flatMap(this::runPractice);
+    // }
 
     // ========================= CREATION OPERATIONS =========================
 
@@ -87,7 +84,9 @@ public class PracticeOrchestrator {
     }
 
     public List<String> getAllCategories() {
-        return practiceSelector.getAllCategories();
+        return practiceRepository.findAllGroupedByCategory().keySet().stream()
+                .sorted()
+                .toList();
     }
 
     public List<ProblemInfo> getAllProblems() {

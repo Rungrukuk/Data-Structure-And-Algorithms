@@ -15,8 +15,8 @@ public class UIFactory {
         return new MenuNavigator(selectionHandler);
     }
 
-    public static SelectionHandler createSelectionHandler(InputHandler inputHandler, UIManager uiManager) {
-        return new SelectionHandler(inputHandler, uiManager);
+    public static SelectionHandler createSelectionHandler(Prompter prompter, UIManager uiManager) {
+        return new SelectionHandler(prompter, uiManager);
     }
 
     public static Prompter createPrompter(InputHandler inputHandler, UIManager uiManager) {
