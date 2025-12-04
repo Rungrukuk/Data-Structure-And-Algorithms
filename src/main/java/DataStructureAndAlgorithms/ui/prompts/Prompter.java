@@ -15,8 +15,6 @@ public class Prompter {
         this.uiManager = uiManager;
     }
 
-    // ========================= PROBLEM METHODS =========================
-
     private Optional<String> promptForName(String message, String errorMessage) {
         uiManager.showPrompt(message);
         try {

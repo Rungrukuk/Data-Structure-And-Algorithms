@@ -51,7 +51,7 @@ public class SelectionHandler {
 
     // ========================= ITEM SELECTION =========================
 
-    private <T> Optional<T> selectItem(List<T> items, String prompt, ItemFormatter<T> formatter) {
+    public <T> Optional<T> selectItem(List<T> items, String prompt, ItemFormatter<T> formatter) {
         if (items == null || items.isEmpty()) {
             uiManager.showError("No items available.");
             return Optional.empty();
@@ -119,14 +119,14 @@ public class SelectionHandler {
 
     // ========================= FORMATTERS =========================
 
-    private String formatProblem(ProblemInfo problem) {
+    public String formatProblem(ProblemInfo problem) {
         return String.format("%s [Category: %s, Type: %s]",
                 problem.getName(),
                 problem.getCategory(),
                 problem.getReturnType());
     }
 
-    private String formatPractice(PracticeInfo practice) {
+    public String formatPractice(PracticeInfo practice) {
         return String.format("%s [Category: %s, Practice]",
                 practice.getProblemInfo().getName(),
                 practice.getProblemInfo().getCategory());

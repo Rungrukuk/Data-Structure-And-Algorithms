@@ -1,46 +1,34 @@
 package DataStructureAndAlgorithms.app;
 
-import DataStructureAndAlgorithms.core.exceptions.ValidationException;
-import DataStructureAndAlgorithms.core.models.PracticeInfo;
 import DataStructureAndAlgorithms.core.models.ProblemInfo;
-import DataStructureAndAlgorithms.domain.problems.ProblemOrchestrator;
-import DataStructureAndAlgorithms.domain.practices.PracticeOrchestrator;
+import DataStructureAndAlgorithms.domain.flows.PracticeFlowHandler;
+import DataStructureAndAlgorithms.domain.flows.ProblemFlowHandler;
 import DataStructureAndAlgorithms.menus.MenuOption;
 import DataStructureAndAlgorithms.ui.UIManager;
 import DataStructureAndAlgorithms.ui.navigation.MenuNavigator;
-import DataStructureAndAlgorithms.ui.navigation.SelectionHandler;
-import DataStructureAndAlgorithms.ui.prompts.Prompter;
-import DataStructureAndAlgorithms.utils.constants.ApplicationConstants;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public class ApplicationController {
-    private final UIManager uiManager;
-    private final MenuNavigator menuNavigator;
-    private final SelectionHandler selectionHandler;
-    private final Prompter prompter;
-    private final ProblemOrchestrator problemOrchestrator;
-    private final PracticeOrchestrator practiceOrchestrator;
+    private final UIManager ui;
+    private final MenuNavigator menus;
+    private final ProblemFlowHandler problemFlow;
+    private final PracticeFlowHandler practiceFlow;
 
-    public ApplicationController(UIManager uiManager,
-            MenuNavigator menuNavigator,
-            SelectionHandler selectionHandler,
-            Prompter prompter,
-            ProblemOrchestrator problemOrchestrator,
-            PracticeOrchestrator practiceOrchestrator) {
-        this.uiManager = uiManager;
-        this.menuNavigator = menuNavigator;
-        this.selectionHandler = selectionHandler;
-        this.prompter = prompter;
-        this.problemOrchestrator = problemOrchestrator;
-        this.practiceOrchestrator = practiceOrchestrator;
+    public ApplicationController(
+            UIManager ui,
+            MenuNavigator menus,
+            ProblemFlowHandler problemFlow,
+            PracticeFlowHandler practiceFlow) {
+        this.ui = ui;
+        this.menus = menus;
+        this.problemFlow = problemFlow;
+        this.practiceFlow = practiceFlow;
     }
 
     public void start() {
         try {
-            uiManager.showWelcome();
+            ui.showWelcome();
             runMainLoop();
         } finally {
             shutdown();
@@ -49,12 +37,10 @@ public class ApplicationController {
 
     private void runMainLoop() {
         boolean running = true;
-
         while (running) {
-            MenuOption selectedOption = menuNavigator.showMainMenu();
-
+            MenuOption selectedOption = menus.showMainMenu();
             if (selectedOption == null) {
-                uiManager.showError("Invalid selection. Please try again.");
+                ui.showError("Invalid selection. Please try again.");
                 continue;
             }
 
@@ -72,91 +58,58 @@ public class ApplicationController {
                     running = false;
                     break;
                 default:
-                    uiManager.showError("Unknown option selected");
+                    ui.showError("Unknown option selected");
             }
         }
     }
 
     private void handleRunProblems() {
         boolean inProblemMenu = true;
-
         while (inProblemMenu) {
-            MenuOption selectedOption = menuNavigator.showProblemMenu();
-
+            MenuOption selectedOption = menus.showProblemMenu();
             if (selectedOption == null) {
-                uiManager.showError("Invalid selection. Please try again.");
+                ui.showError("Invalid selection. Please try again.");
                 continue;
             }
 
             switch (selectedOption.getKey()) {
                 case LIST_ALL_PROBLEMS:
-                    runSelectedProblemFromAll();
+                    problemFlow.runFromAll();
                     break;
                 case LIST_PROBLEMS_BY_CATEGORY:
-                    runSelectedProblemByCategory();
+                    problemFlow.runByCategory();
                     break;
                 case RUN_PROBLEM_BY_NAME:
-                    runSelectedProblemByName();
+                    problemFlow.runByName();
                     break;
                 case LIST_ALL_PRACTICES:
-                    runSelectedPracticeFromAll();
+                    practiceFlow.runFromAll();
                     break;
                 case LIST_PRACTICES_BY_CATEGORY:
-                    runSelectedPracticeByCategory();
+                    practiceFlow.runByCategory();
                     break;
                 case RUN_PRACTICE_BY_NAME:
-                    runSelectedPracticeByName();
+                    practiceFlow.runByName();
                     break;
                 case RETURN:
                     inProblemMenu = false;
                     break;
                 default:
-                    uiManager.showError("Unknown option selected");
+                    ui.showError("Unknown option selected");
             }
         }
     }
 
     private void handleCreateProblem() {
-        uiManager.showSectionTitle("CREATE PROBLEM");
-        try {
-            Optional<String> name = Optional.empty();
-            Optional<String> category = Optional.empty();
-            Optional<String> returnType = Optional.empty();
-            while (name.isEmpty()) {
-                name = prompter.promptForProblemNameOptional();
-            }
-            while (category.isEmpty()) {
-                category = prompter.promptForCategoryNameOptional();
-            }
-            while (returnType.isEmpty()) {
-                returnType = prompter.promptForReturnTypeOptional();
-            }
-
-            if (problemOrchestrator.problemExists(name.get(), category.get())) {
-                uiManager.showError("A problem with this name and category already exists.");
-                uiManager.waitForEnter();
-                return;
-            }
-
-            problemOrchestrator.createNewProblem(name.get(), category.get(), returnType.get());
-            uiManager.showSuccess("Problem created successfully!");
-
-        } catch (ValidationException e) {
-            uiManager.showError("Validation error: " + e.getMessage());
-        } catch (Exception e) {
-            uiManager.showError("Failed to create problem: " + e.getMessage());
-        }
-        uiManager.waitForEnter();
+        problemFlow.createProblem();
     }
 
     private void handleManagePractices() {
         boolean inPracticeMenu = true;
-
         while (inPracticeMenu) {
-            MenuOption selectedOption = menuNavigator.showManagePracticesMenu();
-
+            MenuOption selectedOption = menus.showManagePracticesMenu();
             if (selectedOption == null) {
-                uiManager.showError("Invalid selection. Please try again.");
+                ui.showError("Invalid selection. Please try again.");
                 continue;
             }
 
@@ -165,382 +118,58 @@ public class ApplicationController {
                     handleCreatePractice();
                     break;
                 case RESET_PRACTICE:
-                    handleResetPractice();
+                    practiceFlow.resetPractice();
                     break;
                 case RETURN:
                     inPracticeMenu = false;
                     break;
                 default:
-                    uiManager.showError("Unknown option selected");
+                    ui.showError("Unknown option selected");
             }
         }
     }
 
     private void handleCreatePractice() {
-        MenuOption selectedOption = menuNavigator.showCreatePracticeMenu();
-
+        MenuOption selectedOption = menus.showCreatePracticeMenu();
         if (selectedOption == null) {
-            uiManager.showError("Invalid selection.");
-            uiManager.waitForEnter();
+            ui.showError("Invalid selection.");
+            ui.waitForEnter();
             return;
         }
 
         try {
+            Optional<ProblemInfo> problemInfo = Optional.empty();
+
             switch (selectedOption.getKey()) {
                 case LIST_ALL_PROBLEMS:
-                    createPracticeFromAllProblems();
+                    problemInfo = problemFlow.selectProblemForPractice();
                     break;
                 case LIST_PROBLEMS_BY_CATEGORY:
-                    createPracticeByCategory();
+                    problemInfo = problemFlow.selectProblemByCategoryForPractice();
                     break;
                 case FIND_SPECIFIC_PROBLEM:
-                    createPracticeByName();
+                    problemInfo = problemFlow.findProblemByNameForPractice();
                     break;
                 case RETURN:
                     return;
                 default:
-                    uiManager.showError("Unknown option selected");
+                    ui.showError("Unknown option selected");
+            }
+
+            if (problemInfo.isPresent()) {
+                ui.showInfo("Selected problem for practice creation: " + problemInfo.get());
+                ui.showError("Implementation note: Need to complete practice creation logic");
+                ui.waitForEnter();
             }
         } catch (Exception e) {
-            uiManager.showError("Failed to create practice: " + e.getMessage());
-            uiManager.waitForEnter();
+            ui.showError("Failed to create practice: " + e.getMessage());
+            ui.waitForEnter();
         }
-    }
-
-    private void handleResetPractice() {
-        uiManager.showSectionTitle("RESET PRACTICE");
-        uiManager.showInfo("Reset practice functionality will be implemented here.");
-        uiManager.waitForEnter();
-    }
-
-    // ========================= PROBLEM RUNNING METHODS =========================
-
-    private void runSelectedProblemFromAll() {
-        List<ProblemInfo> problemDisplays = problemOrchestrator.listAllProblems();
-
-        if (problemDisplays.isEmpty()) {
-            uiManager.showError("No problems available.");
-            uiManager.waitForEnter();
-            return;
-        }
-
-        Optional<ProblemInfo> selectedDisplay = selectionHandler.selectProblem(
-                problemDisplays,
-                "Select Problem to Run");
-
-        selectedDisplay.ifPresent(display -> {
-            problemOrchestrator.runProblem(display)
-                    .ifPresentOrElse(
-                            result -> {
-                                System.out.println(result);
-                                uiManager.waitForEnter();
-                            },
-                            () -> {
-                                uiManager.showError("Failed to run problem: " + display);
-                                uiManager.waitForEnter();
-                            });
-        });
-    }
-
-    private void runSelectedProblemByCategory() {
-        Map<String, List<ProblemInfo>> problemsByCategory = problemOrchestrator.listProblemsByCategory();
-
-        if (problemsByCategory.isEmpty()) {
-            uiManager.showError("No problems available.");
-            uiManager.waitForEnter();
-            return;
-        }
-
-        List<String> categories = problemOrchestrator.getAllCategories();
-        Optional<String> selectedCategory = selectionHandler.selectCategory(categories, "Select Category");
-
-        if (selectedCategory.isEmpty()) {
-            return;
-        }
-
-        List<ProblemInfo> problemsInCategory = problemsByCategory.get(selectedCategory.get());
-        if (problemsInCategory == null || problemsInCategory.isEmpty()) {
-            uiManager.showError("No problems found in category: " + selectedCategory.get());
-            uiManager.waitForEnter();
-            return;
-        }
-
-        Optional<ProblemInfo> selectedDisplay = selectionHandler.selectProblem(
-                problemsInCategory,
-                "Select Problem to Run");
-
-        selectedDisplay.ifPresent(display -> {
-            problemOrchestrator.runProblem(display)
-                    .ifPresentOrElse(
-                            result -> {
-                                System.out.println(result);
-                                uiManager.waitForEnter();
-                            },
-                            () -> {
-                                uiManager.showError("Failed to run problem: " + display);
-                                uiManager.waitForEnter();
-                            });
-        });
-    }
-
-    private void runSelectedProblemByName() {
-        Optional<String> nameOptional = prompter.promptForProblemNameOptional();
-
-        if (nameOptional.isEmpty() || nameOptional.get().equals(ApplicationConstants.RETURN_BACK)) {
-            return;
-        }
-
-        String name = nameOptional.get();
-        List<ProblemInfo> variants = problemOrchestrator.listProblemVariants(name);
-
-        if (variants.isEmpty()) {
-            uiManager.showError(ApplicationConstants.DIDNOT_FIND_PROBLEM_NAME + name);
-            selectionHandler.showSimilarSuggestions(name, problemOrchestrator.listAllProblems());
-            uiManager.waitForEnter();
-            return;
-        }
-
-        if (variants.size() == 1) {
-            problemOrchestrator.runProblem(variants.get(0))
-                    .ifPresentOrElse(
-                            result -> {
-                                System.out.println(result);
-                                uiManager.waitForEnter();
-                            },
-                            () -> {
-                                uiManager.showError("Failed to run problem: " + variants.get(0));
-                                uiManager.waitForEnter();
-                            });
-            return;
-        }
-
-        Optional<ProblemInfo> selectedProblem = selectionHandler.selectProblem(
-                variants, "Select Problem Variant");
-
-        selectedProblem.ifPresent(problem -> {
-            problemOrchestrator.runProblem(problem)
-                    .ifPresentOrElse(
-                            result -> {
-                                System.out.println(result);
-                                uiManager.waitForEnter();
-                            },
-                            () -> {
-                                uiManager.showError("Failed to run problem: " + problem);
-                                uiManager.waitForEnter();
-                            });
-        });
-    }
-
-    // ========================= PRACTICE RUNNING METHODS =========================
-
-    private void runSelectedPracticeFromAll() {
-        List<PracticeInfo> practices = practiceOrchestrator.listAllPractices();
-
-        if (practices.isEmpty()) {
-            uiManager.showError("No practices available.");
-            uiManager.waitForEnter();
-            return;
-        }
-
-        Optional<PracticeInfo> selectedDisplay = selectionHandler.selectPractice(
-                practices,
-                "Select Practice to Run");
-
-        selectedDisplay.ifPresent(display -> {
-            practiceOrchestrator.runPractice(display)
-                    .ifPresentOrElse(
-                            result -> {
-                                System.out.println(result);
-                                uiManager.waitForEnter();
-                            },
-                            () -> {
-                                uiManager.showError("Failed to run practice: " + display);
-                                uiManager.waitForEnter();
-                            });
-        });
-    }
-
-    private void runSelectedPracticeByCategory() {
-        Map<String, List<PracticeInfo>> practicesByCategory = practiceOrchestrator.listPracticesByCategory();
-
-        if (practicesByCategory.isEmpty()) {
-            uiManager.showError("No practices available.");
-            uiManager.waitForEnter();
-            return;
-        }
-
-        List<String> categories = practiceOrchestrator.getAllCategories();
-        Optional<String> selectedCategory = selectionHandler.selectCategory(categories, "Select Category");
-
-        if (selectedCategory.isEmpty()) {
-            return;
-        }
-
-        List<PracticeInfo> practicesInCategory = practicesByCategory.get(selectedCategory.get());
-        if (practicesInCategory == null || practicesInCategory.isEmpty()) {
-            uiManager.showError("No practices found in category: " + selectedCategory.get());
-            uiManager.waitForEnter();
-            return;
-        }
-
-        Optional<PracticeInfo> selectedDisplay = selectionHandler.selectPractice(
-                practicesInCategory,
-                "Select Practice from " + selectedCategory.get());
-
-        selectedDisplay.ifPresent(practice -> {
-            practiceOrchestrator.runPractice(practice)
-                    .ifPresentOrElse(
-                            result -> {
-                                System.out.println(result);
-                                uiManager.waitForEnter();
-                            },
-                            () -> {
-                                uiManager.showError("Failed to run practice: " + practice);
-                                uiManager.waitForEnter();
-                            });
-        });
-    }
-
-    private void runSelectedPracticeByName() {
-        Optional<String> nameOptional = prompter.promptForPracticeNameOptional();
-
-        if (nameOptional.isEmpty() || nameOptional.get().equals(ApplicationConstants.RETURN_BACK)) {
-            return;
-        }
-
-        String name = nameOptional.get();
-        List<PracticeInfo> variants = practiceOrchestrator.listPracticeVariants(name);
-
-        if (variants.isEmpty()) {
-            uiManager.showError(ApplicationConstants.DIDNOT_FIND_PRACTICE_NAME + name);
-            uiManager.waitForEnter();
-            return;
-        }
-
-        if (variants.size() == 1) {
-            practiceOrchestrator.runPractice(variants.get(0))
-                    .ifPresentOrElse(
-                            result -> {
-                                System.out.println(result);
-                                uiManager.waitForEnter();
-                            },
-                            () -> {
-                                uiManager.showError("Failed to run practice: " + variants.get(0));
-                                uiManager.waitForEnter();
-                            });
-            return;
-        }
-
-        Optional<PracticeInfo> selectedDisplay = selectionHandler.selectPractice(
-                variants,
-                "Select Practice Variant");
-
-        selectedDisplay.ifPresent(practice -> {
-            practiceOrchestrator.runPractice(practice)
-                    .ifPresentOrElse(
-                            result -> {
-                                System.out.println(result);
-                                uiManager.waitForEnter();
-                            },
-                            () -> {
-                                uiManager.showError("Failed to run practice: " + practice);
-                                uiManager.waitForEnter();
-                            });
-        });
-    }
-
-    // ========================= PRACTICE CREATION METHODS =========================
-
-    private void createPracticeFromAllProblems() {
-        List<ProblemInfo> problemDisplays = problemOrchestrator.listAllProblems();
-
-        if (problemDisplays.isEmpty()) {
-            uiManager.showError("No problems found. Please create a problem first.");
-            uiManager.waitForEnter();
-            return;
-        }
-
-        Optional<ProblemInfo> selectedDisplay = selectionHandler.selectProblem(
-                problemDisplays,
-                "Select Problem to Create Practice For");
-
-        selectedDisplay.ifPresent(display -> {
-            uiManager.showError("Implementation note: Need to map display string back to ProblemInfo");
-            uiManager.waitForEnter();
-        });
-    }
-
-    private void createPracticeByCategory() {
-        Map<String, List<ProblemInfo>> problemsByCategory = problemOrchestrator.listProblemsByCategory();
-
-        if (problemsByCategory.isEmpty()) {
-            uiManager.showError("No problems found. Please create a problem first.");
-            uiManager.waitForEnter();
-            return;
-        }
-
-        List<String> categories = problemOrchestrator.getAllCategories();
-        Optional<String> selectedCategory = selectionHandler.selectCategory(categories, "Select Category");
-
-        if (selectedCategory.isEmpty()) {
-            return;
-        }
-
-        List<ProblemInfo> problemsInCategory = problemsByCategory.get(selectedCategory.get());
-        if (problemsInCategory == null || problemsInCategory.isEmpty()) {
-            uiManager.showError("No problems found in category: " + selectedCategory.get());
-            uiManager.waitForEnter();
-            return;
-        }
-
-        Optional<ProblemInfo> selectedDisplay = selectionHandler.selectProblem(
-                problemsInCategory,
-                "Select Problem from " + selectedCategory.get());
-
-        selectedDisplay.ifPresent(problem -> {
-            uiManager.showError("Implementation note: Need to map display string back to ProblemInfo");
-            uiManager.waitForEnter();
-        });
-    }
-
-    private void createPracticeByName() {
-        Optional<String> nameOptional = prompter.promptForProblemNameOptional();
-
-        if (nameOptional.isEmpty()) {
-            return;
-        }
-
-        String name = nameOptional.get();
-        List<ProblemInfo> variants = problemOrchestrator.listProblemVariants(name);
-
-        if (variants.isEmpty()) {
-            uiManager.showError("No problems found with name: " + name);
-            selectionHandler.showSimilarSuggestions(name, problemOrchestrator.listAllProblems());
-            uiManager.waitForEnter();
-            return;
-        }
-
-        if (variants.size() == 1) {
-            uiManager.showInfo("Found: " + variants.get(0));
-            uiManager.showError("Implementation note: Need to map display string back to ProblemInfo");
-            uiManager.waitForEnter();
-            return;
-        }
-
-        Optional<ProblemInfo> selectedDisplay = selectionHandler.selectProblem(
-                variants,
-                "Multiple problems found");
-
-        selectedDisplay.ifPresent(display -> {
-            uiManager.showError("Implementation note: Need to map display string back to ProblemInfo");
-            uiManager.waitForEnter();
-        });
     }
 
     private void shutdown() {
         try {
-            uiManager.showInfo("Exiting application...");
-            // TODO close the input handler
+            ui.showInfo("Exiting application...");
         } catch (Exception e) {
             System.err.println("Error during shutdown: " + e.getMessage());
         }

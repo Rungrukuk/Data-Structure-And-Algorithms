@@ -2,6 +2,8 @@ package DataStructureAndAlgorithms.app;
 
 import DataStructureAndAlgorithms.domain.creators.PracticeGenerator;
 import DataStructureAndAlgorithms.domain.creators.ProblemGenerator;
+import DataStructureAndAlgorithms.domain.flows.PracticeFlowHandler;
+import DataStructureAndAlgorithms.domain.flows.ProblemFlowHandler;
 import DataStructureAndAlgorithms.domain.practices.*;
 import DataStructureAndAlgorithms.domain.problems.*;
 import DataStructureAndAlgorithms.infrastructure.discovery.ClassScanner;
@@ -54,14 +56,15 @@ public class DependencyContainer {
                 practiceGenerator,
                 problemRepository);
 
+        ProblemFlowHandler problemFlowHandler = new ProblemFlowHandler(problemOrchestrator, uiManager, selectionHandler,
+                prompter);
+        PracticeFlowHandler practiceFlowHandler = new PracticeFlowHandler(practiceOrchestrator, uiManager,
+                selectionHandler, prompter);
+
         // ========================= APPLICATION CONTROLLER =========================
         return new ApplicationController(
                 uiManager,
-                menuNavigator,
-                selectionHandler,
-                prompter,
-                problemOrchestrator,
-                practiceOrchestrator);
+                menuNavigator, problemFlowHandler, practiceFlowHandler);
     }
 
     public static ApplicationController createTestApplication() {
