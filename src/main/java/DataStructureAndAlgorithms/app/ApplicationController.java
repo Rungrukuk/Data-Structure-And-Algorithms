@@ -138,29 +138,30 @@ public class ApplicationController {
         }
 
         try {
-            Optional<ProblemInfo> problemInfo = Optional.empty();
+            Optional<ProblemInfo> problemInfoOptional = Optional.empty();
 
             switch (selectedOption.getKey()) {
                 case LIST_ALL_PROBLEMS:
-                    problemInfo = problemFlow.selectProblemForPractice();
+                    problemInfoOptional = problemFlow.listAndSelectFromAll();
                     break;
                 case LIST_PROBLEMS_BY_CATEGORY:
-                    problemInfo = problemFlow.selectProblemByCategoryForPractice();
+                    problemInfoOptional = problemFlow.listAndSelectByCategory();
                     break;
                 case FIND_SPECIFIC_PROBLEM:
-                    problemInfo = problemFlow.findProblemByNameForPractice();
+                    problemInfoOptional = problemFlow.listAndSelectByName();
                     break;
                 case RETURN:
                     return;
                 default:
                     ui.showError("Unknown option selected");
             }
-
-            if (problemInfo.isPresent()) {
-                ui.showInfo("Selected problem for practice creation: " + problemInfo.get());
-                ui.showError("Implementation note: Need to complete practice creation logic");
-                ui.waitForEnter();
-            }
+            problemInfoOptional.ifPresentOrElse(problemInfo -> {
+                ui.showInfo("Selected problem for practice creation: " + problemInfo.getName());
+                practiceFlow.createPractice(problemInfo);
+            }, () -> {
+                ui.showError("Could not find the specified problem");
+            });
+            ui.waitForEnter();
         } catch (Exception e) {
             ui.showError("Failed to create practice: " + e.getMessage());
             ui.waitForEnter();

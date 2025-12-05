@@ -9,10 +9,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class FileManager {
-    private final String basePackage;
 
-    public FileManager(String basePackage) {
-        this.basePackage = basePackage;
+    public FileManager() {
     }
 
     public String getProblemFilePath(ProblemInfo problemInfo) {
@@ -20,9 +18,7 @@ public class FileManager {
         String simpleClassName = NameFormatter.generateSimpleClassName(problemInfo.getName());
 
         return Paths.get(
-                ApplicationConstants.BASE_SOURCE_PATH,
-                basePackage.replace(".", "/"),
-                "Problems",
+                ApplicationConstants.BASE_PROBLEM_PACKAGE,
                 categoryFolder,
                 simpleClassName + ApplicationConstants.JAVA_FILE_SUFFIX).toString();
     }
@@ -34,9 +30,7 @@ public class FileManager {
                 ApplicationConstants.PRACTICE_CLASS_SUFFIX;
 
         return Paths.get(
-                ApplicationConstants.BASE_SOURCE_PATH,
-                basePackage.replace(".", "/"),
-                "Practices",
+                ApplicationConstants.BASE_PRACTICE_PACKAGE,
                 categoryFolder,
                 simpleClassName + ApplicationConstants.JAVA_FILE_SUFFIX).toString();
     }

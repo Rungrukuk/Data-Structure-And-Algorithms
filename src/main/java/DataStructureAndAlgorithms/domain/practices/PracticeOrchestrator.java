@@ -57,11 +57,6 @@ public class PracticeOrchestrator {
                 .map(practiceExecutor::formatResult);
     }
 
-    // public Optional<String> runPracticeByDisplay(String displayString) {
-    // return practiceSelector.findPracticeByDisplay(displayString)
-    // .flatMap(this::runPractice);
-    // }
-
     // ========================= CREATION OPERATIONS =========================
 
     public void createPracticeForProblem(ProblemInfo problemInfo) {
@@ -73,7 +68,7 @@ public class PracticeOrchestrator {
             practiceRepository.add(practiceInfo);
 
         } catch (Exception e) {
-            throw new RuntimeException("Failed to create practice: " + e.getMessage(), e);
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 

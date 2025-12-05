@@ -30,53 +30,65 @@ public abstract class BaseFlowHandler<TInfo> {
     }
 
     public void runFromAll() {
+        listAndSelectFromAll().ifPresent(this::runSelectedItem);
+    }
+
+    public Optional<TInfo> listAndSelectFromAll() {
         List<TInfo> items = listAllItems();
         if (items.isEmpty()) {
             ui.showError("No items available.");
             ui.waitForEnter();
-            return;
+            return Optional.empty();
         }
 
         Optional<TInfo> selected = select(items, "Select Item to Run");
-        selected.ifPresent(this::runSelectedItem);
+
+        return selected;
     }
 
-    public void runByCategory() {
+    public Optional<TInfo> listAndSelectByCategory() {
         Map<String, List<TInfo>> itemsByCategory = groupItemsByCategory();
         if (itemsByCategory.isEmpty()) {
             ui.showError("No items available.");
             ui.waitForEnter();
-            return;
+            return Optional.empty();
         }
 
         List<String> categories = getAllCategories();
         Optional<String> selectedCategory = selector.selectCategory(categories, "Select Category");
         if (selectedCategory.isEmpty()) {
-            return;
+            return Optional.empty();
         }
 
         List<TInfo> itemsInCategory = itemsByCategory.get(selectedCategory.get());
         if (itemsInCategory == null || itemsInCategory.isEmpty()) {
             ui.showError("No items found in category: " + selectedCategory.get());
             ui.waitForEnter();
-            return;
+            return Optional.empty();
         }
 
-        Optional<TInfo> selected = select(itemsInCategory, "Select Item from " + selectedCategory.get());
-        selected.ifPresent(this::runSelectedItem);
+        return select(itemsInCategory, "Select Item from " + selectedCategory.get());
     }
 
-    public final void runByName() {
+    public void runByCategory() {
+        listAndSelectByCategory().ifPresent(this::runSelectedItem);
+    }
+
+    public Optional<TInfo> listAndSelectByName() {
         Optional<String> nameOptional = Optional.empty();
         while (nameOptional.isEmpty()) {
             nameOptional = promptForName();
         }
         if (shouldReturn(nameOptional)) {
-            return;
+            return Optional.empty();
         }
         String name = nameOptional.get();
         List<TInfo> variants = searchItemsByName(name);
-        handleSearchResults(name, variants);
+        return getSuggestionOptional(name, variants);
+    }
+
+    public final void runByName() {
+        listAndSelectByName().ifPresent(this::runSelectedItem);
     }
 
     protected abstract Optional<String> promptForName();
@@ -99,28 +111,26 @@ public abstract class BaseFlowHandler<TInfo> {
         return nameOptional.get().equals(ApplicationConstants.RETURN_BACK);
     }
 
-    protected void handleSearchResults(String name, List<TInfo> variants) {
+    protected Optional<TInfo> getSuggestionOptional(String name, List<TInfo> variants) {
         if (variants.isEmpty()) {
             ui.showError(getNotFoundMessage(name));
-            handleSimilarItems(name);
-            return;
+            return handleSimilarItems(name);
         }
 
         if (variants.size() == 1) {
-            runSelectedItem(variants.get(0));
-            return;
+            return Optional.of(variants.get(0));
         }
 
         ui.showInfo("Multiple items found with name: " + name);
-        select(variants, "Select which item to run").ifPresent(this::runSelectedItem);
+        return select(variants, "Select which item to run");
     }
 
-    private void handleSimilarItems(String name) {
+    private Optional<TInfo> handleSimilarItems(String name) {
         List<TInfo> similarItems = selector.showSimilarSuggestions(name, listAllItems(),
                 getNameExtractor(), formatter);
 
         if (similarItems.isEmpty()) {
-            return;
+            return Optional.empty();
         }
 
         String message = similarItems.size() == 1
@@ -129,13 +139,13 @@ public abstract class BaseFlowHandler<TInfo> {
 
         if (!getUserConfirmation(message)) {
             ui.showInfo("Operation cancelled.");
-            return;
+            return Optional.empty();
         }
 
         if (similarItems.size() == 1) {
-            runSelectedItem(similarItems.get(0));
+            return Optional.of(similarItems.get(0));
         } else {
-            select(similarItems, "Select which item to run").ifPresent(this::runSelectedItem);
+            return select(similarItems, "Select which item to run");
         }
     }
 

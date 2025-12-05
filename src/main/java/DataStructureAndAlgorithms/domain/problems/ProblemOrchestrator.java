@@ -34,16 +34,6 @@ public class ProblemOrchestrator {
         return problemRepository.findByName(name);
     }
 
-    // ========================= SELECTION OPERATIONS =========================
-
-    // public Optional<ProblemInfo> selectProblemFromAll() {
-    // List<String> problems = listAllProblems();
-    // if (problems.isEmpty()) {
-    // return Optional.empty();
-    // }
-
-    // return Optional.empty();
-    // }
 
     // ========================= EXECUTION OPERATIONS =========================
 
@@ -51,11 +41,6 @@ public class ProblemOrchestrator {
         return problemExecutor.runProblem(problemInfo)
                 .map(problemExecutor::formatResult);
     }
-
-    // public Optional<String> runProblemByDisplay(String displayString) {
-    // return problemSelector.findProblemByDisplay(displayString)
-    // .flatMap(this::runProblem);
-    // }
 
     // ========================= CREATION OPERATIONS =========================
 
@@ -68,7 +53,7 @@ public class ProblemOrchestrator {
             problemRepository.add(problemInfo);
 
         } catch (Exception e) {
-            throw new RuntimeException("Failed to create problem: " + e.getMessage(), e);
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 

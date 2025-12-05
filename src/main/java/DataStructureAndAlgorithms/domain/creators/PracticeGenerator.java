@@ -41,10 +41,9 @@ public class PracticeGenerator {
             practiceInfo.setFilePath(filePath);
 
         } catch (IOException e) {
-            throw new CreationException("Failed to create practice file: " + e.getMessage(), e);
+            throw new CreationException(e.getMessage(), e);
         }
     }
-
 
     private String generatePracticeTemplate(ProblemInfo info, String className, String packageName) {
         String returnType = info.getReturnType();

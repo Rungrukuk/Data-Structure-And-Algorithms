@@ -15,14 +15,13 @@ import DataStructureAndAlgorithms.ui.UIManager;
 import DataStructureAndAlgorithms.ui.navigation.MenuNavigator;
 import DataStructureAndAlgorithms.ui.navigation.SelectionHandler;
 import DataStructureAndAlgorithms.ui.prompts.Prompter;
-import DataStructureAndAlgorithms.utils.constants.ApplicationConstants;
 
 public class DependencyContainer {
 
     public static ApplicationController createApplication() {
         // ========================= INFRASTRUCTURE LAYER =========================
         InputHandler inputHandler = UIFactory.createInputHandler();
-        FileManager fileManager = new FileManager(ApplicationConstants.BASE_PACKAGE);
+        FileManager fileManager = new FileManager();
         ClassScanner classScanner = new ClassScanner();
         CodeRunner codeRunner = new CodeRunner();
 

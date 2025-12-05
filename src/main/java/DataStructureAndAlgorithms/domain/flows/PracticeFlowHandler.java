@@ -1,6 +1,7 @@
 package DataStructureAndAlgorithms.domain.flows;
 
 import DataStructureAndAlgorithms.core.models.PracticeInfo;
+import DataStructureAndAlgorithms.core.models.ProblemInfo;
 import DataStructureAndAlgorithms.domain.practices.PracticeOrchestrator;
 import DataStructureAndAlgorithms.ui.UIManager;
 import DataStructureAndAlgorithms.ui.navigation.SelectionHandler;
@@ -77,5 +78,10 @@ public class PracticeFlowHandler extends BaseFlowHandler<PracticeInfo> {
         ui.showSectionTitle("RESET PRACTICE");
         ui.showInfo("Reset practice functionality will be implemented here.");
         ui.waitForEnter();
+    }
+
+    public void createPractice(ProblemInfo problemInfo) {
+        orchestrator.createPracticeForProblem(problemInfo);
+        ui.showSuccess("Problem created successfully!");
     }
 }
