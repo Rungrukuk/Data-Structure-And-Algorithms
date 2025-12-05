@@ -61,7 +61,6 @@ public abstract class BaseCreator_OLD {
                     Files.deleteIfExists(Path.of(filePath));
                 } catch (IOException deleteEx) {
                     // Log or handle, but continue with rollback
-                    // TODO
                 }
 
                 onRollback.run();

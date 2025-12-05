@@ -10,6 +10,7 @@ import DataStructureAndAlgorithms.utils.constants.ApplicationConstants;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 
 public class PracticeFlowHandler extends BaseFlowHandler<PracticeInfo> {
     private final PracticeOrchestrator orchestrator;
@@ -31,12 +32,6 @@ public class PracticeFlowHandler extends BaseFlowHandler<PracticeInfo> {
     @Override
     protected String getNotFoundMessage(String name) {
         return ApplicationConstants.DIDNOT_FIND_PRACTICE_NAME + name;
-    }
-
-    @Override
-    protected boolean shouldReturn(Optional<String> nameOptional) {
-        return nameOptional.isEmpty() ||
-                nameOptional.get().equals(ApplicationConstants.RETURN_BACK);
     }
 
     @Override
@@ -71,6 +66,11 @@ public class PracticeFlowHandler extends BaseFlowHandler<PracticeInfo> {
                             ui.showError("Failed to run practice: " + practice);
                             ui.waitForEnter();
                         });
+    }
+
+    @Override
+    protected Function<PracticeInfo, String> getNameExtractor() {
+        return practice -> practice.getProblemInfo().getName();
     }
 
     public void resetPractice() {

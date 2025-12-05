@@ -4,10 +4,12 @@ import DataStructureAndAlgorithms.ui.UIManager;
 import DataStructureAndAlgorithms.ui.navigation.SelectionHandler;
 import DataStructureAndAlgorithms.ui.navigation.SelectionHandler.ItemFormatter;
 import DataStructureAndAlgorithms.ui.prompts.Prompter;
+import DataStructureAndAlgorithms.utils.constants.ApplicationConstants;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 
 public abstract class BaseFlowHandler<TInfo> {
     protected final UIManager ui;
@@ -65,11 +67,13 @@ public abstract class BaseFlowHandler<TInfo> {
     }
 
     public final void runByName() {
-        Optional<String> nameOptional = promptForName();
+        Optional<String> nameOptional = Optional.empty();
+        while (nameOptional.isEmpty()) {
+            nameOptional = promptForName();
+        }
         if (shouldReturn(nameOptional)) {
             return;
         }
-        // TODO need to implement show suggestions
         String name = nameOptional.get();
         List<TInfo> variants = searchItemsByName(name);
         handleSearchResults(name, variants);
@@ -89,14 +93,16 @@ public abstract class BaseFlowHandler<TInfo> {
 
     protected abstract void runSelectedItem(TInfo item);
 
+    protected abstract Function<TInfo, String> getNameExtractor();
+
     protected boolean shouldReturn(Optional<String> nameOptional) {
-        return nameOptional.isEmpty();
+        return nameOptional.get().equals(ApplicationConstants.RETURN_BACK);
     }
 
     protected void handleSearchResults(String name, List<TInfo> variants) {
         if (variants.isEmpty()) {
             ui.showError(getNotFoundMessage(name));
-            ui.waitForEnter();
+            handleSimilarItems(name);
             return;
         }
 
@@ -105,7 +111,40 @@ public abstract class BaseFlowHandler<TInfo> {
             return;
         }
 
-        Optional<TInfo> selected = select(variants, "Select Item Variant");
-        selected.ifPresent(this::runSelectedItem);
+        ui.showInfo("Multiple items found with name: " + name);
+        select(variants, "Select which item to run").ifPresent(this::runSelectedItem);
+    }
+
+    private void handleSimilarItems(String name) {
+        List<TInfo> similarItems = selector.showSimilarSuggestions(name, listAllItems(),
+                getNameExtractor(), formatter);
+
+        if (similarItems.isEmpty()) {
+            return;
+        }
+
+        String message = similarItems.size() == 1
+                ? "Would you like to run this item?"
+                : "Would you like to run one of these items?";
+
+        if (!getUserConfirmation(message)) {
+            ui.showInfo("Operation cancelled.");
+            return;
+        }
+
+        if (similarItems.size() == 1) {
+            runSelectedItem(similarItems.get(0));
+        } else {
+            select(similarItems, "Select which item to run").ifPresent(this::runSelectedItem);
+        }
+    }
+
+    private boolean getUserConfirmation(String message) {
+        while (true) {
+            Optional<Boolean> confirmation = prompter.promptForConfirmationOptional(message);
+            if (confirmation.isPresent()) {
+                return confirmation.get();
+            }
+        }
     }
 }

@@ -11,6 +11,7 @@ import DataStructureAndAlgorithms.utils.constants.ApplicationConstants;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 
 public class ProblemFlowHandler extends BaseFlowHandler<ProblemInfo> {
     private final ProblemOrchestrator orchestrator;
@@ -32,12 +33,6 @@ public class ProblemFlowHandler extends BaseFlowHandler<ProblemInfo> {
     @Override
     protected String getNotFoundMessage(String name) {
         return ApplicationConstants.DIDNOT_FIND_PROBLEM_NAME + name;
-    }
-
-    @Override
-    protected boolean shouldReturn(Optional<String> nameOptional) {
-        return nameOptional.isEmpty() ||
-                nameOptional.get().equals(ApplicationConstants.RETURN_BACK);
     }
 
     @Override
@@ -74,6 +69,11 @@ public class ProblemFlowHandler extends BaseFlowHandler<ProblemInfo> {
                         });
     }
 
+    @Override
+    protected Function<ProblemInfo, String> getNameExtractor() {
+        return ProblemInfo::getName;
+    }
+
     public void createProblem() {
         ui.showSectionTitle("CREATE PROBLEM");
         try {
@@ -84,13 +84,22 @@ public class ProblemFlowHandler extends BaseFlowHandler<ProblemInfo> {
             while (name.isEmpty()) {
                 name = prompter.promptForProblemNameOptional();
             }
+            if (shouldReturn(name)) {
+                return;
+            }
 
             while (category.isEmpty()) {
                 category = prompter.promptForCategoryNameOptional();
             }
+            if (shouldReturn(category)) {
+                return;
+            }
 
             while (returnType.isEmpty()) {
                 returnType = prompter.promptForReturnTypeOptional();
+            }
+            if (shouldReturn(returnType)) {
+                return;
             }
 
             if (orchestrator.problemExists(name.get(), category.get())) {

@@ -30,12 +30,19 @@ public class Prompter {
         uiManager.showPrompt(ApplicationConstants.ENTER_RETURN_TYPE);
         try {
             String input = inputHandler.readReturnType();
-            if (input.equals(ApplicationConstants.RETURN_BACK)) {
-                return Optional.empty();
-            }
             return Optional.of(input);
         } catch (Exception e) {
             uiManager.showError(ApplicationConstants.INVALID_RETURN_TYPE);
+            return Optional.empty();
+        }
+    }
+
+    public Optional<Boolean> promptForConfirmationOptional(String message) {
+        uiManager.showPrompt(message + " (Y/N): ");
+        try {
+            return Optional.of(inputHandler.readConfirmation());
+        } catch (Exception e) {
+            uiManager.showError("Error reading input: " + e.getMessage());
             return Optional.empty();
         }
     }

@@ -8,7 +8,9 @@ import DataStructureAndAlgorithms.utils.helpers.TextHelper;
 import DataStructureAndAlgorithms.utils.constants.ApplicationConstants;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 
 public class SelectionHandler {
     private final Prompter prompter;
@@ -37,7 +39,7 @@ public class SelectionHandler {
                 uiManager.showSelectionPrompt(options.size());
                 Optional<Integer> choice = prompter.promptForChoiceOptional(prompt);
 
-                if (choice.get() < 1 || choice.get() > options.size()) {
+                if (choice.isEmpty() || choice.get() < 1 || choice.get() > options.size()) {
                     uiManager.showError("Invalid selection. Please enter a number between 1 and " + options.size());
                     continue;
                 }
@@ -49,7 +51,7 @@ public class SelectionHandler {
         }
     }
 
-    // ========================= ITEM SELECTION =========================
+    // ========================= GENERIC ITEM SELECTION =========================
 
     public <T> Optional<T> selectItem(List<T> items, String prompt, ItemFormatter<T> formatter) {
         if (items == null || items.isEmpty()) {
@@ -75,6 +77,95 @@ public class SelectionHandler {
         });
     }
 
+    public <T> Optional<T> selectFromCategory(
+            Map<String, List<T>> itemsByCategory,
+            Function<T, String> itemDisplayFormatter,
+            String prompt) {
+
+        List<String> categories = itemsByCategory.keySet().stream()
+                .sorted()
+                .toList();
+
+        if (categories.isEmpty()) {
+            uiManager.showError("No categories available.");
+            return Optional.empty();
+        }
+
+        Optional<String> selectedCategory = selectFromOptions(categories, "Select Category");
+        if (selectedCategory.isEmpty()) {
+            return Optional.empty();
+        }
+
+        List<T> itemsInCategory = itemsByCategory.get(selectedCategory.get());
+        if (itemsInCategory == null || itemsInCategory.isEmpty()) {
+            uiManager.showError("No items found in category: " + selectedCategory.get());
+            return Optional.empty();
+        }
+
+        return selectItem(itemsInCategory, prompt + " from " + selectedCategory.get(),
+                item -> itemDisplayFormatter.apply(item));
+    }
+
+    // ========================= GENERIC SUGGESTIONS =========================
+
+    public <T> List<T> showSimilarSuggestions(String input, List<T> allItems,
+            Function<T, String> nameExtractor,
+            ItemFormatter<T> formatter) {
+
+        List<T> similarItems = findSimilarItems(input, allItems, nameExtractor);
+
+        if (!similarItems.isEmpty()) {
+            uiManager.showInfo("Found Similar Suggestions");
+            uiManager.showMenuOptions(similarItems.stream().map(formatter::format).toList());
+        }
+        return similarItems;
+    }
+
+    private <T> List<T> findSimilarItems(String input, List<T> allItems,
+            Function<T, String> nameExtractor) {
+        String normalizedInput = normalizeString(input);
+
+        return allItems.stream()
+                .filter(item -> {
+                    String itemName = nameExtractor.apply(item);
+                    String normalizedItemName = normalizeString(itemName);
+
+                    if (normalizedItemName.equals(normalizedInput)) {
+                        return true;
+                    }
+
+                    if (normalizedItemName.contains(normalizedInput) ||
+                            normalizedInput.contains(normalizedItemName)) {
+                        return true;
+                    }
+
+                    double similarity = TextHelper.calculateSimilarity(
+                            normalizedInput, normalizedItemName);
+                    return similarity > ApplicationConstants.MINIMUM_SIMILARITY_VALUE;
+                })
+                .limit(5)
+                .toList();
+    }
+
+    private String normalizeString(String input) {
+        return input.toLowerCase().replaceAll("[^a-z0-9]", "");
+    }
+
+    // ========================= FORMATTERS =========================
+
+    public String formatProblem(ProblemInfo problem) {
+        return String.format("%s [Category: %s]",
+                problem.getName(),
+                problem.getCategory());
+    }
+
+    public String formatPractice(PracticeInfo practice) {
+        ProblemInfo problem = practice.getProblemInfo();
+        return String.format("%s [Category: %s]",
+                problem.getName(),
+                problem.getCategory());
+    }
+
     public Optional<ProblemInfo> selectProblem(List<ProblemInfo> problems, String prompt) {
         return selectItem(problems, prompt, this::formatProblem);
     }
@@ -88,48 +179,7 @@ public class SelectionHandler {
             uiManager.showError("No categories available.");
             return Optional.empty();
         }
-
         return selectFromOptions(categories, prompt);
-    }
-
-    // ========================= SUGGESTIONS =========================
-
-    public void showSimilarSuggestions(String input, List<ProblemInfo> allOptions) {
-        List<String> problemNames = allOptions.stream().map(ProblemInfo::getName).toList();
-        List<String> similar = findSimilarOptions(input, problemNames);
-        if (!similar.isEmpty()) {
-            uiManager.showInfo("Did you mean:");
-            similar.forEach(name -> System.out.println("   - " + name));
-        }
-    }
-
-    private List<String> findSimilarOptions(String input, List<String> allOptions) {
-        String normalizedInput = input.toLowerCase().replaceAll("[^a-z0-9]", "");
-        return allOptions.stream()
-                .filter(option -> {
-                    String normalizedOption = option.toLowerCase().replaceAll("[^a-z0-9]", "");
-                    return normalizedOption.contains(normalizedInput) ||
-                            normalizedInput.contains(normalizedOption) ||
-                            TextHelper.calculateSimilarity(normalizedInput,
-                                    normalizedOption) > ApplicationConstants.MINIMUM_SIMILARITY_VALUE;
-                })
-                .limit(3)
-                .toList();
-    }
-
-    // ========================= FORMATTERS =========================
-
-    public String formatProblem(ProblemInfo problem) {
-        return String.format("%s [Category: %s, Type: %s]",
-                problem.getName(),
-                problem.getCategory(),
-                problem.getReturnType());
-    }
-
-    public String formatPractice(PracticeInfo practice) {
-        return String.format("%s [Category: %s, Practice]",
-                practice.getProblemInfo().getName(),
-                practice.getProblemInfo().getCategory());
     }
 
     @FunctionalInterface

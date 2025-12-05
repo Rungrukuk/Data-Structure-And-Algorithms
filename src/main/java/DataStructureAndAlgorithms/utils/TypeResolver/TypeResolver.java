@@ -1,13 +1,38 @@
 package DataStructureAndAlgorithms.utils.TypeResolver;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TypeResolver {
     private TypeResolver() {
     }
+
+    private static final String[] PRIMITIVE_TYPES = {
+            "int", "long", "double", "float", "boolean", "char", "byte", "short", "void"
+    };
+
+    private static final String[] WRAPPER_TYPES = {
+            "Integer", "Long", "Double", "Float", "Boolean", "Character", "Byte", "Short", "Void"
+    };
+
+    private static final Set<String> KNOWN_JAVA_TYPES = new HashSet<>(Arrays.asList(
+            "int", "long", "double", "float", "boolean", "char", "byte", "short", "void",
+            "Integer", "Long", "Double", "Float", "Boolean", "Character", "Byte", "Short", "Void",
+            "String", "Object", "Class", "Number", "Comparable", "Serializable",
+            "List", "Set", "Map", "Collection", "Iterable", "Iterator",
+            "ArrayList", "LinkedList", "Vector", "Stack",
+            "HashSet", "TreeSet", "LinkedHashSet",
+            "HashMap", "TreeMap", "LinkedHashMap", "Hashtable", "ConcurrentHashMap",
+            "Queue", "Deque", "ArrayDeque", "PriorityQueue",
+            "Optional", "Stream", "IntStream", "LongStream", "DoubleStream",
+            "BigInteger", "BigDecimal",
+            "LocalDate", "LocalDateTime", "LocalTime", "ZonedDateTime", "Instant", "Duration", "Period",
+            "UUID"));
 
     public static boolean isValidJavaType(String type) {
         if (type == null || type.trim().isEmpty()) {
@@ -16,7 +41,7 @@ public class TypeResolver {
 
         String trimmedType = type.trim();
 
-        if (trimmedType.matches(".*[^a-zA-Z0-9_<>\\[\\],\\s].*")) {
+        if (trimmedType.matches(".*[^a-zA-Z0-9_<>\\[\\]?,\\s.].*")) {
             return false;
         }
 
@@ -24,23 +49,53 @@ public class TypeResolver {
             return false;
         }
 
-        if (trimmedType.matches("^[A-Z][a-zA-Z0-9_]*$")) {
-            return true;
+        if (trimmedType.endsWith("[]")) {
+            String baseWithoutArrays = trimmedType.replaceAll("\\[\\]", "");
+            return isValidJavaType(baseWithoutArrays);
         }
 
-        if (trimmedType.matches("^[A-Z][a-zA-Z0-9_]*\\[\\]$")) {
-            return true;
+        if (trimmedType.contains("<")) {
+            return validateGenericType(trimmedType);
         }
 
-        if (trimmedType.matches("^[A-Z][a-zA-Z0-9_]*<[a-zA-Z0-9_,\\s<>\\[\\]]+>$")) {
-            return validateGenericParameters(trimmedType);
+        String typeName = extractSimpleName(trimmedType);
+        return KNOWN_JAVA_TYPES.contains(typeName);
+    }
+
+    private static boolean validateGenericType(String type) {
+        String baseType = type;
+        while (baseType.endsWith("[]")) {
+            baseType = baseType.substring(0, baseType.length() - 2);
         }
 
-        if (trimmedType.matches("^[A-Z][a-zA-Z0-9_]*((\\[\\])+)$")) {
-            return true;
+        Pattern pattern = Pattern.compile("^([a-zA-Z][a-zA-Z0-9_]*(\\.[a-zA-Z][a-zA-Z0-9_]*)*)\\s*<(.+)>$");
+        Matcher matcher = pattern.matcher(baseType);
+
+        if (!matcher.matches()) {
+            return false;
         }
 
-        return false;
+        String typeName = matcher.group(1);
+        String parameters = matcher.group(3);
+
+        if (!isKnownType(typeName)) {
+            return false;
+        }
+
+        return validateGenericParameters(parameters);
+    }
+
+    private static boolean isKnownType(String type) {
+        String simpleName = extractSimpleName(type);
+        return KNOWN_JAVA_TYPES.contains(simpleName);
+    }
+
+    private static String extractSimpleName(String type) {
+        int lastDot = type.lastIndexOf('.');
+        if (lastDot > 0) {
+            return type.substring(lastDot + 1);
+        }
+        return type;
     }
 
     private static boolean hasPrimitiveInGenerics(String type) {
@@ -52,7 +107,14 @@ public class TypeResolver {
             String[] typeParams = splitGenericParameters(genericContent);
             for (String param : typeParams) {
                 String trimmedParam = param.trim();
-                if (isPrimitiveType(trimmedParam)) {
+                if (trimmedParam.startsWith("?")) {
+                    continue;
+                }
+                if (isPrimitive(trimmedParam)) {
+                    return true;
+                }
+                String paramWithoutArrays = trimmedParam.replaceAll("\\[\\]", "");
+                if (isPrimitive(paramWithoutArrays)) {
                     return true;
                 }
                 if (trimmedParam.contains("<")) {
@@ -65,48 +127,65 @@ public class TypeResolver {
         return false;
     }
 
-    private static boolean isPrimitiveType(String type) {
-        return type.equals("int") || type.equals("long") || type.equals("double") ||
-                type.equals("float") || type.equals("boolean") || type.equals("char") ||
-                type.equals("byte") || type.equals("short") || type.equals("void");
+    private static boolean isPrimitive(String type) {
+        String typeWithoutArrays = type.replaceAll("\\[\\]", "");
+        for (String primitive : PRIMITIVE_TYPES) {
+            if (primitive.equals(typeWithoutArrays)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static String[] splitGenericParameters(String genericContent) {
         List<String> params = new ArrayList<>();
         int depth = 0;
-        StringBuilder current = new StringBuilder();
+        int start = 0;
 
-        for (char c : genericContent.toCharArray()) {
-            if (c == '<')
+        for (int i = 0; i < genericContent.length(); i++) {
+            char c = genericContent.charAt(i);
+            if (c == '<') {
                 depth++;
-            if (c == '>')
+            } else if (c == '>') {
                 depth--;
-
-            if (c == ',' && depth == 0) {
-                params.add(current.toString().trim());
-                current = new StringBuilder();
-            } else {
-                current.append(c);
+            } else if (c == ',' && depth == 0) {
+                params.add(genericContent.substring(start, i).trim());
+                start = i + 1;
             }
         }
 
-        if (current.length() > 0) {
-            params.add(current.toString().trim());
+        if (start < genericContent.length()) {
+            params.add(genericContent.substring(start).trim());
         }
 
         return params.toArray(new String[0]);
     }
 
-    private static boolean validateGenericParameters(String type) {
-        Pattern pattern = Pattern.compile("<([^>]*)>");
-        Matcher matcher = pattern.matcher(type);
+    private static boolean validateGenericParameters(String parameters) {
+        String[] typeParams = splitGenericParameters(parameters);
 
-        if (matcher.find()) {
-            String genericContent = matcher.group(1);
-            String[] typeParams = splitGenericParameters(genericContent);
+        for (String param : typeParams) {
+            String trimmedParam = param.trim();
 
-            for (String param : typeParams) {
-                if (!isValidJavaType(param)) {
+            if (trimmedParam.startsWith("?")) {
+                if (trimmedParam.equals("?")) {
+                    continue;
+                }
+                if (trimmedParam.matches("^\\?\\s+extends\\s+.+$")) {
+                    String bound = trimmedParam.substring(trimmedParam.indexOf("extends") + 7).trim();
+                    if (!isValidJavaType(bound)) {
+                        return false;
+                    }
+                } else if (trimmedParam.matches("^\\?\\s+super\\s+.+$")) {
+                    String bound = trimmedParam.substring(trimmedParam.indexOf("super") + 5).trim();
+                    if (!isValidJavaType(bound)) {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            } else {
+                if (!isValidJavaType(trimmedParam)) {
                     return false;
                 }
             }
@@ -132,12 +211,16 @@ public class TypeResolver {
             int angleIndex = trimmedType.indexOf('<');
             String baseType = trimmedType.substring(0, angleIndex);
             String genericPart = trimmedType.substring(angleIndex);
-
             String convertedGenericPart = convertGenericParameters(genericPart);
             return baseType + convertedGenericPart;
         }
 
-        return convertSimpleType(trimmedType);
+        for (int i = 0; i < PRIMITIVE_TYPES.length; i++) {
+            if (PRIMITIVE_TYPES[i].equals(trimmedType)) {
+                return WRAPPER_TYPES[i];
+            }
+        }
+        return trimmedType;
     }
 
     private static String convertGenericParameters(String genericPart) {
@@ -150,39 +233,20 @@ public class TypeResolver {
 
             StringBuilder convertedParams = new StringBuilder();
             for (int i = 0; i < typeParams.length; i++) {
-                if (i > 0)
+                if (i > 0) {
                     convertedParams.append(", ");
-                convertedParams.append(convertToWrapperType(typeParams[i]));
+                }
+                String param = typeParams[i].trim();
+                if (param.startsWith("?")) {
+                    convertedParams.append(param);
+                } else {
+                    convertedParams.append(convertToWrapperType(param));
+                }
             }
 
-            return "<" + convertedParams.toString() + ">";
+            return "<" + convertedParams + ">";
         }
 
         return genericPart;
-    }
-
-    private static String convertSimpleType(String type) {
-        switch (type) {
-            case "int":
-                return "Integer";
-            case "long":
-                return "Long";
-            case "double":
-                return "Double";
-            case "float":
-                return "Float";
-            case "boolean":
-                return "Boolean";
-            case "char":
-                return "Character";
-            case "byte":
-                return "Byte";
-            case "short":
-                return "Short";
-            case "void":
-                return "Void";
-            default:
-                return type;
-        }
     }
 }

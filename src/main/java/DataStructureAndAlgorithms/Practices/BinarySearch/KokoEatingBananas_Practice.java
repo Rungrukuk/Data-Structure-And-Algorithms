@@ -13,7 +13,6 @@ public class KokoEatingBananas_Practice extends BasePractice<java.lang.Integer, 
 
     @Override
     public java.lang.Integer practice() {
-        // TODO: Implement practice logic
         throw new UnsupportedOperationException("Unimplemented method 'practice'");
     }
 }

@@ -169,6 +169,7 @@ public class ApplicationController {
 
     private void shutdown() {
         try {
+            // TODO shutdown input handler
             ui.showInfo("Exiting application...");
         } catch (Exception e) {
             System.err.println("Error during shutdown: " + e.getMessage());
