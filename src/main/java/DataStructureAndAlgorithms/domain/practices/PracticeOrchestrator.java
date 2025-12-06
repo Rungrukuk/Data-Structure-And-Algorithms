@@ -39,8 +39,6 @@ public class PracticeOrchestrator {
         return practiceRepository.findByName(name);
     }
 
-    // ========================= SELECTION OPERATIONS =========================
-
     public Optional<ProblemInfo> selectProblemForPractice() {
         List<ProblemInfo> allProblems = problemRepository.findAll();
         if (allProblems.isEmpty()) {
@@ -50,29 +48,22 @@ public class PracticeOrchestrator {
         return Optional.empty();
     }
 
-    // ========================= EXECUTION OPERATIONS =========================
-
     public Optional<String> runPractice(PracticeInfo practiceInfo) {
         return practiceExecutor.runPractice(practiceInfo)
                 .map(practiceExecutor::formatResult);
     }
 
-    // ========================= CREATION OPERATIONS =========================
-
     public void createPracticeForProblem(ProblemInfo problemInfo) {
         PracticeInfo practiceInfo = new PracticeInfo(problemInfo, null, null);
 
-        try {
-            practiceGenerator.createPractice(practiceInfo);
+        practiceGenerator.createPractice(practiceInfo);
 
-            practiceRepository.add(practiceInfo);
-
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
+        practiceRepository.add(practiceInfo);
     }
 
-    // ========================= UTILITY METHODS =========================
+    public void resetPractice(PracticeInfo practiceInfo) {
+        practiceGenerator.resetPractice(practiceInfo);
+    }
 
     public boolean practiceExists(String name, String category) {
         return practiceRepository.exists(name, category);

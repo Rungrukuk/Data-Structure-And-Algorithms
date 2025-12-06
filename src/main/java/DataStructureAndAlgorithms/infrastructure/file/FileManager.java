@@ -15,7 +15,7 @@ public class FileManager {
 
     public String getProblemFilePath(ProblemInfo problemInfo) {
         String categoryFolder = NameFormatter.generateCategoryFolderName(problemInfo.getCategory());
-        String simpleClassName = NameFormatter.generateSimpleClassName(problemInfo.getName());
+        String simpleClassName = NameFormatter.generateProblemSimpleClassName(problemInfo.getName());
 
         return Paths.get(
                 ApplicationConstants.BASE_PROBLEM_PACKAGE,
@@ -26,8 +26,7 @@ public class FileManager {
     public String getPracticeFilePath(PracticeInfo practiceInfo) {
         ProblemInfo problemInfo = practiceInfo.getProblemInfo();
         String categoryFolder = NameFormatter.generateCategoryFolderName(problemInfo.getCategory());
-        String simpleClassName = NameFormatter.generateSimpleClassName(problemInfo.getName()) +
-                ApplicationConstants.PRACTICE_CLASS_SUFFIX;
+        String simpleClassName = NameFormatter.generatePracticeSimpleClassName(problemInfo.getName());
 
         return Paths.get(
                 ApplicationConstants.BASE_PRACTICE_PACKAGE,

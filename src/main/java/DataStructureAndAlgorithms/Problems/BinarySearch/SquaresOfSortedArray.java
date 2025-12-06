@@ -1,4 +1,4 @@
-package DataStructureAndAlgorithms.Problems.Binary_Search;
+package DataStructureAndAlgorithms.Problems.BinarySearch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import DataStructureAndAlgorithms.core.annotations.Problem;
 import DataStructureAndAlgorithms.core.base.BaseProblem;
 
 @Problem(name = "Squares Of Sorted Array", category = "Binary Search")
-public class Squares_Of_Sorted_Array extends BaseProblem<List<Integer>> {
+public class SquaresOfSortedArray extends BaseProblem<List<Integer>> {
     public final int[] nums = new int[] { -4, -1, 0, 3, 10 };
 
     @Override

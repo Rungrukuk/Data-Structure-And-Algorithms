@@ -1,22 +1,22 @@
-package DataStructureAndAlgorithms.Problems.Binary_Search;
+package DataStructureAndAlgorithms.Problems.BinarySearch;
 
 import DataStructureAndAlgorithms.core.annotations.Problem;
 import DataStructureAndAlgorithms.core.base.BaseProblem;
 
-@Problem(name = "Binary Search", category = "Binary Search")
-public class Binary_Search extends BaseProblem<Integer> {
+@Problem(name = "Search Insert Position", category = "Binary Search")
+public class SearchInsertPosition extends BaseProblem<Integer> {
+
     public final int[] nums = new int[] { 1, 3, 5, 6 };
-    public final int target = 5;
+    public final int target = 0;
 
     @Override
     public Integer solve() {
         int right = nums.length - 1;
         int left = 0;
-        int answer = -1;
         while (left <= right) {
             final int middle = left + (right - left);
             if (nums[middle] == target) {
-                answer = middle;
+                left = middle;
                 break;
             }
             if (nums[middle] > target) {
@@ -25,7 +25,7 @@ public class Binary_Search extends BaseProblem<Integer> {
                 left = middle + 1;
             }
         }
-        return answer;
+        return left;
     }
 
 }

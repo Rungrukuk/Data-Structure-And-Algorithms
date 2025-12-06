@@ -23,7 +23,7 @@ public class ProblemGenerator {
             throw new CreationException("Problem already exists at: " + filePath);
         }
 
-        String className = NameFormatter.generateSimpleClassName(problemInfo.getName());
+        String className = NameFormatter.generateProblemSimpleClassName(problemInfo.getName());
         String packageName = ApplicationConstants.PROBLEM_PACKAGE + "." +
                 NameFormatter.generateCategoryFolderName(problemInfo.getCategory());
         String content = generateProblemTemplate(problemInfo, className, packageName);

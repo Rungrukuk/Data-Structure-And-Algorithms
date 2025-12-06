@@ -1,10 +1,10 @@
-package DataStructureAndAlgorithms.Problems.Binary_Search;
+package DataStructureAndAlgorithms.Problems.BinarySearch;
 
 import DataStructureAndAlgorithms.core.annotations.Problem;
 import DataStructureAndAlgorithms.core.base.BaseProblem;
 
 @Problem(name = "First Bad Version", category = "Binary Search")
-public class First_Bad_Version extends BaseProblem<Integer> {
+public class FirstBadVersion extends BaseProblem<Integer> {
     public final int n = 5;
     public final int badVersion = 4;
 

@@ -1,5 +1,6 @@
 package DataStructureAndAlgorithms.utils.TypeResolver;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -248,5 +249,14 @@ public class TypeResolver {
         }
 
         return genericPart;
+    }
+
+    public static String getSimpleTypeName(Type type) {
+        if (type instanceof Class<?>) {
+            return ((Class<?>) type).getSimpleName();
+        }
+        String name = type.getTypeName();
+        int lastDot = name.lastIndexOf('.');
+        return lastDot == -1 ? name : name.substring(lastDot + 1);
     }
 }

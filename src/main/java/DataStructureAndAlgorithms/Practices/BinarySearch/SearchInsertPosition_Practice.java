@@ -2,12 +2,12 @@ package DataStructureAndAlgorithms.Practices.BinarySearch;
 
 import DataStructureAndAlgorithms.core.base.BasePractice;
 import DataStructureAndAlgorithms.core.annotations.Practice;
-import DataStructureAndAlgorithms.Problems.BinarySearch.KokoEatingBananas;
+import DataStructureAndAlgorithms.Problems.BinarySearch.SearchInsertPosition;
 
-@Practice(problemName = "Koko Eating Bananas", category = "Binary Search")
-public class KokoEatingBananas_Practice extends BasePractice<Integer, KokoEatingBananas> {
+@Practice(problemName = "Search Insert Position", category = "Binary Search")
+public class SearchInsertPosition_Practice extends BasePractice<Integer, SearchInsertPosition> {
 
-    public KokoEatingBananas_Practice(KokoEatingBananas problem) {
+    public SearchInsertPosition_Practice(SearchInsertPosition problem) {
         super(problem);
     }
 

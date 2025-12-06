@@ -4,7 +4,7 @@ import DataStructureAndAlgorithms.core.annotations.Problem;
 import DataStructureAndAlgorithms.core.base.BaseProblem;
 
 @Problem(name = "Binary Search", category = "Tree")
-public class Binary_Search extends BaseProblem<Integer> {
+public class BinarySearch extends BaseProblem<Integer> {
     public final int[] nums = new int[] { 1, 3, 5, 6 };
     public final int target = 5;
 

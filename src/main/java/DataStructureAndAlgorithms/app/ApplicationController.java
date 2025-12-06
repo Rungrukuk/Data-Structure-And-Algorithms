@@ -1,5 +1,6 @@
 package DataStructureAndAlgorithms.app;
 
+import DataStructureAndAlgorithms.core.models.PracticeInfo;
 import DataStructureAndAlgorithms.core.models.ProblemInfo;
 import DataStructureAndAlgorithms.domain.flows.PracticeFlowHandler;
 import DataStructureAndAlgorithms.domain.flows.ProblemFlowHandler;
@@ -79,7 +80,7 @@ public class ApplicationController {
                 case LIST_PROBLEMS_BY_CATEGORY:
                     problemFlow.runByCategory();
                     break;
-                case RUN_PROBLEM_BY_NAME:
+                case FIND_SPECIFIC_PROBLEM:
                     problemFlow.runByName();
                     break;
                 case LIST_ALL_PRACTICES:
@@ -88,7 +89,7 @@ public class ApplicationController {
                 case LIST_PRACTICES_BY_CATEGORY:
                     practiceFlow.runByCategory();
                     break;
-                case RUN_PRACTICE_BY_NAME:
+                case FIND_SPECIFIC_PRACTICE:
                     practiceFlow.runByName();
                     break;
                 case RETURN:
@@ -118,7 +119,7 @@ public class ApplicationController {
                     handleCreatePractice();
                     break;
                 case RESET_PRACTICE:
-                    practiceFlow.resetPractice();
+                    handleResetPractice();
                     break;
                 case RETURN:
                     inPracticeMenu = false;
@@ -137,35 +138,63 @@ public class ApplicationController {
             return;
         }
 
-        try {
-            Optional<ProblemInfo> problemInfoOptional = Optional.empty();
+        Optional<ProblemInfo> problemInfoOptional = Optional.empty();
 
-            switch (selectedOption.getKey()) {
-                case LIST_ALL_PROBLEMS:
-                    problemInfoOptional = problemFlow.listAndSelectFromAll();
-                    break;
-                case LIST_PROBLEMS_BY_CATEGORY:
-                    problemInfoOptional = problemFlow.listAndSelectByCategory();
-                    break;
-                case FIND_SPECIFIC_PROBLEM:
-                    problemInfoOptional = problemFlow.listAndSelectByName();
-                    break;
-                case RETURN:
-                    return;
-                default:
-                    ui.showError("Unknown option selected");
-            }
-            problemInfoOptional.ifPresentOrElse(problemInfo -> {
-                ui.showInfo("Selected problem for practice creation: " + problemInfo.getName());
-                practiceFlow.createPractice(problemInfo);
-            }, () -> {
-                ui.showError("Could not find the specified problem");
-            });
-            ui.waitForEnter();
-        } catch (Exception e) {
-            ui.showError("Failed to create practice: " + e.getMessage());
-            ui.waitForEnter();
+        switch (selectedOption.getKey()) {
+            case LIST_ALL_PROBLEMS:
+                problemInfoOptional = problemFlow.listAndSelectFromAll();
+                break;
+            case LIST_PROBLEMS_BY_CATEGORY:
+                problemInfoOptional = problemFlow.listAndSelectByCategory();
+                break;
+            case FIND_SPECIFIC_PROBLEM:
+                problemInfoOptional = problemFlow.listAndSelectByName();
+                break;
+            case RETURN:
+                return;
+            default:
+                ui.showError("Unknown option selected");
         }
+        problemInfoOptional.ifPresentOrElse(problemInfo -> {
+            practiceFlow.createPractice(problemInfo);
+        }, () -> {
+            ui.showError("Could not find the specified problem");
+        });
+        ui.waitForEnter();
+    }
+
+    private void handleResetPractice() {
+        MenuOption selectedOption = menus.showResetPracticeMenu();
+        if (selectedOption == null) {
+            ui.showError("Invalid selection.");
+            ui.waitForEnter();
+            return;
+        }
+        Optional<PracticeInfo> practiceInfoOptional = Optional.empty();
+
+        switch (selectedOption.getKey()) {
+            case LIST_ALL_PRACTICES:
+                practiceInfoOptional = practiceFlow.listAndSelectFromAll();
+                break;
+            case LIST_PRACTICES_BY_CATEGORY:
+                practiceInfoOptional = practiceFlow.listAndSelectByCategory();
+                break;
+            case FIND_SPECIFIC_PRACTICE:
+                practiceInfoOptional = practiceFlow.listAndSelectByName();
+                break;
+            case RETURN:
+                return;
+            default:
+                ui.showError("Unknown option selected");
+        }
+
+        practiceInfoOptional.ifPresentOrElse(practiceInfo -> {
+            practiceFlow.resetPractice(practiceInfo);
+        }, () -> {
+            ui.showError("Could not find the specified practice");
+        });
+        ui.waitForEnter();
+
     }
 
     private void shutdown() {

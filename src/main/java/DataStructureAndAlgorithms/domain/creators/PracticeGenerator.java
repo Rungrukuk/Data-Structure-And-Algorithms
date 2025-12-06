@@ -26,8 +26,7 @@ public class PracticeGenerator {
             throw new CreationException("Practice already exists at: " + filePath);
         }
 
-        String className = NameFormatter.generateSimpleClassName(problemInfo.getName()) +
-                ApplicationConstants.PRACTICE_CLASS_SUFFIX;
+        String className = NameFormatter.generatePracticeSimpleClassName(problemInfo.getName());
         String packageName = ApplicationConstants.PRACTICE_PACKAGE + "." +
                 NameFormatter.generateCategoryFolderName(problemInfo.getCategory());
         String content = generatePracticeTemplate(problemInfo, className, packageName);
@@ -41,13 +40,27 @@ public class PracticeGenerator {
             practiceInfo.setFilePath(filePath);
 
         } catch (IOException e) {
-            throw new CreationException(e.getMessage(), e);
+            throw new CreationException("Failed to create practice: " + e.getMessage(), e);
+        }
+    }
+
+    public void resetPractice(PracticeInfo practiceInfo) {
+        ProblemInfo problemInfo = practiceInfo.getProblemInfo();
+        String content = generatePracticeTemplate(problemInfo,
+                NameFormatter.generatePracticeSimpleClassName(problemInfo.getName()),
+                ApplicationConstants.PRACTICE_PACKAGE + "." +
+                        NameFormatter.generateCategoryFolderName(problemInfo.getCategory()));
+        try {
+            Files.writeString(Path.of(practiceInfo.getFilePath()), content);
+
+        } catch (IOException e) {
+            throw new CreationException("Failed to create practice: " + e.getMessage(), e);
         }
     }
 
     private String generatePracticeTemplate(ProblemInfo info, String className, String packageName) {
         String returnType = info.getReturnType();
-        String problemSimpleClassName = NameFormatter.generateSimpleClassName(info.getName());
+        String problemSimpleClassName = NameFormatter.generateProblemSimpleClassName(info.getName());
         String problemClass = info.getClassName();
 
         String imports = ApplicationConstants.BASE_PRACTICE_IMPORT +

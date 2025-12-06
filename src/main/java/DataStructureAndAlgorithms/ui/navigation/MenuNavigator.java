@@ -40,4 +40,11 @@ public class MenuNavigator {
         return selection.map(label -> MenuRegistry.findByLabel(MenuRegistry.CREATE_PRACTICE_MENU, label))
                 .orElse(null);
     }
+
+    public MenuOption showResetPracticeMenu() {
+        List<String> menuLabels = MenuRegistry.getLabels(MenuRegistry.RESET_PRACTICE_MENU);
+        Optional<String> selection = selectionHandler.selectFromMenu(menuLabels, "RESET PRACTICE");
+        return selection.map(label -> MenuRegistry.findByLabel(MenuRegistry.RESET_PRACTICE_MENU, label))
+                .orElse(null);
+    }
 }

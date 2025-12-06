@@ -59,19 +59,17 @@ public final class NameFormatter {
         return className.replace(".", "/");
     }
 
-    public static String generateSimpleClassName(String problemName) {
+    public static String generateProblemSimpleClassName(String problemName) {
         String formattedName = formatInput(problemName);
         return formattedName.replace(" ", "");
+    }
+
+    public static String generatePracticeSimpleClassName(String problemName) {
+        return generateProblemSimpleClassName(problemName) + ApplicationConstants.PRACTICE_CLASS_SUFFIX;
     }
 
     public static String generateCategoryFolderName(String category) {
         String formattedCategory = formatInput(category);
         return formattedCategory.replace(" ", "");
-    }
-
-    public static String generateClassName(String problemOrPracticeName, String category,
-            String problemOrPracticePackage) {
-        return problemOrPracticePackage + ApplicationConstants.DOT_SEPERATOR + generateCategoryFolderName(category)
-                + ApplicationConstants.DOT_SEPERATOR + generateSimpleClassName(problemOrPracticeName);
     }
 }

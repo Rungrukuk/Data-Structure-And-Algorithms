@@ -16,8 +16,6 @@ public class MenuRegistry {
     public static final MenuOption LIST_ALL_PROBLEMS = new MenuOption(MenuKey.LIST_ALL_PROBLEMS, "List All Problems");
     public static final MenuOption LIST_PROBLEMS_BY_CATEGORY = new MenuOption(MenuKey.LIST_PROBLEMS_BY_CATEGORY,
             "List Problems By Category");
-    public static final MenuOption RUN_PROBLEM_BY_NAME = new MenuOption(MenuKey.RUN_PROBLEM_BY_NAME,
-            "Run Problem By Name");
 
     public static final MenuOption CREATE_PRACTICE = new MenuOption(MenuKey.CREATE_PRACTICE, "Create Practice Class");
     public static final MenuOption RESET_PRACTICE = new MenuOption(MenuKey.RESET_PRACTICE, "Reset Practices");
@@ -26,8 +24,8 @@ public class MenuRegistry {
             "List All Practices");
     public static final MenuOption LIST_PRACTICES_BY_CATEGORY = new MenuOption(MenuKey.LIST_PRACTICES_BY_CATEGORY,
             "List Practices By Category");
-    public static final MenuOption RUN_PRACTICE_BY_NAME = new MenuOption(MenuKey.RUN_PRACTICE_BY_NAME,
-            "Run Practice By Name");
+    public static final MenuOption FIND_SPECIFIC_PRACTICE = new MenuOption(MenuKey.FIND_SPECIFIC_PRACTICE,
+            "Find Specific Practice");
 
     public static final MenuOption FIND_SPECIFIC_PROBLEM = new MenuOption(MenuKey.FIND_SPECIFIC_PROBLEM,
             "Find Specific Problem");
@@ -41,10 +39,10 @@ public class MenuRegistry {
     public static final List<MenuOption> PROBLEM_MENU = Arrays.asList(
             LIST_ALL_PROBLEMS,
             LIST_PROBLEMS_BY_CATEGORY,
-            RUN_PROBLEM_BY_NAME,
+            FIND_SPECIFIC_PROBLEM,
             LIST_ALL_PRACTICES,
             LIST_PRACTICES_BY_CATEGORY,
-            RUN_PRACTICE_BY_NAME,
+            FIND_SPECIFIC_PRACTICE,
             RETURN);
 
     public static final List<MenuOption> MANAGE_PRACTICES_MENU = Arrays.asList(
@@ -57,6 +55,12 @@ public class MenuRegistry {
             LIST_PROBLEMS_BY_CATEGORY,
             FIND_SPECIFIC_PROBLEM,
             RETURN);
+     public static final List<MenuOption> RESET_PRACTICE_MENU = Arrays.asList(
+        LIST_ALL_PRACTICES,
+        LIST_PRACTICES_BY_CATEGORY,
+        FIND_SPECIFIC_PRACTICE,
+        RETURN
+     );
 
     public static MenuOption findByKey(MenuKey key) {
         Map<MenuKey, MenuOption> allOptions = Arrays.stream(MenuRegistry.class.getFields())

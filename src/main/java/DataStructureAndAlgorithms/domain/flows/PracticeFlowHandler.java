@@ -74,14 +74,13 @@ public class PracticeFlowHandler extends BaseFlowHandler<PracticeInfo> {
         return practice -> practice.getProblemInfo().getName();
     }
 
-    public void resetPractice() {
-        ui.showSectionTitle("RESET PRACTICE");
-        ui.showInfo("Reset practice functionality will be implemented here.");
-        ui.waitForEnter();
+    public void resetPractice(PracticeInfo practiceInfo) {
+        orchestrator.resetPractice(practiceInfo);
+        ui.showSuccess("Practice resetted successfully!");
     }
 
     public void createPractice(ProblemInfo problemInfo) {
         orchestrator.createPracticeForProblem(problemInfo);
-        ui.showSuccess("Problem created successfully!");
+        ui.showSuccess("Practice created successfully!");
     }
 }
