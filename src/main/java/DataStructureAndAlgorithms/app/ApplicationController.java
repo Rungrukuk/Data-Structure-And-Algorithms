@@ -8,6 +8,7 @@ import DataStructureAndAlgorithms.menus.MenuOption;
 import DataStructureAndAlgorithms.ui.UIManager;
 import DataStructureAndAlgorithms.ui.navigation.MenuNavigator;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ApplicationController {
@@ -121,6 +122,8 @@ public class ApplicationController {
                 case RESET_PRACTICE:
                     handleResetPractice();
                     break;
+                case BULK_RESET_PRACTICES:
+                    handleBulkResetPractices();
                 case RETURN:
                     inPracticeMenu = false;
                     break;
@@ -188,7 +191,26 @@ public class ApplicationController {
 
         practiceInfoOptional.ifPresentOrElse(practiceFlow::resetPractice, () -> ui.showError("Could not find the specified practice"));
         ui.waitForEnter();
+    }
 
+    private void handleBulkResetPractices(){
+        MenuOption selectedOption = menus.showBulkResetPracticesMenu();
+        if (selectedOption == null) {
+            ui.showError("Invalid selection.");
+            ui.waitForEnter();
+            return;
+        }
+
+        switch (selectedOption.getKey()){
+            case RESET_ALL_PRACTICES -> practiceFlow.resetAllPractices();
+            case RESET_PRACTICES_BY_CATEGORY ->  handleResetPracticesByCategory();
+        }
+    }
+
+    private void handleResetPracticesByCategory(){
+        Optional<List<PracticeInfo>> practices = practiceFlow.getItemsBySelectedCategory();
+        practices.ifPresentOrElse(practiceFlow::resetPracticesByCategory,() -> ui.showError("Could not find the specified practice"));
+        ui.waitForEnter();
     }
 
     private void shutdown() {

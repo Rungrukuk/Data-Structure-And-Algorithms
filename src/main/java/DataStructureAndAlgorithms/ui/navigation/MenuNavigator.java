@@ -47,4 +47,11 @@ public class MenuNavigator {
         return selection.map(label -> MenuRegistry.findByLabel(MenuRegistry.RESET_PRACTICE_MENU, label))
                 .orElse(null);
     }
+
+    public MenuOption showBulkResetPracticesMenu(){
+        List<String> menuLabels = MenuRegistry.getLabels(MenuRegistry.BULK_RESET_PRACTICES_MENU);
+        Optional<String> selection = selectionHandler.selectFromMenu(menuLabels, "BULK RESET PRACTICES");
+        return selection.map(label -> MenuRegistry.findByLabel(MenuRegistry.BULK_RESET_PRACTICES_MENU, label))
+                .orElse(null);
+    }
 }
