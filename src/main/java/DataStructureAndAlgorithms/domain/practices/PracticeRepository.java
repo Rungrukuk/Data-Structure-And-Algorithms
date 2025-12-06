@@ -23,5 +23,5 @@ public interface PracticeRepository {
 
     void remove(PracticeInfo practice);
 
-    void refresh();
+
 }

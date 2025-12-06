@@ -2,7 +2,6 @@ package DataStructureAndAlgorithms.menus;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MenuRegistry {
@@ -61,22 +60,6 @@ public class MenuRegistry {
         FIND_SPECIFIC_PRACTICE,
         RETURN
      );
-
-    public static MenuOption findByKey(MenuKey key) {
-        Map<MenuKey, MenuOption> allOptions = Arrays.stream(MenuRegistry.class.getFields())
-                .filter(field -> MenuOption.class.isAssignableFrom(field.getType()))
-                .map(field -> {
-                    try {
-                        return (MenuOption) field.get(null);
-                    } catch (IllegalAccessException e) {
-                        return null;
-                    }
-                })
-                .filter(option -> option != null)
-                .collect(Collectors.toMap(MenuOption::getKey, option -> option));
-
-        return allOptions.get(key);
-    }
 
     public static List<String> getLabels(List<MenuOption> menu) {
         return menu.stream()

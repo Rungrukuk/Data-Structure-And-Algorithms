@@ -61,7 +61,7 @@ public class Prompter {
         return promptForName(ApplicationConstants.ENTER_CATEGORY_NAME, ApplicationConstants.INVALID_CATEGORY_NAME);
     }
 
-    public Optional<Integer> promptForChoiceOptional(String prompt) {
+    public Optional<Integer> promptForChoiceOptional() {
         return Optional.of(inputHandler.readInt());
     }
 

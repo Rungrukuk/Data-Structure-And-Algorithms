@@ -54,11 +54,6 @@ public class UIManager {
         }
     }
 
-    public void showMenuOptions(List<String> options, String title) {
-        showSectionTitle(title);
-        showMenuOptions(options);
-    }
-
     public void showSelectionPrompt(int maxOption) {
         System.out.print("Select an option (1-" + maxOption + "): ");
     }

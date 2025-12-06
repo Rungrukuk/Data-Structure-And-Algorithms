@@ -18,12 +18,6 @@ public class ProblemExecutor {
         return codeRunner.runProblem(problemInfo);
     }
 
-    // public Optional<ProblemResult> runProblemByDisplay(String displayString,
-    // ProblemSelector selector) {
-    // return selector.findProblemByDisplay(displayString)
-    // .flatMap(this::runProblem);
-    // }
-
     public String formatResult(ProblemResult result) {
         return ApplicationConstants.ANSI_GREEN +
                 result.getProblemName() + " Problem Run Successfully ✅\n" +

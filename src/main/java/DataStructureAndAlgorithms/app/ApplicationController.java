@@ -150,16 +150,14 @@ public class ApplicationController {
             case FIND_SPECIFIC_PROBLEM:
                 problemInfoOptional = problemFlow.listAndSelectByName();
                 break;
+            case EXIT:
+                break;
             case RETURN:
                 return;
             default:
                 ui.showError("Unknown option selected");
         }
-        problemInfoOptional.ifPresentOrElse(problemInfo -> {
-            practiceFlow.createPractice(problemInfo);
-        }, () -> {
-            ui.showError("Could not find the specified problem");
-        });
+        problemInfoOptional.ifPresentOrElse(practiceFlow::createPractice, () -> ui.showError("Could not find the specified problem"));
         ui.waitForEnter();
     }
 
@@ -188,11 +186,7 @@ public class ApplicationController {
                 ui.showError("Unknown option selected");
         }
 
-        practiceInfoOptional.ifPresentOrElse(practiceInfo -> {
-            practiceFlow.resetPractice(practiceInfo);
-        }, () -> {
-            ui.showError("Could not find the specified practice");
-        });
+        practiceInfoOptional.ifPresentOrElse(practiceFlow::resetPractice, () -> ui.showError("Could not find the specified practice"));
         ui.waitForEnter();
 
     }

@@ -1,26 +1,17 @@
 package DataStructureAndAlgorithms.utils.TypeResolver;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TypeResolver {
-    private TypeResolver() {
-    }
-
     private static final String[] PRIMITIVE_TYPES = {
             "int", "long", "double", "float", "boolean", "char", "byte", "short", "void"
     };
-
     private static final String[] WRAPPER_TYPES = {
             "Integer", "Long", "Double", "Float", "Boolean", "Character", "Byte", "Short", "Void"
     };
-
     private static final Set<String> KNOWN_JAVA_TYPES = new HashSet<>(Arrays.asList(
             "int", "long", "double", "float", "boolean", "char", "byte", "short", "void",
             "Integer", "Long", "Double", "Float", "Boolean", "Character", "Byte", "Short", "Void",
@@ -34,6 +25,9 @@ public class TypeResolver {
             "BigInteger", "BigDecimal",
             "LocalDate", "LocalDateTime", "LocalTime", "ZonedDateTime", "Instant", "Duration", "Period",
             "UUID"));
+
+    private TypeResolver() {
+    }
 
     public static boolean isValidJavaType(String type) {
         if (type == null || type.trim().isEmpty()) {
@@ -51,7 +45,7 @@ public class TypeResolver {
         }
 
         if (trimmedType.endsWith("[]")) {
-            String baseWithoutArrays = trimmedType.replaceAll("\\[\\]", "");
+            String baseWithoutArrays = trimmedType.replaceAll("\\[]", "");
             return isValidJavaType(baseWithoutArrays);
         }
 
@@ -114,7 +108,7 @@ public class TypeResolver {
                 if (isPrimitive(trimmedParam)) {
                     return true;
                 }
-                String paramWithoutArrays = trimmedParam.replaceAll("\\[\\]", "");
+                String paramWithoutArrays = trimmedParam.replaceAll("\\[]", "");
                 if (isPrimitive(paramWithoutArrays)) {
                     return true;
                 }
@@ -129,7 +123,7 @@ public class TypeResolver {
     }
 
     private static boolean isPrimitive(String type) {
-        String typeWithoutArrays = type.replaceAll("\\[\\]", "");
+        String typeWithoutArrays = type.replaceAll("\\[]", "");
         for (String primitive : PRIMITIVE_TYPES) {
             if (primitive.equals(typeWithoutArrays)) {
                 return true;

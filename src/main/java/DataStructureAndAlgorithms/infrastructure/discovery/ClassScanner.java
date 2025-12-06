@@ -19,14 +19,8 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class ClassScanner {
-
-    @FunctionalInterface
-    private interface DiscoveryFactory<A extends Annotation, T> {
-        T create(Class<?> clazz, A annotation, Type[] genericTypes);
-    }
 
     // ========================= DISCOVER PROBLEMS =========================
     public Map<String, List<ProblemInfo>> discoverProblems() {
@@ -171,16 +165,9 @@ public class ClassScanner {
         return reflections.getTypesAnnotatedWith(annotation);
     }
 
-    // ========================= CATEGORY HELPERS =========================
-    public Map<String, List<ProblemInfo>> getProblemsByCategory(Map<String, List<ProblemInfo>> problems) {
-        return problems.values().stream()
-                .flatMap(List::stream)
-                .collect(Collectors.groupingBy(ProblemInfo::getCategory));
+    @FunctionalInterface
+    private interface DiscoveryFactory<A extends Annotation, T> {
+        T create(Class<?> clazz, A annotation, Type[] genericTypes);
     }
 
-    public Map<String, List<PracticeInfo>> getPracticesByCategory(Map<String, List<PracticeInfo>> practices) {
-        return practices.values().stream()
-                .flatMap(List::stream)
-                .collect(Collectors.groupingBy(p -> p.getProblemInfo().getCategory()));
-    }
 }

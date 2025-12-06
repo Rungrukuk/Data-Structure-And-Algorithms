@@ -1,9 +1,9 @@
 package DataStructureAndAlgorithms.infrastructure.input;
 
-import DataStructureAndAlgorithms.utils.naming.NameFormatter;
 import DataStructureAndAlgorithms.core.exceptions.ValidationException;
 import DataStructureAndAlgorithms.utils.TypeResolver.TypeResolver;
 import DataStructureAndAlgorithms.utils.constants.ApplicationConstants;
+import DataStructureAndAlgorithms.utils.naming.NameFormatter;
 
 import java.util.Scanner;
 
@@ -23,7 +23,7 @@ public class InputHandler {
 
     public String readName() {
         String name = readLine();
-        if (name == null || name.isBlank()) {
+        if (name.isBlank()) {
             throw new ValidationException("Input cannot be empty.");
         }
         return NameFormatter.formatInput(name);
@@ -31,7 +31,7 @@ public class InputHandler {
 
     public String readReturnType() {
         String input = readLine();
-        if (input == null || input.isEmpty()) {
+        if (input.isBlank()) {
             throw new ValidationException("Return type cannot be empty.");
         }
         if (input.equals(ApplicationConstants.RETURN_BACK)) {
@@ -53,7 +53,7 @@ public class InputHandler {
 
     public Boolean readConfirmation() {
         String input = readLine().toUpperCase();
-        if (input == null || input.isEmpty()) {
+        if (input.isBlank()) {
             throw new ValidationException("Input cannot be empty.");
         }
         if (input.equals("Y") || input.equals("YES")) {
@@ -67,7 +67,7 @@ public class InputHandler {
 
     public int readInt() {
         String line = readLine();
-        if (line == null || line.isBlank()) {
+        if (line.isBlank()) {
             throw new ValidationException("Input cannot be empty.");
         }
         try {

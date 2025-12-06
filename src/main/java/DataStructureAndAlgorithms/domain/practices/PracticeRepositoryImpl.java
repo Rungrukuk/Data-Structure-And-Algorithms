@@ -115,8 +115,4 @@ public class PracticeRepositoryImpl implements PracticeRepository {
         }
     }
 
-    @Override
-    public void refresh() {
-        initialize();
-    }
 }

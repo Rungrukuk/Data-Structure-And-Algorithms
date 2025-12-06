@@ -41,9 +41,7 @@ public abstract class BaseFlowHandler<TInfo> {
             return Optional.empty();
         }
 
-        Optional<TInfo> selected = select(items, "Select Item to Run");
-
-        return selected;
+        return select(items, "Select Item to Run");
     }
 
     public Optional<TInfo> listAndSelectByCategory() {
@@ -55,7 +53,7 @@ public abstract class BaseFlowHandler<TInfo> {
         }
 
         List<String> categories = getAllCategories();
-        Optional<String> selectedCategory = selector.selectCategory(categories, "Select Category");
+        Optional<String> selectedCategory = selector.selectCategory(categories);
         if (selectedCategory.isEmpty()) {
             return Optional.empty();
         }
@@ -79,7 +77,7 @@ public abstract class BaseFlowHandler<TInfo> {
         while (nameOptional.isEmpty()) {
             nameOptional = promptForName();
         }
-        if (shouldReturn(nameOptional)) {
+        if (shouldReturn(nameOptional.get())) {
             return Optional.empty();
         }
         String name = nameOptional.get();
@@ -107,8 +105,8 @@ public abstract class BaseFlowHandler<TInfo> {
 
     protected abstract Function<TInfo, String> getNameExtractor();
 
-    protected boolean shouldReturn(Optional<String> nameOptional) {
-        return nameOptional.get().equals(ApplicationConstants.RETURN_BACK);
+    protected boolean shouldReturn(String nameOptional) {
+        return nameOptional.equals(ApplicationConstants.RETURN_BACK);
     }
 
     protected Optional<TInfo> getSuggestionOptional(String name, List<TInfo> variants) {
@@ -118,7 +116,7 @@ public abstract class BaseFlowHandler<TInfo> {
         }
 
         if (variants.size() == 1) {
-            return Optional.of(variants.get(0));
+            return Optional.of(variants.getFirst());
         }
 
         ui.showInfo("Multiple items found with name: " + name);
@@ -143,7 +141,7 @@ public abstract class BaseFlowHandler<TInfo> {
         }
 
         if (similarItems.size() == 1) {
-            return Optional.of(similarItems.get(0));
+            return Optional.of(similarItems.getFirst());
         } else {
             return select(similarItems, "Select which item to run");
         }

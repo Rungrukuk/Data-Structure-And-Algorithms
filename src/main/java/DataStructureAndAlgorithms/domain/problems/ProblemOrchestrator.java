@@ -69,7 +69,4 @@ public class ProblemOrchestrator {
                 .toList();
     }
 
-    public void refresh() {
-        problemRepository.refresh();
-    }
 }

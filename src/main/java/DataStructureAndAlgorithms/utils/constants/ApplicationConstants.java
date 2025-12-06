@@ -5,39 +5,25 @@ import java.util.Map;
 
 public class ApplicationConstants {
 
-    private ApplicationConstants() {
-    }
-
     // ========================= FILE PATHS =========================
     public static final String BASE_SOURCE_PATH = "src/main/java/";
     public static final String BASE_PACKAGE = "DataStructureAndAlgorithms";
-    public static final String DOT_SEPERATOR = ".";
-    public static final String SLASH_SEPERATOR = "/";
-    public static final String PROBLEM_PACKAGE = BASE_PACKAGE + DOT_SEPERATOR + "Problems";
-    public static final String PRACTICE_PACKAGE = BASE_PACKAGE + DOT_SEPERATOR + "Practices";
-    public static final String BASE_PROBLEM_PACKAGE = BASE_SOURCE_PATH + BASE_PACKAGE + SLASH_SEPERATOR + "Problems";
-    public static final String BASE_PRACTICE_PACKAGE = BASE_SOURCE_PATH + BASE_PACKAGE + SLASH_SEPERATOR + "Practices";
-
+    public static final String PROBLEM_PACKAGE = BASE_PACKAGE + "." + "Problems";
+    public static final String PRACTICE_PACKAGE = BASE_PACKAGE + "." + "Practices";
+    public static final String BASE_PROBLEM_PACKAGE = BASE_SOURCE_PATH + BASE_PACKAGE + "/" + "Problems";
+    public static final String BASE_PRACTICE_PACKAGE = BASE_SOURCE_PATH + BASE_PACKAGE + "/" + "Practices";
     public static final String PRACTICE_CLASS_SUFFIX = "_Practice";
     public static final String JAVA_FILE_SUFFIX = ".java";
-
     // ========================= TERMINAL COLORS =========================
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_GREEN = "\u001B[32m";
-
     public static final int RETURN_TYPE_POSITION = 0;
-    public static final int PROBLEM_CLASS_POSITION = 1;
     public static final int NUMBER_OF_GENERICS_PROBLEM = 1;
     public static final int NUMBER_OF_GENERICS_PRACTICE = 2;
     public static final double MINIMUM_SIMILARITY_VALUE = 0.7;
-
     // ========================= MENU CONSTANTS =========================
     public static final String RETURN_BACK = "0";
-    public static final String INCORRECT_OPTION = "Incorrect option";
-    public static final String INCORRECT_PROBLEM_NAME = "Incorrect problem name";
-    public static final String INCORRECT_PRACTICE_NAME = "Incorrect practice name";
-    public static final String CHOOSE_OPTION = "Choose an option between 1 - %d: ";
     public static final String ENTER_PROBLEM_NAME = "Enter a problem name (0 to return): ";
     public static final String ENTER_CATEGORY_NAME = "Enter a category name (0 to return): ";
     public static final String ENTER_RETURN_TYPE = "Enter return type {e.g.,Integer, List<String>}(0 to return): ";
@@ -48,9 +34,14 @@ public class ApplicationConstants {
     public static final String INVALID_PRACTICE_NAME = "Invalid practice name";
     public static final String INVALID_CATEGORY_NAME = "Invalid category name";
     public static final String INVALID_RETURN_TYPE = "Invalid reutrn type";
-
     // ========================= IMPORTS =========================
     public static final Map<String, String> IMPORT_MAPPINGS = new HashMap<>();
+    public static final String IMPORT = "import ";
+    public static final String BASE_PROBLEM_IMPORT = IMPORT + "DataStructureAndAlgorithms.core.base.BaseProblem;\n";
+    public static final String BASE_PRACTICE_IMPORT = IMPORT + "DataStructureAndAlgorithms.core.base.BasePractice;\n";
+    public static final String PRACTICE_IMPORT = IMPORT + "DataStructureAndAlgorithms.core.annotations.Practice;\n";
+    public static final String PROBLEM_IMPORT = IMPORT + "DataStructureAndAlgorithms.core.annotations.Problem;\n";
+
     static {
         IMPORT_MAPPINGS.put("List", "java.util.List");
         IMPORT_MAPPINGS.put("ArrayList", "java.util.ArrayList");
@@ -66,10 +57,8 @@ public class ApplicationConstants {
         IMPORT_MAPPINGS.put("Arrays", "java.util.Arrays");
         IMPORT_MAPPINGS.put("Collections", "java.util.Collections");
     }
-    public static final String IMPORT = "import ";
-    public static final String BASE_PROBLEM_IMPORT = IMPORT + "DataStructureAndAlgorithms.core.base.BaseProblem;\n";
-    public static final String BASE_PRACTICE_IMPORT = IMPORT + "DataStructureAndAlgorithms.core.base.BasePractice;\n";
-    public static final String PRACTICE_IMPORT = IMPORT + "DataStructureAndAlgorithms.core.annotations.Practice;\n";
-    public static final String PROBLEM_IMPORT = IMPORT + "DataStructureAndAlgorithms.core.annotations.Problem;\n";
+
+    private ApplicationConstants() {
+    }
 
 }

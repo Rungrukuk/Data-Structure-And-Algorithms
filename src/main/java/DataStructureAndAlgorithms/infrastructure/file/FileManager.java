@@ -34,11 +34,6 @@ public class FileManager {
                 simpleClassName + ApplicationConstants.JAVA_FILE_SUFFIX).toString();
     }
 
-    public String getFullPackagePath(String packageName) {
-        return Paths.get(
-                ApplicationConstants.BASE_SOURCE_PATH,
-                packageName.replace(".", "/")).toString();
-    }
 
     public boolean exists(String filePath) {
         return Paths.get(filePath).toFile().exists();

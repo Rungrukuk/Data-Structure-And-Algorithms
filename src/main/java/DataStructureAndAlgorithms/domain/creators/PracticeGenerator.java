@@ -69,19 +69,24 @@ public class PracticeGenerator {
                 generateCommonImports(returnType);
 
         return String.format(
-                "package %s;\n\n" +
-                        "%s\n" +
-                        "@Practice(problemName = \"%s\", category = \"%s\")\n" +
-                        "public class %s extends BasePractice<%s, %s> {\n\n" +
-                        "    public %s(%s problem) {\n" +
-                        "        super(problem);\n" +
-                        "    }\n\n" +
-                        "    @Override\n" +
-                        "    public %s practice() {\n" +
-                        "        // TODO: Implement practice logic\n" +
-                        "        throw new UnsupportedOperationException(\"Unimplemented method 'practice'\");\n" +
-                        "    }\n" +
-                        "}",
+                """
+                        package %s;
+                        
+                        %s
+                        @Practice(problemName = "%s", category = "%s")
+                        public class %s extends BasePractice<%s, %s> {
+                        
+                            public %s(%s problem) {
+                                super(problem);
+                            }
+                        
+                            @Override
+                            public %s practice() {
+                                // TODO: Implement practice logic
+                                throw new UnsupportedOperationException("Unimplemented method 'practice'");
+                            }
+                        }
+                        """,
                 packageName,
                 imports,
                 info.getName(),

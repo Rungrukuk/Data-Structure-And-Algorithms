@@ -1,7 +1,5 @@
 package DataStructureAndAlgorithms.core.models;
 
-import DataStructureAndAlgorithms.utils.constants.ApplicationConstants;
-
 public class ProblemInfo {
 
     private String name;
@@ -63,6 +61,6 @@ public class ProblemInfo {
     }
 
     public String getUniqueId() {
-        return category + ApplicationConstants.DOT_SEPERATOR + name;
+        return category + "." + name;
     }
 }

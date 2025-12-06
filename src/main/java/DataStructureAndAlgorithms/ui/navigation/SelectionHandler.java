@@ -4,11 +4,10 @@ import DataStructureAndAlgorithms.core.models.PracticeInfo;
 import DataStructureAndAlgorithms.core.models.ProblemInfo;
 import DataStructureAndAlgorithms.ui.UIManager;
 import DataStructureAndAlgorithms.ui.prompts.Prompter;
-import DataStructureAndAlgorithms.utils.helpers.TextHelper;
 import DataStructureAndAlgorithms.utils.constants.ApplicationConstants;
+import DataStructureAndAlgorithms.utils.helpers.TextHelper;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -32,12 +31,12 @@ public class SelectionHandler {
         return selectItem(options, title, s -> s);
     }
 
-    public Optional<String> selectFromOptions(List<String> options, String prompt) {
+    public Optional<String> selectFromOptions(List<String> options) {
         while (true) {
             try {
                 uiManager.showMenuOptions(options);
                 uiManager.showSelectionPrompt(options.size());
-                Optional<Integer> choice = prompter.promptForChoiceOptional(prompt);
+                Optional<Integer> choice = prompter.promptForChoiceOptional();
 
                 if (choice.isEmpty() || choice.get() < 1 || choice.get() > options.size()) {
                     uiManager.showError("Invalid selection. Please enter a number between 1 and " + options.size());
@@ -65,7 +64,7 @@ public class SelectionHandler {
 
         uiManager.showSectionTitle(prompt);
 
-        Optional<String> selectedDisplay = selectFromOptions(displayStrings, prompt);
+        Optional<String> selectedDisplay = selectFromOptions(displayStrings);
 
         return selectedDisplay.flatMap(display -> {
             for (int i = 0; i < items.size(); i++) {
@@ -77,34 +76,6 @@ public class SelectionHandler {
         });
     }
 
-    public <T> Optional<T> selectFromCategory(
-            Map<String, List<T>> itemsByCategory,
-            Function<T, String> itemDisplayFormatter,
-            String prompt) {
-
-        List<String> categories = itemsByCategory.keySet().stream()
-                .sorted()
-                .toList();
-
-        if (categories.isEmpty()) {
-            uiManager.showError("No categories available.");
-            return Optional.empty();
-        }
-
-        Optional<String> selectedCategory = selectFromOptions(categories, "Select Category");
-        if (selectedCategory.isEmpty()) {
-            return Optional.empty();
-        }
-
-        List<T> itemsInCategory = itemsByCategory.get(selectedCategory.get());
-        if (itemsInCategory == null || itemsInCategory.isEmpty()) {
-            uiManager.showError("No items found in category: " + selectedCategory.get());
-            return Optional.empty();
-        }
-
-        return selectItem(itemsInCategory, prompt + " from " + selectedCategory.get(),
-                item -> itemDisplayFormatter.apply(item));
-    }
 
     // ========================= GENERIC SUGGESTIONS =========================
 
@@ -166,20 +137,13 @@ public class SelectionHandler {
                 problem.getCategory());
     }
 
-    public Optional<ProblemInfo> selectProblem(List<ProblemInfo> problems, String prompt) {
-        return selectItem(problems, prompt, this::formatProblem);
-    }
 
-    public Optional<PracticeInfo> selectPractice(List<PracticeInfo> practices, String prompt) {
-        return selectItem(practices, prompt, this::formatPractice);
-    }
-
-    public Optional<String> selectCategory(List<String> categories, String prompt) {
+    public Optional<String> selectCategory(List<String> categories) {
         if (categories == null || categories.isEmpty()) {
             uiManager.showError("No categories available.");
             return Optional.empty();
         }
-        return selectFromOptions(categories, prompt);
+        return selectFromOptions(categories);
     }
 
     @FunctionalInterface

@@ -7,28 +7,24 @@ public final class NameFormatter {
     }
 
     public static String formatInput(String input) {
-
         String withSpaces = input.replaceAll("[_-]", " ");
 
-        String[] words = withSpaces.split("\\s+");
+        String[] rawWords = withSpaces.split("\\s+");
         StringBuilder formatted = new StringBuilder();
 
-        for (String word : words) {
-            if (word.isEmpty())
+        for (String rawWord : rawWords) {
+            if (rawWord.isEmpty())
                 continue;
 
-            if (!word.contains(" ") && word.matches(".*[a-z][A-Z].*")) {
-                String camelCaseSplit = word.replaceAll("([a-z])([A-Z])", "$1 $2");
-                String[] camelWords = camelCaseSplit.split(" ");
+            String camelSplit = rawWord.replaceAll("([a-z])([A-Z])", "$1 $2");
 
-                for (String camelWord : camelWords) {
-                    if (formatted.length() > 0)
-                        formatted.append(" ");
-                    formatted.append(capitalizeFirstLetter(camelWord));
-                }
-            } else {
-                if (formatted.length() > 0)
+            for (String word : camelSplit.split(" ")) {
+                if (word.isEmpty())
+                    continue;
+
+                if (!formatted.isEmpty())
                     formatted.append(" ");
+
                 formatted.append(capitalizeFirstLetter(word));
             }
         }
@@ -36,19 +32,12 @@ public final class NameFormatter {
         return formatted.toString();
     }
 
+
     public static String capitalizeFirstLetter(String word) {
         if (word == null || word.isEmpty()) {
             return word;
         }
         return word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase();
-    }
-
-    public static String generateFormattedCategoryName(String category) {
-        return formatInput(category);
-    }
-
-    public static String generateFormattedProblemName(String problemName) {
-        return formatInput(problemName);
     }
 
     public static String convertId(String id) {

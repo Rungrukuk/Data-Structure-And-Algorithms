@@ -1,7 +1,5 @@
 package DataStructureAndAlgorithms.core.models;
 
-import DataStructureAndAlgorithms.utils.constants.ApplicationConstants;
-
 public class PracticeInfo {
 
     private ProblemInfo problemInfo;
@@ -39,6 +37,6 @@ public class PracticeInfo {
     }
 
     public String getUniqueId() {
-        return problemInfo.getCategory() + ApplicationConstants.DOT_SEPERATOR + problemInfo.getName();
+        return problemInfo.getCategory() + "." + problemInfo.getName();
     }
 }

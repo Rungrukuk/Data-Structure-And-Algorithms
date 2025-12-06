@@ -4,8 +4,14 @@ import DataStructureAndAlgorithms.domain.creators.PracticeGenerator;
 import DataStructureAndAlgorithms.domain.creators.ProblemGenerator;
 import DataStructureAndAlgorithms.domain.flows.PracticeFlowHandler;
 import DataStructureAndAlgorithms.domain.flows.ProblemFlowHandler;
-import DataStructureAndAlgorithms.domain.practices.*;
-import DataStructureAndAlgorithms.domain.problems.*;
+import DataStructureAndAlgorithms.domain.practices.PracticeExecutor;
+import DataStructureAndAlgorithms.domain.practices.PracticeOrchestrator;
+import DataStructureAndAlgorithms.domain.practices.PracticeRepository;
+import DataStructureAndAlgorithms.domain.practices.PracticeRepositoryImpl;
+import DataStructureAndAlgorithms.domain.problems.ProblemExecutor;
+import DataStructureAndAlgorithms.domain.problems.ProblemOrchestrator;
+import DataStructureAndAlgorithms.domain.problems.ProblemRepository;
+import DataStructureAndAlgorithms.domain.problems.ProblemRepositoryImpl;
 import DataStructureAndAlgorithms.infrastructure.discovery.ClassScanner;
 import DataStructureAndAlgorithms.infrastructure.file.FileManager;
 import DataStructureAndAlgorithms.infrastructure.input.InputHandler;
@@ -52,8 +58,7 @@ public class DependencyContainer {
         PracticeOrchestrator practiceOrchestrator = new PracticeOrchestrator(
                 practiceRepository,
                 practiceExecutor,
-                practiceGenerator,
-                problemRepository);
+                practiceGenerator);
 
         ProblemFlowHandler problemFlowHandler = new ProblemFlowHandler(problemOrchestrator, uiManager, selectionHandler,
                 prompter);
@@ -66,7 +71,9 @@ public class DependencyContainer {
                 menuNavigator, problemFlowHandler, practiceFlowHandler);
     }
 
+/*
     public static ApplicationController createTestApplication() {
         return createApplication();
     }
+*/
 }

@@ -49,16 +49,20 @@ public class ProblemGenerator {
                 generateCommonImports(returnType);
 
         return String.format(
-                "package %s;\n\n" +
-                        "%s\n" +
-                        "@Problem(name = \"%s\", category = \"%s\")\n" +
-                        "public class %s extends BaseProblem<%s> {\n\n" +
-                        "    @Override\n" +
-                        "    public %s solve() {\n" +
-                        "        // TODO: Implement solution\n" +
-                        "        throw new UnsupportedOperationException(\"Unimplemented method 'solve'\");\n" +
-                        "    }\n" +
-                        "}",
+                """
+                         package %s;
+                        
+                         %s
+                         @Problem(name = "%s", category = "%s")
+                         public class %s extends BaseProblem<%s> {
+                        
+                             @Override
+                             public %s solve() {
+                                 // TODO: Implement solution
+                                 throw new UnsupportedOperationException("Unimplemented method 'solve'");
+                             }
+                         }
+                        """,
                 packageName,
                 imports,
                 info.getName(),

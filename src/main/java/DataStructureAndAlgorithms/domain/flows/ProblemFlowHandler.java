@@ -84,21 +84,21 @@ public class ProblemFlowHandler extends BaseFlowHandler<ProblemInfo> {
             while (name.isEmpty()) {
                 name = prompter.promptForProblemNameOptional();
             }
-            if (shouldReturn(name)) {
+            if (shouldReturn(name.get())) {
                 return;
             }
 
             while (category.isEmpty()) {
                 category = prompter.promptForCategoryNameOptional();
             }
-            if (shouldReturn(category)) {
+            if (shouldReturn(category.get())) {
                 return;
             }
 
             while (returnType.isEmpty()) {
                 returnType = prompter.promptForReturnTypeOptional();
             }
-            if (shouldReturn(returnType)) {
+            if (shouldReturn(returnType.get())) {
                 return;
             }
 

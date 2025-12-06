@@ -6,7 +6,7 @@ public class TextHelper {
         String longer = s1.length() > s2.length() ? s1 : s2;
         String shorter = s1.length() > s2.length() ? s2 : s1;
 
-        if (longer.length() == 0)
+        if (longer.isEmpty())
             return 1.0;
 
         return (longer.length() - editDistance(longer, shorter)) / (double) longer.length();
