@@ -13,9 +13,7 @@ public class PracticeOrchestrator {
     private final PracticeExecutor practiceExecutor;
     private final PracticeGenerator practiceGenerator;
 
-    public PracticeOrchestrator(PracticeRepository practiceRepository,
-            PracticeExecutor practiceExecutor,
-                                PracticeGenerator practiceGenerator) {
+    public PracticeOrchestrator(PracticeRepository practiceRepository, PracticeExecutor practiceExecutor, PracticeGenerator practiceGenerator) {
         this.practiceRepository = practiceRepository;
         this.practiceExecutor = practiceExecutor;
         this.practiceGenerator = practiceGenerator;
@@ -37,8 +35,7 @@ public class PracticeOrchestrator {
 
 
     public Optional<String> runPractice(PracticeInfo practiceInfo) {
-        return practiceExecutor.runPractice(practiceInfo)
-                .map(practiceExecutor::formatResult);
+        return practiceExecutor.runPractice(practiceInfo).map(practiceExecutor::formatResult);
     }
 
     public void createPracticeForProblem(ProblemInfo problemInfo) {
@@ -53,10 +50,14 @@ public class PracticeOrchestrator {
         practiceGenerator.resetPractice(practiceInfo);
     }
 
+    public void bulkResetPractices(List<PracticeInfo> practices) {
+        for (PracticeInfo p : practices)
+            resetPractice(p);
+    }
+
+
     public List<String> getAllCategories() {
-        return practiceRepository.findAllGroupedByCategory().keySet().stream()
-                .sorted()
-                .toList();
+        return practiceRepository.findAllGroupedByCategory().keySet().stream().sorted().toList();
     }
 
 }

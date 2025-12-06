@@ -83,4 +83,15 @@ public class PracticeFlowHandler extends BaseFlowHandler<PracticeInfo> {
         orchestrator.createPracticeForProblem(problemInfo);
         ui.showSuccess("Practice created successfully!");
     }
+
+    public void resetAllPractices() {
+        orchestrator.bulkResetPractices(this.listAllItems());
+        ui.showSuccess("Practices resetted successfully!");
+
+    }
+    public void resetPracticesByCategory(List<PracticeInfo> practiceInfos){
+        orchestrator.bulkResetPractices(practiceInfos);
+        ui.showSuccess("Practices resetted successfully!");
+    }
+
 }

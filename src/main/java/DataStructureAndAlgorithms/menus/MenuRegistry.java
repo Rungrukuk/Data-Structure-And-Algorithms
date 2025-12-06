@@ -28,6 +28,9 @@ public class MenuRegistry {
 
     public static final MenuOption FIND_SPECIFIC_PROBLEM = new MenuOption(MenuKey.FIND_SPECIFIC_PROBLEM,
             "Find Specific Problem");
+    public static final MenuOption BULK_RESET_PRACTICES = new MenuOption(MenuKey.BULK_RESET_PRACTICES, "Bulk Reset Practices");
+    public static final MenuOption RESET_ALL_PRACTICES = new MenuOption(MenuKey.RESET_ALL_PRACTICES, "Reset All Practices");
+    public static final MenuOption RESET_PRACTICES_BY_CATEGORY = new MenuOption(MenuKey.RESET_PRACTICES_BY_CATEGORY, "Reset Practices By Category");
 
     public static final List<MenuOption> MAIN_MENU = Arrays.asList(
             RUN_PROBLEMS,
@@ -47,6 +50,7 @@ public class MenuRegistry {
     public static final List<MenuOption> MANAGE_PRACTICES_MENU = Arrays.asList(
             CREATE_PRACTICE,
             RESET_PRACTICE,
+            BULK_RESET_PRACTICES,
             RETURN);
 
     public static final List<MenuOption> CREATE_PRACTICE_MENU = Arrays.asList(
@@ -59,6 +63,11 @@ public class MenuRegistry {
         LIST_PRACTICES_BY_CATEGORY,
         FIND_SPECIFIC_PRACTICE,
         RETURN
+     );
+
+     public static final List<MenuOption> BULK_RESET_PRACTICES_MENU = Arrays.asList(
+             RESET_ALL_PRACTICES,
+             RESET_PRACTICES_BY_CATEGORY
      );
 
     public static List<String> getLabels(List<MenuOption> menu) {

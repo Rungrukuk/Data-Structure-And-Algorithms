@@ -45,6 +45,18 @@ public abstract class BaseFlowHandler<TInfo> {
     }
 
     public Optional<TInfo> listAndSelectByCategory() {
+        Optional<List<TInfo>> itemsOpt = getItemsBySelectedCategory();
+        if (itemsOpt.isEmpty()) {
+            return Optional.empty();
+        }
+
+        List<TInfo> items = itemsOpt.get();
+        return select(items, "Select Item");
+    }
+
+
+
+    public Optional<List<TInfo>> getItemsBySelectedCategory() {
         Map<String, List<TInfo>> itemsByCategory = groupItemsByCategory();
         if (itemsByCategory.isEmpty()) {
             ui.showError("No items available.");
@@ -54,6 +66,7 @@ public abstract class BaseFlowHandler<TInfo> {
 
         List<String> categories = getAllCategories();
         Optional<String> selectedCategory = selector.selectCategory(categories);
+
         if (selectedCategory.isEmpty()) {
             return Optional.empty();
         }
@@ -65,8 +78,10 @@ public abstract class BaseFlowHandler<TInfo> {
             return Optional.empty();
         }
 
-        return select(itemsInCategory, "Select Item from " + selectedCategory.get());
+        return Optional.of(itemsInCategory);
     }
+
+
 
     public void runByCategory() {
         listAndSelectByCategory().ifPresent(this::runSelectedItem);
