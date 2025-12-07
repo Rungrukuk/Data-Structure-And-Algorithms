@@ -4,8 +4,8 @@ import DataStructureAndAlgorithms.core.models.PracticeInfo;
 import DataStructureAndAlgorithms.core.models.ProblemInfo;
 import DataStructureAndAlgorithms.domain.exceptions.CreationException;
 import DataStructureAndAlgorithms.infrastructure.file.FileManager;
-import DataStructureAndAlgorithms.utils.constants.ApplicationConstants;
-import DataStructureAndAlgorithms.utils.naming.NameFormatter;
+import DataStructureAndAlgorithms.utils.ApplicationConstants;
+import DataStructureAndAlgorithms.utils.NameFormatter;
 
 import java.io.IOException;
 import java.nio.file.Files;

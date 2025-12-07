@@ -4,8 +4,8 @@ import DataStructureAndAlgorithms.core.models.PracticeInfo;
 import DataStructureAndAlgorithms.core.models.ProblemInfo;
 import DataStructureAndAlgorithms.ui.UIManager;
 import DataStructureAndAlgorithms.ui.prompts.Prompter;
-import DataStructureAndAlgorithms.utils.constants.ApplicationConstants;
-import DataStructureAndAlgorithms.utils.helpers.TextHelper;
+import DataStructureAndAlgorithms.utils.ApplicationConstants;
+import DataStructureAndAlgorithms.utils.SimilarityHelper;
 
 import java.util.List;
 import java.util.Optional;
@@ -110,7 +110,7 @@ public class SelectionHandler {
                         return true;
                     }
 
-                    double similarity = TextHelper.calculateSimilarity(
+                    double similarity = SimilarityHelper.calculateSimilarity(
                             normalizedInput, normalizedItemName);
                     return similarity > ApplicationConstants.MINIMUM_SIMILARITY_VALUE;
                 })

@@ -18,7 +18,7 @@ public class CodeRunner {
             Object result = instance.solve();
             return Optional.of(new ProblemResult(problemInfo.getName(), result));
         } catch (Exception e) {
-            // Log error
+            // TODO Log error
             return Optional.empty();
         }
     }
@@ -38,7 +38,7 @@ public class CodeRunner {
                     solutionResult,
                     isCorrect));
         } catch (Exception e) {
-            // Log error
+            // TODO Log error
             return Optional.empty();
         }
     }

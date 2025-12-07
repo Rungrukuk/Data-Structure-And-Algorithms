@@ -1,4 +1,4 @@
-package DataStructureAndAlgorithms.utils.constants;
+package DataStructureAndAlgorithms.utils;
 
 import java.util.HashMap;
 import java.util.Map;

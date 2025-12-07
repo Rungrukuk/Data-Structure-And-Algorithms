@@ -1,7 +1,7 @@
 package DataStructureAndAlgorithms.ui;
 
 import DataStructureAndAlgorithms.infrastructure.input.InputHandler;
-import DataStructureAndAlgorithms.utils.constants.ApplicationConstants;
+import DataStructureAndAlgorithms.utils.ApplicationConstants;
 
 import java.util.List;
 

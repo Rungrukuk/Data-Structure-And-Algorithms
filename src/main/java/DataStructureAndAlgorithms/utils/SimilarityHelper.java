@@ -1,6 +1,6 @@
-package DataStructureAndAlgorithms.utils.helpers;
+package DataStructureAndAlgorithms.utils;
 
-public class TextHelper {
+public class SimilarityHelper {
 
     public static double calculateSimilarity(String s1, String s2) {
         String longer = s1.length() > s2.length() ? s1 : s2;

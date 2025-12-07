@@ -3,7 +3,8 @@ package DataStructureAndAlgorithms.domain.problems;
 import DataStructureAndAlgorithms.core.models.ProblemInfo;
 import DataStructureAndAlgorithms.core.models.ProblemResult;
 import DataStructureAndAlgorithms.infrastructure.runner.CodeRunner;
-import DataStructureAndAlgorithms.utils.constants.ApplicationConstants;
+import DataStructureAndAlgorithms.utils.ApplicationConstants;
+import DataStructureAndAlgorithms.utils.ResultFormatter;
 
 import java.util.Optional;
 
@@ -21,7 +22,7 @@ public class ProblemExecutor {
     public String formatResult(ProblemResult result) {
         return ApplicationConstants.ANSI_GREEN +
                 result.getProblemName() + " Problem Run Successfully ✅\n" +
-                "Result: " + result.getResult() +
+                "Result: " + ResultFormatter.format(result.getResult()) +
                 ApplicationConstants.ANSI_RESET;
     }
 }
