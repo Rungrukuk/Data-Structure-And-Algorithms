@@ -160,7 +160,8 @@ public class ApplicationController {
             default:
                 ui.showError("Unknown option selected");
         }
-        problemInfoOptional.ifPresentOrElse(practiceFlow::createPractice, () -> ui.showError("Could not find the specified problem"));
+        problemInfoOptional.ifPresentOrElse(practiceFlow::createPractice,
+                () -> ui.showError("Could not find the specified problem"));
         ui.waitForEnter();
     }
 
@@ -189,11 +190,12 @@ public class ApplicationController {
                 ui.showError("Unknown option selected");
         }
 
-        practiceInfoOptional.ifPresentOrElse(practiceFlow::resetPractice, () -> ui.showError("Could not find the specified practice"));
+        practiceInfoOptional.ifPresentOrElse(practiceFlow::resetPractice,
+                () -> ui.showError("Could not find the specified practice"));
         ui.waitForEnter();
     }
 
-    private void handleBulkResetPractices(){
+    private void handleBulkResetPractices() {
         MenuOption selectedOption = menus.showBulkResetPracticesMenu();
         if (selectedOption == null) {
             ui.showError("Invalid selection.");
@@ -201,15 +203,25 @@ public class ApplicationController {
             return;
         }
 
-        switch (selectedOption.getKey()){
-            case RESET_ALL_PRACTICES -> practiceFlow.resetAllPractices();
-            case RESET_PRACTICES_BY_CATEGORY ->  handleResetPracticesByCategory();
+        switch (selectedOption.getKey()) {
+            case RESET_ALL_PRACTICES:
+                practiceFlow.resetAllPractices();
+                break;
+            case RESET_PRACTICES_BY_CATEGORY:
+                handleResetPracticesByCategory();
+                break;
+            case RETURN:
+                return;
+            default:
+                ui.showError("Unknown option selected");
+
         }
     }
 
-    private void handleResetPracticesByCategory(){
+    private void handleResetPracticesByCategory() {
         Optional<List<PracticeInfo>> practices = practiceFlow.getItemsBySelectedCategory();
-        practices.ifPresentOrElse(practiceFlow::resetPracticesByCategory,() -> ui.showError("Could not find the specified practice"));
+        practices.ifPresentOrElse(practiceFlow::resetPracticesByCategory,
+                () -> ui.showError("Could not find the specified practice"));
         ui.waitForEnter();
     }
 
