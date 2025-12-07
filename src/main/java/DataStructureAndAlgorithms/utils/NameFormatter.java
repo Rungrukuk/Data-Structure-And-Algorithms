@@ -1,6 +1,4 @@
-package DataStructureAndAlgorithms.utils.naming;
-
-import DataStructureAndAlgorithms.utils.constants.ApplicationConstants;
+package DataStructureAndAlgorithms.utils;
 
 public final class NameFormatter {
     private NameFormatter() {

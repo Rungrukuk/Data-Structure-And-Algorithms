@@ -1,9 +1,9 @@
 package DataStructureAndAlgorithms.infrastructure.input;
 
 import DataStructureAndAlgorithms.core.exceptions.ValidationException;
-import DataStructureAndAlgorithms.utils.TypeResolver.TypeResolver;
-import DataStructureAndAlgorithms.utils.constants.ApplicationConstants;
-import DataStructureAndAlgorithms.utils.naming.NameFormatter;
+import DataStructureAndAlgorithms.utils.ApplicationConstants;
+import DataStructureAndAlgorithms.utils.NameFormatter;
+import DataStructureAndAlgorithms.utils.TypeValidator;
 
 import java.util.Scanner;
 
@@ -38,13 +38,13 @@ public class InputHandler {
             return input;
         }
 
-        if (!TypeResolver.isValidJavaType(input)) {
+        if (!TypeValidator.isValidJavaType(input)) {
             throw new ValidationException("Invalid return type format.");
         }
 
-        String convertedType = TypeResolver.convertToWrapperType(input);
+        String convertedType = TypeValidator.convertToWrapperType(input);
 
-        if (!TypeResolver.isValidJavaType(convertedType)) {
+        if (!TypeValidator.isValidJavaType(convertedType)) {
             throw new ValidationException("Invalid Java type after conversion");
         }
 

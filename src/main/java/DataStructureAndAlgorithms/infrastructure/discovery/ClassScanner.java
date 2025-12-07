@@ -6,9 +6,10 @@ import DataStructureAndAlgorithms.core.base.BasePractice;
 import DataStructureAndAlgorithms.core.base.BaseProblem;
 import DataStructureAndAlgorithms.core.models.PracticeInfo;
 import DataStructureAndAlgorithms.core.models.ProblemInfo;
-import DataStructureAndAlgorithms.utils.TypeResolver.TypeResolver;
-import DataStructureAndAlgorithms.utils.constants.ApplicationConstants;
-import DataStructureAndAlgorithms.utils.naming.NameFormatter;
+import DataStructureAndAlgorithms.utils.ApplicationConstants;
+import DataStructureAndAlgorithms.utils.NameFormatter;
+import DataStructureAndAlgorithms.utils.TypeValidator;
+
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
 import org.reflections.util.ClasspathHelper;
@@ -31,7 +32,7 @@ public class ClassScanner {
                 ApplicationConstants.NUMBER_OF_GENERICS_PROBLEM,
                 (clazz, annotation, genericTypes) -> {
                     String filePath = buildFilePath(clazz.getName());
-                    String simpleReturnType = TypeResolver.getSimpleTypeName(
+                    String simpleReturnType = TypeValidator.getSimpleTypeName(
                             genericTypes[ApplicationConstants.RETURN_TYPE_POSITION]);
                     return new ProblemInfo(
                             annotation.name(),

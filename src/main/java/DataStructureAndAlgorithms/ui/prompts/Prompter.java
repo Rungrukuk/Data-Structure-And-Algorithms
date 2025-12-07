@@ -2,7 +2,7 @@ package DataStructureAndAlgorithms.ui.prompts;
 
 import DataStructureAndAlgorithms.infrastructure.input.InputHandler;
 import DataStructureAndAlgorithms.ui.UIManager;
-import DataStructureAndAlgorithms.utils.constants.ApplicationConstants;
+import DataStructureAndAlgorithms.utils.ApplicationConstants;
 
 import java.util.Optional;
 

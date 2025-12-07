@@ -6,7 +6,7 @@ import DataStructureAndAlgorithms.domain.practices.PracticeOrchestrator;
 import DataStructureAndAlgorithms.ui.UIManager;
 import DataStructureAndAlgorithms.ui.navigation.SelectionHandler;
 import DataStructureAndAlgorithms.ui.prompts.Prompter;
-import DataStructureAndAlgorithms.utils.constants.ApplicationConstants;
+import DataStructureAndAlgorithms.utils.ApplicationConstants;
 
 import java.util.List;
 import java.util.Map;

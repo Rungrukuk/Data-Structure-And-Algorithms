@@ -1,5 +1,7 @@
 package DataStructureAndAlgorithms.core.base;
 
+import java.util.Objects;
+
 public abstract class BasePractice<T, P extends BaseProblem<T>> {
     protected P problem;
 
@@ -10,15 +12,7 @@ public abstract class BasePractice<T, P extends BaseProblem<T>> {
     public boolean compare() {
         T solutionResult = problem.solve();
         T practiceResult = this.practice();
-        return solutionResult.equals(practiceResult);
-    }
-
-    public T getSolutionResult() {
-        return problem.solve();
-    }
-
-    public T getPracticeResult() {
-        return practice();
+        return Objects.deepEquals(practiceResult, solutionResult);
     }
 
     public abstract T practice();

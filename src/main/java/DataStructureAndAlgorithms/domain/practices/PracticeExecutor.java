@@ -3,7 +3,8 @@ package DataStructureAndAlgorithms.domain.practices;
 import DataStructureAndAlgorithms.core.models.PracticeInfo;
 import DataStructureAndAlgorithms.core.models.PracticeResult;
 import DataStructureAndAlgorithms.infrastructure.runner.CodeRunner;
-import DataStructureAndAlgorithms.utils.constants.ApplicationConstants;
+import DataStructureAndAlgorithms.utils.ApplicationConstants;
+import DataStructureAndAlgorithms.utils.ResultFormatter;
 
 import java.util.Optional;
 
@@ -21,8 +22,13 @@ public class PracticeExecutor {
     public String formatResult(PracticeResult result) {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("Practice Answer: ").append(result.getPracticeResult()).append("\n");
-        sb.append("Expected Answer: ").append(result.getExpectedResult()).append("\n");
+        sb.append("Practice Answer: ")
+                .append(ResultFormatter.format(result.getPracticeResult()))
+                .append("\n");
+
+        sb.append("Expected Answer: ")
+                .append(ResultFormatter.format(result.getExpectedResult()))
+                .append("\n");
 
         if (result.isCorrect()) {
             sb.append(ApplicationConstants.ANSI_GREEN)

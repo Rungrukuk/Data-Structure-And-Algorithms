@@ -2,8 +2,8 @@ package DataStructureAndAlgorithms.infrastructure.file;
 
 import DataStructureAndAlgorithms.core.models.PracticeInfo;
 import DataStructureAndAlgorithms.core.models.ProblemInfo;
-import DataStructureAndAlgorithms.utils.constants.ApplicationConstants;
-import DataStructureAndAlgorithms.utils.naming.NameFormatter;
+import DataStructureAndAlgorithms.utils.ApplicationConstants;
+import DataStructureAndAlgorithms.utils.NameFormatter;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

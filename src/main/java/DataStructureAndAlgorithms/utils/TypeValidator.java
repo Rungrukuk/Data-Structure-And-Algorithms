@@ -1,11 +1,13 @@
-package DataStructureAndAlgorithms.utils.TypeResolver;
+package DataStructureAndAlgorithms.utils;
 
+import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class TypeResolver {
+public class TypeValidator {
     private static final String[] PRIMITIVE_TYPES = {
             "int", "long", "double", "float", "boolean", "char", "byte", "short", "void"
     };
@@ -26,7 +28,7 @@ public class TypeResolver {
             "LocalDate", "LocalDateTime", "LocalTime", "ZonedDateTime", "Instant", "Duration", "Period",
             "UUID"));
 
-    private TypeResolver() {
+    private TypeValidator() {
     }
 
     public static boolean isValidJavaType(String type) {
@@ -198,8 +200,13 @@ public class TypeResolver {
 
         if (trimmedType.endsWith("[]")) {
             String baseType = trimmedType.substring(0, trimmedType.length() - 2);
-            String wrapperBaseType = convertToWrapperType(baseType);
-            return wrapperBaseType + "[]";
+
+            if (isPrimitive(baseType)) {
+                return baseType + "[]";
+            }
+
+            String convertedBase = convertToWrapperType(baseType);
+            return convertedBase + "[]";
         }
 
         if (trimmedType.contains("<")) {
@@ -215,6 +222,7 @@ public class TypeResolver {
                 return WRAPPER_TYPES[i];
             }
         }
+
         return trimmedType;
     }
 
@@ -247,10 +255,34 @@ public class TypeResolver {
 
     public static String getSimpleTypeName(Type type) {
         if (type instanceof Class<?>) {
-            return ((Class<?>) type).getSimpleName();
+            Class<?> clazz = (Class<?>) type;
+            if (clazz.isArray()) {
+                return getSimpleTypeName(clazz.getComponentType()) + "[]";
+            }
+            return clazz.getSimpleName();
+        } else if (type instanceof ParameterizedType) {
+            ParameterizedType pType = (ParameterizedType) type;
+            Type raw = pType.getRawType();
+            Type[] args = pType.getActualTypeArguments();
+
+            StringBuilder sb = new StringBuilder();
+            sb.append(getSimpleTypeName(raw));
+            sb.append("<");
+            for (int i = 0; i < args.length; i++) {
+                sb.append(getSimpleTypeName(args[i]));
+                if (i < args.length - 1)
+                    sb.append(", ");
+            }
+            sb.append(">");
+            return sb.toString();
+        } else if (type instanceof GenericArrayType) {
+            GenericArrayType gArray = (GenericArrayType) type;
+            return getSimpleTypeName(gArray.getGenericComponentType()) + "[]";
+        } else {
+            String name = type.getTypeName();
+            int lastDot = name.lastIndexOf('.');
+            return lastDot == -1 ? name : name.substring(lastDot + 1);
         }
-        String name = type.getTypeName();
-        int lastDot = name.lastIndexOf('.');
-        return lastDot == -1 ? name : name.substring(lastDot + 1);
     }
+
 }
