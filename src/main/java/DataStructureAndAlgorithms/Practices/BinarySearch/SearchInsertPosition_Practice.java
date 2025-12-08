@@ -13,7 +13,20 @@ public class SearchInsertPosition_Practice extends BasePractice<Integer, SearchI
 
     @Override
     public Integer practice() {
-        // TODO: Implement practice logic
-        throw new UnsupportedOperationException("Unimplemented method 'practice'");
+        int right = problem.nums.length - 1;
+        int left = 0;
+        while (left <= right) {
+            final int middle = left + (right - left);
+            if (problem.nums[middle] == problem.target) {
+                left = middle;
+                break;
+            }
+            if (problem.nums[middle] > problem.target) {
+                right = middle - 1;
+            } else {
+                left = middle + 1;
+            }
+        }
+        return left;
     }
 }

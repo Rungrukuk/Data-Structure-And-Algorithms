@@ -31,8 +31,7 @@ public class MedianOfTwoSortedArrays extends BaseProblem<Double> {
             if (nums1Left <= nums2Right && nums2Left <= nums1Right) {
                 if ((n + m) % 2 == 0)
                     return (Math.max(nums1Left, nums2Left) + Math.min(nums1Right, nums2Right)) / 2.0;
-                else
-                    return ((double) Math.max(nums1Left, nums2Left));
+                return ((double) Math.max(nums1Left, nums2Left));
             } else if (nums1Left > nums2Right)
                 right = i - 1;
             else

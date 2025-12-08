@@ -18,8 +18,7 @@ public class CodeRunner {
             Object result = instance.solve();
             return Optional.of(new ProblemResult(problemInfo.getName(), result));
         } catch (Exception e) {
-            // TODO Log error
-            return Optional.empty();
+            throw new RuntimeException("Failed to run problem: " + e);
         }
     }
 
@@ -38,8 +37,7 @@ public class CodeRunner {
                     solutionResult,
                     isCorrect));
         } catch (Exception e) {
-            // TODO Log error
-            return Optional.empty();
+            throw new RuntimeException("Failed to run practice: " + e);
         }
     }
 

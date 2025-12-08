@@ -234,6 +234,8 @@ public class MinimumTimeToCompleteTrips extends BaseProblem<Long> {
             long currentTrips = 0;
             for (int i : time) {
                 currentTrips += middle / i;
+                if (currentTrips >= totalTrips)
+                    break;
             }
             if (currentTrips < totalTrips) {
                 left = middle + 1;
