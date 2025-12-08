@@ -6,11 +6,11 @@ import java.util.List;
 import DataStructureAndAlgorithms.core.annotations.Problem;
 import DataStructureAndAlgorithms.core.base.BaseProblem;
 
-@Problem(name = "Find Closest Elements", category = "Binary Search")
-public class FindClosestElements extends BaseProblem<List<Integer>> {
+@Problem(name = "Find K Closest Elements", category = "Binary Search")
+public class FindKClosestElements extends BaseProblem<List<Integer>> {
     public final int[] arr = new int[] { 1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
     public final int k = 3;
-    public final int x = 9;
+    public final int x = 10;
 
     @Override
     public List<Integer> solve() {

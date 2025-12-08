@@ -27,7 +27,6 @@ public class SquaresOfSortedArray_Practice extends BasePractice<Integer[], Squar
                 right--;
             }
             i--;
-
         }
         return answer;
     }
