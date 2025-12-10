@@ -15,17 +15,18 @@ public class GuessNumberHigherOrLower_Practice extends BasePractice<Integer, Gue
     public Integer practice() {
         int left = 0;
         int right = problem.n;
+
         while (left <= right) {
             int middle = left + (right - left) / 2;
-            if (problem.guess(middle) == 0) {
-                return middle;
-            } else if (problem.guess(middle) == -1) {
+            if (problem.guess(middle) == -1) {
                 right = middle - 1;
-            } else {
+            } else if (problem.guess(middle) == 1) {
                 left = middle + 1;
-            }
-
+            } else
+                return middle;
         }
+
         return left;
+
     }
 }

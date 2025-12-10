@@ -15,10 +15,6 @@ public class SearchInsertPosition extends BaseProblem<Integer> {
         int left = 0;
         while (left <= right) {
             final int middle = left + (right - left);
-            if (nums[middle] == target) {
-                left = middle;
-                break;
-            }
             if (nums[middle] > target) {
                 right = middle - 1;
             } else {

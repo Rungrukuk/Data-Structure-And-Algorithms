@@ -15,10 +15,10 @@ public class FirstBadVersion_Practice extends BasePractice<Integer, FirstBadVers
     public Integer practice() {
         int left = 0;
         int right = problem.n;
-        while (left <= right) {
+        while (left < right) {
             int middle = left + (right - left) / 2;
             if (problem.isBadVersion(middle)) {
-                right = middle - 1;
+                right = middle;
             } else
                 left = middle + 1;
         }
