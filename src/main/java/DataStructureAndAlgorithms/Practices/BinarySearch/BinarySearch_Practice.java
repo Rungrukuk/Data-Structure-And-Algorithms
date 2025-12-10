@@ -15,15 +15,16 @@ public class BinarySearch_Practice extends BasePractice<Integer, BinarySearch> {
     public Integer practice() {
         int left = 0;
         int right = problem.nums.length - 1;
-        while (left <= right) {
+
+        while (left < right) {
             int middle = left + (right - left) / 2;
             if (problem.nums[middle] == problem.target) {
                 return middle;
             }
-            if (problem.nums[middle] > problem.target) {
-                right = middle - 1;
-            } else
+            if (problem.nums[middle] < problem.target) {
                 left = middle + 1;
+            } else
+                right = middle;
         }
 
         return -1;

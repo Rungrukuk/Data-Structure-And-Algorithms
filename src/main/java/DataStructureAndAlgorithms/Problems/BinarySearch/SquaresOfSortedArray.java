@@ -4,14 +4,14 @@ import DataStructureAndAlgorithms.core.annotations.Problem;
 import DataStructureAndAlgorithms.core.base.BaseProblem;
 
 @Problem(name = "Squares Of Sorted Array", category = "Binary Search")
-public class SquaresOfSortedArray extends BaseProblem<Integer[]> {
-    public final int[] nums = new int[] { -4, -1, 0, 3, 10 };
+public class SquaresOfSortedArray extends BaseProblem<int[]> {
+    public final int[] nums = new int[] { -7, -3, 2, 3, 11 };
 
     @Override
-    public Integer[] solve() {
+    public int[] solve() {
         int left = 0;
         int right = nums.length - 1;
-        Integer[] answer = new Integer[nums.length];
+        int[] answer = new int[nums.length];
         int i = nums.length - 1;
         while (left <= right) {
             if (Math.abs(nums[left]) > Math.abs(nums[right])) {
