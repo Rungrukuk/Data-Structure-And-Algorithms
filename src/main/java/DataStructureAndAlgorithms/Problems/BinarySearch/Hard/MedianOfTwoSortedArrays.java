@@ -1,12 +1,12 @@
-package DataStructureAndAlgorithms.Problems.BinarySearch;
+package DataStructureAndAlgorithms.Problems.BinarySearch.Hard;
 
 import DataStructureAndAlgorithms.core.annotations.Problem;
 import DataStructureAndAlgorithms.core.base.BaseProblem;
 
-@Problem(name = "Median Of Two Sorted Arrays", category = "Binary Search")
+@Problem(name = "Median Of Two Sorted Arrays", category = "Binary Search", difficulty = "Hard")
 public class MedianOfTwoSortedArrays extends BaseProblem<Double> {
-    public int[] nums1 = new int[] { 1, 2, 3, 4, 5 };
-    public int[] nums2 = new int[] { 6, 7, 8, 9, 10, 11, 12 };
+    public int[] nums1 = new int[]{1, 2, 3, 4, 5};
+    public int[] nums2 = new int[]{6, 7, 8, 9, 10, 11, 12};
 
     @Override
     public Double solve() {

@@ -1,11 +1,11 @@
-package DataStructureAndAlgorithms.Problems.BinarySearch;
+package DataStructureAndAlgorithms.Problems.BinarySearch.Easy;
 
 import DataStructureAndAlgorithms.core.annotations.Problem;
 import DataStructureAndAlgorithms.core.base.BaseProblem;
 
-@Problem(name = "Binary Search", category = "Binary Search")
+@Problem(name = "Binary Search", category = "Binary Search", difficulty = "Easy")
 public class BinarySearch extends BaseProblem<Integer> {
-    public final int[] nums = new int[] { 1, 3, 5, 6 };
+    public final int[] nums = new int[]{1, 3, 5, 6};
     public final int target = 5;
 
     @Override

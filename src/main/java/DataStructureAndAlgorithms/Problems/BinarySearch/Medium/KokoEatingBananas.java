@@ -1,11 +1,11 @@
-package DataStructureAndAlgorithms.Problems.BinarySearch;
+package DataStructureAndAlgorithms.Problems.BinarySearch.Medium;
 
 import DataStructureAndAlgorithms.core.annotations.Problem;
 import DataStructureAndAlgorithms.core.base.BaseProblem;
 
-@Problem(name = "Koko Eating Bananas", category = "Binary Search")
+@Problem(name = "Koko Eating Bananas", category = "Binary Search", difficulty = "Medium")
 public class KokoEatingBananas extends BaseProblem<Integer> {
-    public final int[] piles = new int[] { 3, 6, 7, 11 };
+    public final int[] piles = new int[]{3, 6, 7, 11};
     public final int h = 8;
 
     @Override

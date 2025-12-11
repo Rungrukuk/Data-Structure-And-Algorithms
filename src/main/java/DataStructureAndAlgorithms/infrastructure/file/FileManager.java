@@ -19,7 +19,7 @@ public class FileManager {
 
         return Paths.get(
                 ApplicationConstants.BASE_PROBLEM_PACKAGE,
-                categoryFolder,
+                categoryFolder, problemInfo.getDifficulty(),
                 simpleClassName + ApplicationConstants.JAVA_FILE_SUFFIX).toString();
     }
 
@@ -30,10 +30,9 @@ public class FileManager {
 
         return Paths.get(
                 ApplicationConstants.BASE_PRACTICE_PACKAGE,
-                categoryFolder,
+                categoryFolder, problemInfo.getDifficulty(),
                 simpleClassName + ApplicationConstants.JAVA_FILE_SUFFIX).toString();
     }
-
 
     public boolean exists(String filePath) {
         return Paths.get(filePath).toFile().exists();

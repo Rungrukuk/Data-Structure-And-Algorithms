@@ -7,6 +7,7 @@ import DataStructureAndAlgorithms.domain.flows.ProblemFlowHandler;
 import DataStructureAndAlgorithms.menus.MenuOption;
 import DataStructureAndAlgorithms.ui.UIManager;
 import DataStructureAndAlgorithms.ui.navigation.MenuNavigator;
+import DataStructureAndAlgorithms.utils.ApplicationConstants;
 
 import java.util.List;
 import java.util.Optional;
@@ -51,7 +52,7 @@ public class ApplicationController {
                     handleRunProblems();
                     break;
                 case CREATE_PROBLEM:
-                    handleCreateProblem();
+                    problemFlow.createProblem();
                     break;
                 case MANAGE_PRACTICES:
                     handleManagePractices();
@@ -100,10 +101,6 @@ public class ApplicationController {
                     ui.showError("Unknown option selected");
             }
         }
-    }
-
-    private void handleCreateProblem() {
-        problemFlow.createProblem();
     }
 
     private void handleManagePractices() {
@@ -219,9 +216,47 @@ public class ApplicationController {
     }
 
     private void handleResetPracticesByCategory() {
-        Optional<List<PracticeInfo>> practices = practiceFlow.getItemsBySelectedCategory();
-        practices.ifPresentOrElse(practiceFlow::resetPracticesByCategory,
-                () -> ui.showError("Could not find the specified practice"));
+        Optional<List<PracticeInfo>> practicesOpt = practiceFlow.getItemsBySelectedCategory();
+
+        if (practicesOpt.isEmpty()) {
+            ui.showError("Could not find the specified practice");
+            ui.waitForEnter();
+            return;
+        }
+
+        List<PracticeInfo> practices = practicesOpt.get();
+        MenuOption selectedOption = menus.showBulkResetPracticesByCategoryMenu();
+
+        if (selectedOption == null) {
+            ui.showError("Invalid selection.");
+            ui.waitForEnter();
+            return;
+        }
+
+        switch (selectedOption.getKey()) {
+            case RESET_ALL_PRACTICES:
+                practiceFlow.resetPracticesByCategory(practices);
+                break;
+
+            case RESET_EASY_PRACTICES:
+                practiceFlow.resetPracticesByDifficulty(practices, ApplicationConstants.EASY_DIFFICULTY);
+                break;
+
+            case RESET_MEDIUM_PRACTICES:
+                practiceFlow.resetPracticesByDifficulty(practices, ApplicationConstants.MEDIUM_DIFFICULTY);
+                break;
+
+            case RESET_HARD_PRACTICES:
+                practiceFlow.resetPracticesByDifficulty(practices, ApplicationConstants.HARD_DIFFICULTY);
+                break;
+
+            case RETURN:
+                return;
+
+            default:
+                ui.showError("Unknown option selected");
+        }
+
         ui.waitForEnter();
     }
 

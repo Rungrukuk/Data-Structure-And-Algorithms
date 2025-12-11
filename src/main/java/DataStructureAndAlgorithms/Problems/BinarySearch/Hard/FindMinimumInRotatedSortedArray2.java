@@ -1,11 +1,11 @@
-package DataStructureAndAlgorithms.Problems.BinarySearch;
+package DataStructureAndAlgorithms.Problems.BinarySearch.Hard;
 
-import DataStructureAndAlgorithms.core.base.BaseProblem;
 import DataStructureAndAlgorithms.core.annotations.Problem;
+import DataStructureAndAlgorithms.core.base.BaseProblem;
 
-@Problem(name = "Find Minimum In Rotated Sorted Array 2", category = "Binary Search")
+@Problem(name = "Find Minimum In Rotated Sorted Array 2", category = "Binary Search", difficulty = "Hard")
 public class FindMinimumInRotatedSortedArray2 extends BaseProblem<Integer> {
-    int[] nums = new int[] { 4, 5, 6, 7, 0, 1, 4 };
+    int[] nums = new int[]{4, 5, 6, 7, 0, 1, 4};
 
     @Override
     public Integer solve() {

@@ -1,11 +1,11 @@
-package DataStructureAndAlgorithms.Problems.BinarySearch;
+package DataStructureAndAlgorithms.Problems.BinarySearch.Medium;
 
 import DataStructureAndAlgorithms.core.annotations.Problem;
 import DataStructureAndAlgorithms.core.base.BaseProblem;
 
-@Problem(name = "Search In Rotated Sorted Array", category = "Binary Search")
+@Problem(name = "Search In Rotated Sorted Array", category = "Binary Search", difficulty = "Medium")
 public class SearchInRotatedSortedArray extends BaseProblem<Integer> {
-    public final int[] nums = new int[] { 3, 5, 1 };
+    public final int[] nums = new int[]{3, 5, 1};
     public final int target = 3;
 
     @Override

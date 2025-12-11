@@ -74,6 +74,12 @@ public class PracticeFlowHandler extends BaseFlowHandler<PracticeInfo> {
         return practice -> practice.getProblemInfo().getName();
     }
 
+    public void resetPracticesByDifficulty(List<PracticeInfo> practiceInfos, String difficulty) {
+        List<PracticeInfo> practicesInChosenDifficulty = orchestrator.listPracticesByDifficulty(practiceInfos,
+                difficulty);
+        orchestrator.bulkResetPractices(practicesInChosenDifficulty);
+    }
+
     public void resetPractice(PracticeInfo practiceInfo) {
         orchestrator.resetPractice(practiceInfo);
         ui.showSuccess("Practice resetted successfully!");
@@ -89,7 +95,8 @@ public class PracticeFlowHandler extends BaseFlowHandler<PracticeInfo> {
         ui.showSuccess("Practices resetted successfully!");
 
     }
-    public void resetPracticesByCategory(List<PracticeInfo> practiceInfos){
+
+    public void resetPracticesByCategory(List<PracticeInfo> practiceInfos) {
         orchestrator.bulkResetPractices(practiceInfos);
         ui.showSuccess("Practices resetted successfully!");
     }

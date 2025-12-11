@@ -1,12 +1,12 @@
-package DataStructureAndAlgorithms.Problems.BinarySearch;
+package DataStructureAndAlgorithms.Problems.BinarySearch.Hard;
 
-import DataStructureAndAlgorithms.core.base.BaseProblem;
 import DataStructureAndAlgorithms.core.annotations.Problem;
+import DataStructureAndAlgorithms.core.base.BaseProblem;
 
-@Problem(name = "Kth Smallest Product Of Two Sorted Arrays", category = "Binary Search")
+@Problem(name = "Kth Smallest Product Of Two Sorted Arrays", category = "Binary Search", difficulty = "Hard")
 public class KthSmallestProductOfTwoSortedArrays extends BaseProblem<Long> {
-    public int[] nums1 = new int[] { -2, -1, 0, 1, 2 };
-    public int[] nums2 = new int[] { -3, -1, 2, 4, 5 };
+    public int[] nums1 = new int[]{-2, -1, 0, 1, 2};
+    public int[] nums2 = new int[]{-3, -1, 2, 4, 5};
     public int k = 3;
 
     @Override

@@ -1,9 +1,9 @@
-package DataStructureAndAlgorithms.Problems.BinarySearch;
+package DataStructureAndAlgorithms.Problems.BinarySearch.Easy;
 
 import DataStructureAndAlgorithms.core.annotations.Problem;
 import DataStructureAndAlgorithms.core.base.BaseProblem;
 
-@Problem(name = "Guess Number Higher Or Lower", category = "Binary Search")
+@Problem(name = "Guess Number Higher Or Lower", category = "Binary Search", difficulty = "Easy")
 public class GuessNumberHigherOrLower extends BaseProblem<Integer> {
     public final int n = 10;
     private final int pick = 6;

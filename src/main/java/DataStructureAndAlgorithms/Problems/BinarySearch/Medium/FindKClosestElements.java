@@ -1,14 +1,14 @@
-package DataStructureAndAlgorithms.Problems.BinarySearch;
-
-import java.util.ArrayList;
-import java.util.List;
+package DataStructureAndAlgorithms.Problems.BinarySearch.Medium;
 
 import DataStructureAndAlgorithms.core.annotations.Problem;
 import DataStructureAndAlgorithms.core.base.BaseProblem;
 
-@Problem(name = "Find K Closest Elements", category = "Binary Search")
+import java.util.ArrayList;
+import java.util.List;
+
+@Problem(name = "Find K Closest Elements", category = "Binary Search", difficulty = "Medium")
 public class FindKClosestElements extends BaseProblem<List<Integer>> {
-    public final int[] arr = new int[] { 1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+    public final int[] arr = new int[]{1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     public final int k = 3;
     public final int x = 10;
 

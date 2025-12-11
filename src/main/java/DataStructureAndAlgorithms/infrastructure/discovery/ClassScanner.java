@@ -9,7 +9,6 @@ import DataStructureAndAlgorithms.core.models.ProblemInfo;
 import DataStructureAndAlgorithms.utils.ApplicationConstants;
 import DataStructureAndAlgorithms.utils.NameFormatter;
 import DataStructureAndAlgorithms.utils.TypeValidator;
-
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
 import org.reflections.util.ClasspathHelper;
@@ -39,7 +38,8 @@ public class ClassScanner {
                             annotation.category(),
                             clazz.getName(),
                             simpleReturnType,
-                            filePath);
+                            filePath,
+                            annotation.difficulty());
                 },
                 Problem::name,
                 ProblemInfo::getUniqueId,
@@ -90,10 +90,8 @@ public class ClassScanner {
         for (Class<?> clazz : getAnnotatedClasses(packageName, annotationType)) {
             validateSuperclass(clazz, requiredSuperclass);
             Type[] generics = extractGenerics(clazz, requiredGenerics);
-
             A annotation = clazz.getAnnotation(annotationType);
             T info = factory.create(clazz, annotation, generics);
-
             String key = keyExtractor.apply(annotation);
             validateDuplicate(result, key, info, isProblem, idExtractor, filePathExtractor);
             result.computeIfAbsent(key, k -> new ArrayList<>()).add(info);

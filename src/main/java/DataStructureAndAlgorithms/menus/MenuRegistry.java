@@ -12,11 +12,13 @@ public class MenuRegistry {
     public static final MenuOption CREATE_PROBLEM = new MenuOption(MenuKey.CREATE_PROBLEM, "Create New Problem");
     public static final MenuOption MANAGE_PRACTICES = new MenuOption(MenuKey.MANAGE_PRACTICES, "Manage Practices");
 
-    public static final MenuOption LIST_ALL_PROBLEMS = new MenuOption(MenuKey.LIST_ALL_PROBLEMS, "List All Problems");
+    public static final MenuOption LIST_ALL_PROBLEMS = new MenuOption(MenuKey.LIST_ALL_PROBLEMS,
+            "List All Problems");
     public static final MenuOption LIST_PROBLEMS_BY_CATEGORY = new MenuOption(MenuKey.LIST_PROBLEMS_BY_CATEGORY,
             "List Problems By Category");
 
-    public static final MenuOption CREATE_PRACTICE = new MenuOption(MenuKey.CREATE_PRACTICE, "Create Practice Class");
+    public static final MenuOption CREATE_PRACTICE = new MenuOption(MenuKey.CREATE_PRACTICE,
+            "Create Practice Class");
     public static final MenuOption RESET_PRACTICE = new MenuOption(MenuKey.RESET_PRACTICE, "Reset Practices");
 
     public static final MenuOption LIST_ALL_PRACTICES = new MenuOption(MenuKey.LIST_ALL_PRACTICES,
@@ -28,9 +30,19 @@ public class MenuRegistry {
 
     public static final MenuOption FIND_SPECIFIC_PROBLEM = new MenuOption(MenuKey.FIND_SPECIFIC_PROBLEM,
             "Find Specific Problem");
-    public static final MenuOption BULK_RESET_PRACTICES = new MenuOption(MenuKey.BULK_RESET_PRACTICES, "Bulk Reset Practices");
-    public static final MenuOption RESET_ALL_PRACTICES = new MenuOption(MenuKey.RESET_ALL_PRACTICES, "Reset All Practices");
-    public static final MenuOption RESET_PRACTICES_BY_CATEGORY = new MenuOption(MenuKey.RESET_PRACTICES_BY_CATEGORY, "Reset Practices By Category");
+    public static final MenuOption BULK_RESET_PRACTICES = new MenuOption(MenuKey.BULK_RESET_PRACTICES,
+            "Bulk Reset Practices");
+    public static final MenuOption RESET_ALL_PRACTICES = new MenuOption(MenuKey.RESET_ALL_PRACTICES,
+            "Reset All Practices");
+    public static final MenuOption RESET_PRACTICES_BY_CATEGORY = new MenuOption(MenuKey.RESET_PRACTICES_BY_CATEGORY,
+            "Reset Practices By Category");
+
+    public static final MenuOption RESET_EASY_PRACTICES = new MenuOption(MenuKey.RESET_EASY_PRACTICES,
+            "Reset Easy Pactices");
+    public static final MenuOption RESET_MEDIUM_PRACTICES = new MenuOption(MenuKey.RESET_MEDIUM_PRACTICES,
+            "Reset Medium Pactices");
+    public static final MenuOption RESET_HARD_PRACTICES = new MenuOption(MenuKey.RESET_HARD_PRACTICES,
+            "Reset Hard Pactices");
 
     public static final List<MenuOption> MAIN_MENU = Arrays.asList(
             RUN_PROBLEMS,
@@ -58,18 +70,23 @@ public class MenuRegistry {
             LIST_PROBLEMS_BY_CATEGORY,
             FIND_SPECIFIC_PROBLEM,
             RETURN);
-     public static final List<MenuOption> RESET_PRACTICE_MENU = Arrays.asList(
-        LIST_ALL_PRACTICES,
-        LIST_PRACTICES_BY_CATEGORY,
-        FIND_SPECIFIC_PRACTICE,
-        RETURN
-     );
+    public static final List<MenuOption> RESET_PRACTICE_MENU = Arrays.asList(
+            LIST_ALL_PRACTICES,
+            LIST_PRACTICES_BY_CATEGORY,
+            FIND_SPECIFIC_PRACTICE,
+            RETURN);
 
-     public static final List<MenuOption> BULK_RESET_PRACTICES_MENU = Arrays.asList(
-             RESET_ALL_PRACTICES,
-             RESET_PRACTICES_BY_CATEGORY,
-             RETURN
-     );
+    public static final List<MenuOption> BULK_RESET_PRACTICES_MENU = Arrays.asList(
+            RESET_ALL_PRACTICES,
+            RESET_PRACTICES_BY_CATEGORY,
+            RETURN);
+
+    public static final List<MenuOption> BULK_RESET_PRACTICES_BY_CATEGORY_MENU = Arrays.asList(
+            RESET_ALL_PRACTICES,
+            RESET_EASY_PRACTICES,
+            RESET_MEDIUM_PRACTICES,
+            RESET_HARD_PRACTICES,
+            RETURN);
 
     public static List<String> getLabels(List<MenuOption> menu) {
         return menu.stream()

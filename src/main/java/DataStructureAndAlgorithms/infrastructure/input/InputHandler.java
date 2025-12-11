@@ -61,7 +61,7 @@ public class InputHandler {
         } else if (input.equals("N") || input.equals("NO")) {
             return false;
         } else {
-            throw new ValidationException("Invalid input. Please enter Y or N.");
+            throw new ValidationException("Input must be one of: Y (Yes) or N (No).");
         }
     }
 
@@ -83,5 +83,19 @@ public class InputHandler {
 
     public void close() {
         scanner.close();
+    }
+
+    public String readDifficulty() {
+        String input = readLine().toUpperCase();
+        if (input.isBlank()) {
+            throw new ValidationException("Input cannot be empty.");
+        }
+        return switch (input) {
+            case ApplicationConstants.RETURN_BACK -> input;
+            case "H", "HARD" -> ApplicationConstants.HARD_DIFFICULTY;
+            case "M", "MEDIUM" -> ApplicationConstants.MEDIUM_DIFFICULTY;
+            case "E", "EASY" -> ApplicationConstants.EASY_DIFFICULTY;
+            default -> throw new ValidationException("Input must be one of: H (Hard), M (Medium), or E (Easy).");
+        };
     }
 }

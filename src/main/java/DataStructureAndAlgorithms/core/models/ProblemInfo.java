@@ -12,12 +12,24 @@ public class ProblemInfo {
 
     private String filePath;
 
-    public ProblemInfo(String name, String category, String className, String returnType, String filePath) {
+    private String difficulty;
+
+    public ProblemInfo(String name, String category, String className, String returnType, String filePath,
+                       String difficulty) {
         this.name = name;
         this.category = category;
         this.className = className;
         this.returnType = returnType;
         this.filePath = filePath;
+        this.difficulty = difficulty;
+    }
+
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
     }
 
     public String getFilePath() {

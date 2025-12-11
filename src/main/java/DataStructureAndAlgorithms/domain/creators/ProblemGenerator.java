@@ -25,7 +25,7 @@ public class ProblemGenerator {
 
         String className = NameFormatter.generateProblemSimpleClassName(problemInfo.getName());
         String packageName = ApplicationConstants.PROBLEM_PACKAGE + "." +
-                NameFormatter.generateCategoryFolderName(problemInfo.getCategory());
+                NameFormatter.generateCategoryFolderName(problemInfo.getCategory()) + "." + problemInfo.getDifficulty();
         String content = generateProblemTemplate(problemInfo, className, packageName);
 
         try {
@@ -51,9 +51,9 @@ public class ProblemGenerator {
         return String.format(
                 """
                          package %s;
-                        
+
                          %s
-                         @Problem(name = "%s", category = "%s")
+                         @Problem(name = "%s", category = "%s", difficulty = "%s")
                          public class %s extends BaseProblem<%s> {
                         
                              @Override
@@ -67,6 +67,7 @@ public class ProblemGenerator {
                 imports,
                 info.getName(),
                 info.getCategory(),
+                info.getDifficulty(),
                 className,
                 returnType,
                 returnType);

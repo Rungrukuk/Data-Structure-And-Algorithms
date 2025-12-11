@@ -1,12 +1,12 @@
-package DataStructureAndAlgorithms.Problems.BinarySearch;
+package DataStructureAndAlgorithms.Problems.BinarySearch.Easy;
 
 import DataStructureAndAlgorithms.core.annotations.Problem;
 import DataStructureAndAlgorithms.core.base.BaseProblem;
 
-@Problem(name = "Search Insert Position", category = "Binary Search")
+@Problem(name = "Search Insert Position", category = "Binary Search", difficulty = "Easy")
 public class SearchInsertPosition extends BaseProblem<Integer> {
 
-    public final int[] nums = new int[] { 1, 3, 5, 6 };
+    public final int[] nums = new int[]{1, 3, 5, 6};
     public final int target = 0;
 
     @Override

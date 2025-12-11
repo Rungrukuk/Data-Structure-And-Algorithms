@@ -1,11 +1,11 @@
-package DataStructureAndAlgorithms.Problems.BinarySearch;
+package DataStructureAndAlgorithms.Problems.BinarySearch.Easy;
 
 import DataStructureAndAlgorithms.core.annotations.Problem;
 import DataStructureAndAlgorithms.core.base.BaseProblem;
 
-@Problem(name = "Squares Of Sorted Array", category = "Binary Search")
+@Problem(name = "Squares Of Sorted Array", category = "Binary Search", difficulty = "Easy")
 public class SquaresOfSortedArray extends BaseProblem<int[]> {
-    public final int[] nums = new int[] { -7, -3, 2, 3, 11 };
+    public final int[] nums = new int[]{-7, -3, 2, 3, 11};
 
     @Override
     public int[] solve() {

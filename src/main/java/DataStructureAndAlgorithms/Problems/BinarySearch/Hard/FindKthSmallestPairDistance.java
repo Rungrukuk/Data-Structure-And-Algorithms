@@ -1,15 +1,14 @@
-package DataStructureAndAlgorithms.Problems.BinarySearch;
+package DataStructureAndAlgorithms.Problems.BinarySearch.Hard;
 
+import DataStructureAndAlgorithms.core.annotations.Problem;
 import DataStructureAndAlgorithms.core.base.BaseProblem;
 
 import java.util.Arrays;
 
-import DataStructureAndAlgorithms.core.annotations.Problem;
-
-@Problem(name = "Find Kth Smallest Pair Distance", category = "Binary Search")
+@Problem(name = "Find Kth Smallest Pair Distance", category = "Binary Search", difficulty = "Hard")
 public class FindKthSmallestPairDistance extends BaseProblem<Integer> {
 
-    public int[] nums = new int[] { 2, 4, 5, 0, 10, 4, 10, 6, 6, 9, 3, 7, 3, 5, 8, 6, 6, 10, 7, 4, 3, 1, 3, 0, 7, 10, 9,
+    public int[] nums = new int[]{2, 4, 5, 0, 10, 4, 10, 6, 6, 9, 3, 7, 3, 5, 8, 6, 6, 10, 7, 4, 3, 1, 3, 0, 7, 10, 9,
             7, 3, 1, 10, 0, 9, 2, 2, 0, 0, 10, 1, 7, 8, 4, 2, 1, 0, 3, 0, 10, 2, 8, 0, 8, 5, 7, 2, 5, 0, 0, 3, 9, 0, 1,
             3, 2, 3, 3, 9, 6, 9, 8, 4, 5, 3, 6, 0, 4, 0, 1, 8, 3, 4, 4, 5, 2, 8, 5, 7, 7, 8, 9, 8, 0, 9, 0, 0, 10, 9, 7,
             7, 1, 0, 1, 1, 3, 1, 1, 3, 3, 10, 10, 0, 10, 6, 0, 7, 6, 0, 7, 5, 1, 0, 2, 3, 2, 9, 9, 1, 6, 7, 7, 9, 0, 3,
@@ -296,7 +295,7 @@ public class FindKthSmallestPairDistance extends BaseProblem<Integer> {
             2, 0, 9, 1, 2, 1, 7, 0, 10, 2, 2, 5, 0, 7, 1, 9, 9, 7, 2, 10, 4, 3, 2, 6, 10, 0, 4, 2, 1, 10, 5, 10, 2, 0,
             3, 5, 9, 2, 7, 1, 7, 0, 7, 4, 2, 8, 0, 3, 0, 6, 3, 8, 0, 7, 1, 10, 9, 9, 1, 5, 10, 7, 9, 6, 8, 10, 7, 8, 2,
             10, 2, 6, 1, 4, 9, 2, 3, 7, 9, 5, 8, 4, 5, 6, 6, 9, 7, 3, 10, 2, 5, 4, 3, 3, 10, 4, 7, 2, 3, 3, 5, 3, 7, 1,
-            10, 7, 1, 4, 3, 4 };
+            10, 7, 1, 4, 3, 4};
     public int k = 25000000;
 
     @Override
