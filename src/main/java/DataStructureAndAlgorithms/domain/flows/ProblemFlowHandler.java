@@ -1,12 +1,11 @@
 package DataStructureAndAlgorithms.domain.flows;
 
-import DataStructureAndAlgorithms.core.exceptions.ValidationException;
 import DataStructureAndAlgorithms.core.models.ProblemInfo;
 import DataStructureAndAlgorithms.domain.problems.ProblemOrchestrator;
+import DataStructureAndAlgorithms.exceptions.core.ValidationException;
 import DataStructureAndAlgorithms.ui.UIManager;
 import DataStructureAndAlgorithms.ui.navigation.SelectionHandler;
 import DataStructureAndAlgorithms.ui.prompts.Prompter;
-import DataStructureAndAlgorithms.utils.ApplicationConstants;
 
 import java.util.List;
 import java.util.Map;
@@ -32,7 +31,7 @@ public class ProblemFlowHandler extends BaseFlowHandler<ProblemInfo> {
 
     @Override
     protected String getNotFoundMessage(String name) {
-        return ApplicationConstants.DIDNOT_FIND_PROBLEM_NAME + name;
+        return "Could not find specified problem: " + name;
     }
 
     @Override

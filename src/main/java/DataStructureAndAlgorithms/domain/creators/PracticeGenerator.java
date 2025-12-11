@@ -2,7 +2,7 @@ package DataStructureAndAlgorithms.domain.creators;
 
 import DataStructureAndAlgorithms.core.models.PracticeInfo;
 import DataStructureAndAlgorithms.core.models.ProblemInfo;
-import DataStructureAndAlgorithms.domain.exceptions.CreationException;
+import DataStructureAndAlgorithms.exceptions.domain.CreationException;
 import DataStructureAndAlgorithms.infrastructure.file.FileManager;
 import DataStructureAndAlgorithms.utils.ApplicationConstants;
 import DataStructureAndAlgorithms.utils.NameFormatter;
@@ -28,7 +28,8 @@ public class PracticeGenerator {
 
         String className = NameFormatter.generatePracticeSimpleClassName(problemInfo.getName());
         String packageName = ApplicationConstants.PRACTICE_PACKAGE + "." +
-                NameFormatter.generateCategoryFolderName(problemInfo.getCategory()) + "." + problemInfo.getDifficulty();
+                NameFormatter.generateCategoryFolderName(problemInfo.getCategory()) + "." +
+                problemInfo.getDifficulty();
         String content = generatePracticeTemplate(problemInfo, className, packageName);
 
         try {

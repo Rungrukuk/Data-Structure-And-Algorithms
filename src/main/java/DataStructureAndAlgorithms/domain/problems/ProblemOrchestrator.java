@@ -45,15 +45,8 @@ public class ProblemOrchestrator {
 
     public void createNewProblem(String name, String category, String returnType, String difficulty) {
         ProblemInfo problemInfo = new ProblemInfo(name, category, null, returnType, null, difficulty);
-
-        try {
-            problemGenerator.createProblem(problemInfo);
-
-            problemRepository.add(problemInfo);
-
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
+        problemGenerator.createProblem(problemInfo);
+        problemRepository.add(problemInfo);
     }
 
     // ========================= UTILITY METHODS =========================

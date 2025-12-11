@@ -2,6 +2,7 @@ package DataStructureAndAlgorithms.domain.problems;
 
 import DataStructureAndAlgorithms.core.models.ProblemInfo;
 import DataStructureAndAlgorithms.infrastructure.discovery.ClassScanner;
+import DataStructureAndAlgorithms.utils.ProblemComparators;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,7 +42,9 @@ public class ProblemRepositoryImpl implements ProblemRepository {
 
     @Override
     public List<ProblemInfo> findAll() {
-        return new ArrayList<>(problemsById.values());
+        return problemsById.values().stream()
+                .sorted(ProblemComparators.PROBLEM_BY_CATEGORY_DIFFICULTY_NAME)
+                .toList();
     }
 
     @Override
@@ -51,9 +54,10 @@ public class ProblemRepositoryImpl implements ProblemRepository {
 
     @Override
     public List<ProblemInfo> findByName(String name) {
-        return problemsByName.getOrDefault(name, new ArrayList<>());
+        return problemsByName.getOrDefault(name, new ArrayList<>()).stream()
+                .sorted(ProblemComparators.PROBLEM_BY_CATEGORY_DIFFICULTY_NAME)
+                .toList();
     }
-
     @Override
     public Optional<ProblemInfo> findByNameAndCategory(String name, String category) {
         return findByName(name).stream()
@@ -63,7 +67,13 @@ public class ProblemRepositoryImpl implements ProblemRepository {
 
     @Override
     public Map<String, List<ProblemInfo>> findAllGroupedByCategory() {
-        return new HashMap<>(problemsByCategory);
+        Map<String, List<ProblemInfo>> copy = new HashMap<>();
+
+        problemsByCategory.forEach((category, list) -> {
+            copy.put(category, list.stream().sorted(ProblemComparators.PROBLEM_BY_CATEGORY_DIFFICULTY_NAME).toList());
+        });
+
+        return copy;
     }
 
     @Override

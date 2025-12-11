@@ -6,7 +6,6 @@ import DataStructureAndAlgorithms.domain.practices.PracticeOrchestrator;
 import DataStructureAndAlgorithms.ui.UIManager;
 import DataStructureAndAlgorithms.ui.navigation.SelectionHandler;
 import DataStructureAndAlgorithms.ui.prompts.Prompter;
-import DataStructureAndAlgorithms.utils.ApplicationConstants;
 
 import java.util.List;
 import java.util.Map;
@@ -32,7 +31,7 @@ public class PracticeFlowHandler extends BaseFlowHandler<PracticeInfo> {
 
     @Override
     protected String getNotFoundMessage(String name) {
-        return ApplicationConstants.DIDNOT_FIND_PRACTICE_NAME + name;
+        return "Could not find specified practice: " + name;
     }
 
     @Override

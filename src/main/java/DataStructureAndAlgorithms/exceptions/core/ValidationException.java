@@ -1,4 +1,4 @@
-package DataStructureAndAlgorithms.core.exceptions;
+package DataStructureAndAlgorithms.exceptions.core;
 
 public class ValidationException extends RuntimeException {
     public ValidationException(String message) {

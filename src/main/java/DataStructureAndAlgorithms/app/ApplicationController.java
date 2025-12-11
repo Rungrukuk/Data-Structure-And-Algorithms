@@ -1,5 +1,6 @@
 package DataStructureAndAlgorithms.app;
 
+import DataStructureAndAlgorithms.core.models.Difficulty;
 import DataStructureAndAlgorithms.core.models.PracticeInfo;
 import DataStructureAndAlgorithms.core.models.ProblemInfo;
 import DataStructureAndAlgorithms.domain.flows.PracticeFlowHandler;
@@ -7,7 +8,6 @@ import DataStructureAndAlgorithms.domain.flows.ProblemFlowHandler;
 import DataStructureAndAlgorithms.menus.MenuOption;
 import DataStructureAndAlgorithms.ui.UIManager;
 import DataStructureAndAlgorithms.ui.navigation.MenuNavigator;
-import DataStructureAndAlgorithms.utils.ApplicationConstants;
 
 import java.util.List;
 import java.util.Optional;
@@ -239,15 +239,15 @@ public class ApplicationController {
                 break;
 
             case RESET_EASY_PRACTICES:
-                practiceFlow.resetPracticesByDifficulty(practices, ApplicationConstants.EASY_DIFFICULTY);
+                practiceFlow.resetPracticesByDifficulty(practices, Difficulty.EASY.toString());
                 break;
 
             case RESET_MEDIUM_PRACTICES:
-                practiceFlow.resetPracticesByDifficulty(practices, ApplicationConstants.MEDIUM_DIFFICULTY);
+                practiceFlow.resetPracticesByDifficulty(practices, Difficulty.MEDIUM.toString());
                 break;
 
             case RESET_HARD_PRACTICES:
-                practiceFlow.resetPracticesByDifficulty(practices, ApplicationConstants.HARD_DIFFICULTY);
+                practiceFlow.resetPracticesByDifficulty(practices, Difficulty.HARD.toString());
                 break;
 
             case RETURN:

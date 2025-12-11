@@ -12,7 +12,7 @@ public class ProblemInfo {
 
     private String filePath;
 
-    private String difficulty;
+    private Difficulty difficulty;
 
     public ProblemInfo(String name, String category, String className, String returnType, String filePath,
                        String difficulty) {
@@ -21,15 +21,15 @@ public class ProblemInfo {
         this.className = className;
         this.returnType = returnType;
         this.filePath = filePath;
-        this.difficulty = difficulty;
+        this.difficulty = Difficulty.fromString(difficulty);
     }
 
-    public String getDifficulty() {
+    public Difficulty getDifficulty() {
         return difficulty;
     }
 
     public void setDifficulty(String difficulty) {
-        this.difficulty = difficulty;
+        this.difficulty = Difficulty.fromString(difficulty);
     }
 
     public String getFilePath() {

@@ -19,7 +19,7 @@ public class FileManager {
 
         return Paths.get(
                 ApplicationConstants.BASE_PROBLEM_PACKAGE,
-                categoryFolder, problemInfo.getDifficulty(),
+                categoryFolder, problemInfo.getDifficulty().toString(),
                 simpleClassName + ApplicationConstants.JAVA_FILE_SUFFIX).toString();
     }
 
@@ -30,7 +30,7 @@ public class FileManager {
 
         return Paths.get(
                 ApplicationConstants.BASE_PRACTICE_PACKAGE,
-                categoryFolder, problemInfo.getDifficulty(),
+                categoryFolder, problemInfo.getDifficulty().toString(),
                 simpleClassName + ApplicationConstants.JAVA_FILE_SUFFIX).toString();
     }
 

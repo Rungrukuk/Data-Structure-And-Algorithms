@@ -125,16 +125,12 @@ public class SelectionHandler {
     // ========================= FORMATTERS =========================
 
     public String formatProblem(ProblemInfo problem) {
-        return String.format("%s [Category: %s]",
-                problem.getName(),
-                problem.getCategory());
+        return String.format("%-45s%-30s%s", problem.getName(), String.format("[Category: %s]", problem.getCategory()), problem.getDifficulty());
     }
 
     public String formatPractice(PracticeInfo practice) {
         ProblemInfo problem = practice.getProblemInfo();
-        return String.format("%s [Category: %s]",
-                problem.getName(),
-                problem.getCategory());
+        return String.format("%-45s%-30s%s", problem.getName(), String.format("[Category: %s]", problem.getCategory()), problem.getDifficulty());
     }
 
 

@@ -36,7 +36,7 @@ public class PracticeOrchestrator {
 
     public List<PracticeInfo> listPracticesByDifficulty(List<PracticeInfo> categorizedPractices, String difficulty) {
         return categorizedPractices.stream()
-                .filter(p -> difficulty.equals(p.getProblemInfo().getDifficulty()))
+                .filter(p -> difficulty.equals(p.getProblemInfo().getDifficulty().toString()))
                 .toList();
     }
 

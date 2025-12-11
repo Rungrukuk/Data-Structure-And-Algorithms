@@ -4,6 +4,7 @@ import DataStructureAndAlgorithms.core.models.PracticeInfo;
 import DataStructureAndAlgorithms.core.models.ProblemInfo;
 import DataStructureAndAlgorithms.domain.problems.ProblemRepository;
 import DataStructureAndAlgorithms.infrastructure.discovery.ClassScanner;
+import DataStructureAndAlgorithms.utils.ProblemComparators;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -51,17 +52,20 @@ public class PracticeRepositoryImpl implements PracticeRepository {
 
     @Override
     public List<PracticeInfo> findAll() {
-        return new ArrayList<>(practicesById.values());
+        return practicesById.values().stream()
+                .sorted(ProblemComparators.PRACTICE_BY_CATEGORY_DIFFICULTY_NAME)
+                .toList();
     }
 
     @Override
     public Optional<PracticeInfo> findById(String uniqueId) {
         return Optional.ofNullable(practicesById.get(uniqueId));
     }
-
     @Override
     public List<PracticeInfo> findByName(String name) {
-        return practicesByName.getOrDefault(name, new ArrayList<>());
+        return practicesByName.getOrDefault(name, new ArrayList<>()).stream()
+                .sorted(ProblemComparators.PRACTICE_BY_CATEGORY_DIFFICULTY_NAME)
+                .toList();
     }
 
     @Override
@@ -73,7 +77,13 @@ public class PracticeRepositoryImpl implements PracticeRepository {
 
     @Override
     public Map<String, List<PracticeInfo>> findAllGroupedByCategory() {
-        return new HashMap<>(practicesByCategory);
+        Map<String, List<PracticeInfo>> copy = new HashMap<>();
+
+        practicesByCategory.forEach((category, list) -> {
+            copy.put(category, list.stream().sorted(ProblemComparators.PRACTICE_BY_CATEGORY_DIFFICULTY_NAME).toList());
+        });
+
+        return copy;
     }
 
     @Override

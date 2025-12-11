@@ -2,7 +2,6 @@ package DataStructureAndAlgorithms.ui.prompts;
 
 import DataStructureAndAlgorithms.infrastructure.input.InputHandler;
 import DataStructureAndAlgorithms.ui.UIManager;
-import DataStructureAndAlgorithms.utils.ApplicationConstants;
 
 import java.util.Optional;
 
@@ -27,12 +26,12 @@ public class Prompter {
     }
 
     public Optional<String> promptForReturnTypeOptional() {
-        uiManager.showPrompt(ApplicationConstants.ENTER_RETURN_TYPE);
+        uiManager.showPrompt("Enter return type {e.g.,Integer, List<String>}(0 to return): ");
         try {
             String input = inputHandler.readReturnType();
             return Optional.of(input);
         } catch (Exception e) {
-            uiManager.showError(ApplicationConstants.INVALID_RETURN_TYPE);
+            uiManager.showError("Invalid return type");
             return Optional.empty();
         }
     }
@@ -48,21 +47,21 @@ public class Prompter {
     }
 
     public Optional<String> promptForProblemNameOptional() {
-        return promptForName(ApplicationConstants.ENTER_PROBLEM_NAME,
-                ApplicationConstants.INVALID_PROBLEM_NAME);
+        return promptForName("Enter a problem name (0 to return): ",
+                "Invalid problem name");
     }
 
     public Optional<String> promptForPracticeNameOptional() {
-        return promptForName(ApplicationConstants.ENTER_PRACTICE_NAME,
-                ApplicationConstants.INVALID_PRACTICE_NAME);
+        return promptForName("Enter a practice name (0 to return): ",
+                "Invalid practice name");
     }
 
     public Optional<String> promptForCategoryNameOptional() {
-        return promptForName(ApplicationConstants.ENTER_CATEGORY_NAME, ApplicationConstants.INVALID_CATEGORY_NAME);
+        return promptForName("Enter a category name (0 to return): ", "Invalid category name");
     }
 
     public Optional<String> promptForDifficultyOptional() {
-        uiManager.showPrompt(ApplicationConstants.ENTER_DIFFICULTY);
+        uiManager.showPrompt("Enter difficulty {H (Hard), M (Medium), E (Easy)}(0 to return): ");
         try {
             return Optional.of(inputHandler.readDifficulty());
         } catch (Exception e) {
