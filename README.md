@@ -206,24 +206,16 @@ PracticeResult result = new PracticeResult(
 );
 ```
 
-Similarity-based scoring is used for non-exact matches.
 
 ---
 
 ## 🔧 Advanced Usage
 
 * Reset all practices in a category
-* Reset only HARD difficulties
+* Reset only Hard difficulties
 * Generate new problem templates
-* Custom sorting using `ProblemComparators`
 
 ---
-
-## 🧪 Testing Strategy
-
-* Unit tests for orchestrators, utilities, and infrastructure
-* Integration tests for end-to-end flow
-* Architecture compliance tests
 
 ---
 
@@ -254,4 +246,5 @@ Similarity-based scoring is used for non-exact matches.
 ## 🎉 Happy Coding!
 
 This framework provides a scalable and professional architecture for mastering DSA through structured, hands-on practice!
+
 
