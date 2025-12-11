@@ -117,7 +117,7 @@ java -cp out DataStructureAndAlgorithms.app.AppLauncher
 ### **2. Create a Problem**
 
 ```java
-@Problem(name = "Binary Search", category = "Search", difficulty = "EASY")
+@Problem(name = "Binary Search", category = "Search", difficulty = "Easy")
 public class BinarySearch extends BaseProblem<Integer> {
     private final int[] nums = {-1, 0, 3, 5, 9, 12};
     private final int target = 9;
@@ -254,3 +254,4 @@ Similarity-based scoring is used for non-exact matches.
 ## 🎉 Happy Coding!
 
 This framework provides a scalable and professional architecture for mastering DSA through structured, hands-on practice!
+
