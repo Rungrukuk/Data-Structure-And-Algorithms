@@ -1,7 +1,7 @@
 package DataStructureAndAlgorithms.domain.creators;
 
 import DataStructureAndAlgorithms.core.models.ProblemInfo;
-import DataStructureAndAlgorithms.domain.exceptions.CreationException;
+import DataStructureAndAlgorithms.exceptions.domain.CreationException;
 import DataStructureAndAlgorithms.infrastructure.file.FileManager;
 import DataStructureAndAlgorithms.utils.ApplicationConstants;
 import DataStructureAndAlgorithms.utils.NameFormatter;
@@ -25,7 +25,8 @@ public class ProblemGenerator {
 
         String className = NameFormatter.generateProblemSimpleClassName(problemInfo.getName());
         String packageName = ApplicationConstants.PROBLEM_PACKAGE + "." +
-                NameFormatter.generateCategoryFolderName(problemInfo.getCategory()) + "." + problemInfo.getDifficulty();
+                NameFormatter.generateCategoryFolderName(problemInfo.getCategory()) + "."
+                + problemInfo.getDifficulty();
         String content = generateProblemTemplate(problemInfo, className, packageName);
 
         try {

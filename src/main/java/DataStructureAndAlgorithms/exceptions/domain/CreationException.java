@@ -1,4 +1,4 @@
-package DataStructureAndAlgorithms.domain.exceptions;
+package DataStructureAndAlgorithms.exceptions.domain;
 
 public class CreationException extends RuntimeException {
     public CreationException(String message) {

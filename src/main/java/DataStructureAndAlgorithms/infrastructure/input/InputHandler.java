@@ -1,6 +1,7 @@
 package DataStructureAndAlgorithms.infrastructure.input;
 
-import DataStructureAndAlgorithms.core.exceptions.ValidationException;
+import DataStructureAndAlgorithms.core.models.Difficulty;
+import DataStructureAndAlgorithms.exceptions.core.ValidationException;
 import DataStructureAndAlgorithms.utils.ApplicationConstants;
 import DataStructureAndAlgorithms.utils.NameFormatter;
 import DataStructureAndAlgorithms.utils.TypeValidator;
@@ -92,9 +93,9 @@ public class InputHandler {
         }
         return switch (input) {
             case ApplicationConstants.RETURN_BACK -> input;
-            case "H", "HARD" -> ApplicationConstants.HARD_DIFFICULTY;
-            case "M", "MEDIUM" -> ApplicationConstants.MEDIUM_DIFFICULTY;
-            case "E", "EASY" -> ApplicationConstants.EASY_DIFFICULTY;
+            case "H", "HARD" -> Difficulty.HARD.toString();
+            case "M", "MEDIUM" -> Difficulty.MEDIUM.toString();
+            case "E", "EASY" -> Difficulty.EASY.toString();
             default -> throw new ValidationException("Input must be one of: H (Hard), M (Medium), or E (Easy).");
         };
     }

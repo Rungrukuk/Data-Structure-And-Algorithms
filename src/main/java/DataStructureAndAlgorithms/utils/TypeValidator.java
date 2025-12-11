@@ -254,34 +254,36 @@ public class TypeValidator {
     }
 
     public static String getSimpleTypeName(Type type) {
-        if (type instanceof Class<?>) {
-            Class<?> clazz = (Class<?>) type;
-            if (clazz.isArray()) {
-                return getSimpleTypeName(clazz.getComponentType()) + "[]";
+        switch (type) {
+            case Class<?> clazz -> {
+                if (clazz.isArray()) {
+                    return getSimpleTypeName(clazz.getComponentType()) + "[]";
+                }
+                return clazz.getSimpleName();
             }
-            return clazz.getSimpleName();
-        } else if (type instanceof ParameterizedType) {
-            ParameterizedType pType = (ParameterizedType) type;
-            Type raw = pType.getRawType();
-            Type[] args = pType.getActualTypeArguments();
+            case ParameterizedType pType -> {
+                Type raw = pType.getRawType();
+                Type[] args = pType.getActualTypeArguments();
 
-            StringBuilder sb = new StringBuilder();
-            sb.append(getSimpleTypeName(raw));
-            sb.append("<");
-            for (int i = 0; i < args.length; i++) {
-                sb.append(getSimpleTypeName(args[i]));
-                if (i < args.length - 1)
-                    sb.append(", ");
+                StringBuilder sb = new StringBuilder();
+                sb.append(getSimpleTypeName(raw));
+                sb.append("<");
+                for (int i = 0; i < args.length; i++) {
+                    sb.append(getSimpleTypeName(args[i]));
+                    if (i < args.length - 1)
+                        sb.append(", ");
+                }
+                sb.append(">");
+                return sb.toString();
             }
-            sb.append(">");
-            return sb.toString();
-        } else if (type instanceof GenericArrayType) {
-            GenericArrayType gArray = (GenericArrayType) type;
-            return getSimpleTypeName(gArray.getGenericComponentType()) + "[]";
-        } else {
-            String name = type.getTypeName();
-            int lastDot = name.lastIndexOf('.');
-            return lastDot == -1 ? name : name.substring(lastDot + 1);
+            case GenericArrayType gArray -> {
+                return getSimpleTypeName(gArray.getGenericComponentType()) + "[]";
+            }
+            default -> {
+                String name = type.getTypeName();
+                int lastDot = name.lastIndexOf('.');
+                return lastDot == -1 ? name : name.substring(lastDot + 1);
+            }
         }
     }
 

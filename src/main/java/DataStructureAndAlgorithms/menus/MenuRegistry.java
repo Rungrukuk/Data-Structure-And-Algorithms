@@ -82,10 +82,10 @@ public class MenuRegistry {
             RETURN);
 
     public static final List<MenuOption> BULK_RESET_PRACTICES_BY_CATEGORY_MENU = Arrays.asList(
-            RESET_ALL_PRACTICES,
             RESET_EASY_PRACTICES,
             RESET_MEDIUM_PRACTICES,
             RESET_HARD_PRACTICES,
+            RESET_ALL_PRACTICES,
             RETURN);
 
     public static List<String> getLabels(List<MenuOption> menu) {
