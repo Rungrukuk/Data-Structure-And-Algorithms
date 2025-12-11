@@ -10,6 +10,8 @@ import java.lang.annotation.Target;
 public @interface Problem {
     String name();
 
-    String category() default "General";
+    String category();
+
+    String difficulty();
 
 }

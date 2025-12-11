@@ -61,6 +61,16 @@ public class Prompter {
         return promptForName(ApplicationConstants.ENTER_CATEGORY_NAME, ApplicationConstants.INVALID_CATEGORY_NAME);
     }
 
+    public Optional<String> promptForDifficultyOptional() {
+        uiManager.showPrompt(ApplicationConstants.ENTER_DIFFICULTY);
+        try {
+            return Optional.of(inputHandler.readDifficulty());
+        } catch (Exception e) {
+            uiManager.showError("Error reading input: " + e.getMessage());
+            return Optional.empty();
+        }
+    }
+
     public Optional<Integer> promptForChoiceOptional() {
         return Optional.of(inputHandler.readInt());
     }

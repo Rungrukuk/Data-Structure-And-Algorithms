@@ -12,4 +12,6 @@ public @interface Practice {
 
     String category();
 
+    String difficulty();
+
 }

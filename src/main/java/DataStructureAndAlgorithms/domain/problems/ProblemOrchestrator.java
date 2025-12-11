@@ -34,7 +34,6 @@ public class ProblemOrchestrator {
         return problemRepository.findByName(name);
     }
 
-
     // ========================= EXECUTION OPERATIONS =========================
 
     public Optional<String> runProblem(ProblemInfo problemInfo) {
@@ -44,8 +43,8 @@ public class ProblemOrchestrator {
 
     // ========================= CREATION OPERATIONS =========================
 
-    public void createNewProblem(String name, String category, String returnType) {
-        ProblemInfo problemInfo = new ProblemInfo(name, category, null, returnType, null);
+    public void createNewProblem(String name, String category, String returnType, String difficulty) {
+        ProblemInfo problemInfo = new ProblemInfo(name, category, null, returnType, null, difficulty);
 
         try {
             problemGenerator.createProblem(problemInfo);

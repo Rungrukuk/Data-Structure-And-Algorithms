@@ -48,10 +48,18 @@ public class MenuNavigator {
                 .orElse(null);
     }
 
-    public MenuOption showBulkResetPracticesMenu(){
+    public MenuOption showBulkResetPracticesMenu() {
         List<String> menuLabels = MenuRegistry.getLabels(MenuRegistry.BULK_RESET_PRACTICES_MENU);
         Optional<String> selection = selectionHandler.selectFromMenu(menuLabels, "BULK RESET PRACTICES");
         return selection.map(label -> MenuRegistry.findByLabel(MenuRegistry.BULK_RESET_PRACTICES_MENU, label))
+                .orElse(null);
+    }
+
+    public MenuOption showBulkResetPracticesByCategoryMenu() {
+        List<String> menuLabels = MenuRegistry.getLabels(MenuRegistry.BULK_RESET_PRACTICES_BY_CATEGORY_MENU);
+        Optional<String> selection = selectionHandler.selectFromMenu(menuLabels, "BULK RESET PRACTICES BY CATEGORY");
+        return selection
+                .map(label -> MenuRegistry.findByLabel(MenuRegistry.BULK_RESET_PRACTICES_BY_CATEGORY_MENU, label))
                 .orElse(null);
     }
 }

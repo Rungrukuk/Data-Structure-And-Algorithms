@@ -18,16 +18,19 @@ public class ApplicationConstants {
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_GREEN = "\u001B[32m";
+
     public static final int RETURN_TYPE_POSITION = 0;
     public static final int NUMBER_OF_GENERICS_PROBLEM = 1;
     public static final int NUMBER_OF_GENERICS_PRACTICE = 2;
     public static final double MINIMUM_SIMILARITY_VALUE = 0.7;
+
     // ========================= MENU CONSTANTS =========================
     public static final String RETURN_BACK = "0";
     public static final String ENTER_PROBLEM_NAME = "Enter a problem name (0 to return): ";
     public static final String ENTER_CATEGORY_NAME = "Enter a category name (0 to return): ";
     public static final String ENTER_RETURN_TYPE = "Enter return type {e.g.,Integer, List<String>}(0 to return): ";
     public static final String ENTER_PRACTICE_NAME = "Enter a practice name (0 to return): ";
+    public static final String ENTER_DIFFICULTY = "Enter difficulty {H (Hard), M (Medium), E (Easy)}(0 to return): ";
     public static final String DIDNOT_FIND_PROBLEM_NAME = "Could not find specified problem: ";
     public static final String DIDNOT_FIND_PRACTICE_NAME = "Could not find specified practice: ";
     public static final String INVALID_PROBLEM_NAME = "Invalid problem name";
@@ -41,6 +44,10 @@ public class ApplicationConstants {
     public static final String BASE_PRACTICE_IMPORT = IMPORT + "DataStructureAndAlgorithms.core.base.BasePractice;\n";
     public static final String PRACTICE_IMPORT = IMPORT + "DataStructureAndAlgorithms.core.annotations.Practice;\n";
     public static final String PROBLEM_IMPORT = IMPORT + "DataStructureAndAlgorithms.core.annotations.Problem;\n";
+    // ========================= Difficulties =========================
+    public static final String HARD_DIFFICULTY = "Hard";
+    public static final String MEDIUM_DIFFICULTY = "Medium";
+    public static final String EASY_DIFFICULTY = "Easy";
 
     static {
         IMPORT_MAPPINGS.put("List", "java.util.List");

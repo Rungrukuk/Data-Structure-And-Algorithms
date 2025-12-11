@@ -13,7 +13,8 @@ public class PracticeOrchestrator {
     private final PracticeExecutor practiceExecutor;
     private final PracticeGenerator practiceGenerator;
 
-    public PracticeOrchestrator(PracticeRepository practiceRepository, PracticeExecutor practiceExecutor, PracticeGenerator practiceGenerator) {
+    public PracticeOrchestrator(PracticeRepository practiceRepository, PracticeExecutor practiceExecutor,
+                                PracticeGenerator practiceGenerator) {
         this.practiceRepository = practiceRepository;
         this.practiceExecutor = practiceExecutor;
         this.practiceGenerator = practiceGenerator;
@@ -33,6 +34,11 @@ public class PracticeOrchestrator {
         return practiceRepository.findByName(name);
     }
 
+    public List<PracticeInfo> listPracticesByDifficulty(List<PracticeInfo> categorizedPractices, String difficulty) {
+        return categorizedPractices.stream()
+                .filter(p -> difficulty.equals(p.getProblemInfo().getDifficulty()))
+                .toList();
+    }
 
     public Optional<String> runPractice(PracticeInfo practiceInfo) {
         return practiceExecutor.runPractice(practiceInfo).map(practiceExecutor::formatResult);
@@ -54,7 +60,6 @@ public class PracticeOrchestrator {
         for (PracticeInfo p : practices)
             resetPractice(p);
     }
-
 
     public List<String> getAllCategories() {
         return practiceRepository.findAllGroupedByCategory().keySet().stream().sorted().toList();

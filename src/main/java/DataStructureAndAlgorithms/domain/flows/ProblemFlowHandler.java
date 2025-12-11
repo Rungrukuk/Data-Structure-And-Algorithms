@@ -79,6 +79,7 @@ public class ProblemFlowHandler extends BaseFlowHandler<ProblemInfo> {
         try {
             Optional<String> name = Optional.empty();
             Optional<String> category = Optional.empty();
+            Optional<String> difficulty = Optional.empty();
             Optional<String> returnType = Optional.empty();
 
             while (name.isEmpty()) {
@@ -87,11 +88,16 @@ public class ProblemFlowHandler extends BaseFlowHandler<ProblemInfo> {
             if (shouldReturn(name.get())) {
                 return;
             }
-
             while (category.isEmpty()) {
                 category = prompter.promptForCategoryNameOptional();
             }
             if (shouldReturn(category.get())) {
+                return;
+            }
+            while (difficulty.isEmpty()) {
+                difficulty = prompter.promptForDifficultyOptional();
+            }
+            if (shouldReturn(difficulty.get())) {
                 return;
             }
 
@@ -108,7 +114,7 @@ public class ProblemFlowHandler extends BaseFlowHandler<ProblemInfo> {
                 return;
             }
 
-            orchestrator.createNewProblem(name.get(), category.get(), returnType.get());
+            orchestrator.createNewProblem(name.get(), category.get(), returnType.get(), difficulty.get());
             ui.showSuccess("Problem created successfully!");
         } catch (ValidationException e) {
             ui.showError("Validation error: " + e.getMessage());

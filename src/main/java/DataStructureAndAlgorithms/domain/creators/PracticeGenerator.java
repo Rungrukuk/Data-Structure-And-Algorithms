@@ -28,7 +28,7 @@ public class PracticeGenerator {
 
         String className = NameFormatter.generatePracticeSimpleClassName(problemInfo.getName());
         String packageName = ApplicationConstants.PRACTICE_PACKAGE + "." +
-                NameFormatter.generateCategoryFolderName(problemInfo.getCategory());
+                NameFormatter.generateCategoryFolderName(problemInfo.getCategory()) + "." + problemInfo.getDifficulty();
         String content = generatePracticeTemplate(problemInfo, className, packageName);
 
         try {
@@ -49,7 +49,8 @@ public class PracticeGenerator {
         String content = generatePracticeTemplate(problemInfo,
                 NameFormatter.generatePracticeSimpleClassName(problemInfo.getName()),
                 ApplicationConstants.PRACTICE_PACKAGE + "." +
-                        NameFormatter.generateCategoryFolderName(problemInfo.getCategory()));
+                        NameFormatter.generateCategoryFolderName(problemInfo.getCategory()) + "."
+                        + problemInfo.getDifficulty());
         try {
             Files.writeString(Path.of(practiceInfo.getFilePath()), content);
 
@@ -71,9 +72,9 @@ public class PracticeGenerator {
         return String.format(
                 """
                         package %s;
-                        
+
                         %s
-                        @Practice(problemName = "%s", category = "%s")
+                        @Practice(problemName = "%s", category = "%s", difficulty = "%s")
                         public class %s extends BasePractice<%s, %s> {
                         
                             public %s(%s problem) {
@@ -91,6 +92,7 @@ public class PracticeGenerator {
                 imports,
                 info.getName(),
                 info.getCategory(),
+                info.getDifficulty(),
                 className,
                 returnType,
                 problemSimpleClassName,
