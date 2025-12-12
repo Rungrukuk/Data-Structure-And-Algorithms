@@ -101,7 +101,6 @@ src/main/java/DataStructureAndAlgorithms/
 * Automatic class discovery using annotations
 * Dynamic menu navigation
 * Code generation for problem & practice templates
-* Result comparison with similarity scoring
 
 ---
 
@@ -246,5 +245,6 @@ PracticeResult result = new PracticeResult(
 ## 🎉 Happy Coding!
 
 This framework provides a scalable and professional architecture for mastering DSA through structured, hands-on practice!
+
 
 
