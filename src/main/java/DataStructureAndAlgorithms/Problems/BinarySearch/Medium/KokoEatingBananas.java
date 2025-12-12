@@ -22,7 +22,7 @@ public class KokoEatingBananas extends BaseProblem<Integer> {
         int left = (int) ((total - 1) / h) + 1;
         while (left < right) {
             int mid = left + (right - left) / 2;
-            int time = 0;
+            long time = 0;
             for (int p : piles) {
                 time += (p - 1) / mid + 1;
             }
