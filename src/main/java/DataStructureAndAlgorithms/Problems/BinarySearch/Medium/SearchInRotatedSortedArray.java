@@ -14,26 +14,24 @@ public class SearchInRotatedSortedArray extends BaseProblem<Integer> {
         int right = nums.length - 1;
 
         while (left <= right) {
-            int middle = left + (right - left) / 2;
+            int mid = left + (right - left) / 2;
 
-            if (nums[middle] == target)
-                return middle;
+            if (nums[mid] == target)
+                return mid;
 
-            if (nums[left] <= nums[middle]) {
-                if (nums[left] <= target && target < nums[middle]) {
-                    right = middle - 1;
-                } else {
-                    left = middle + 1;
-                }
-            } else {
-                if (nums[middle] < target && target <= nums[right]) {
-                    left = middle + 1;
-                } else {
-                    right = middle - 1;
-                }
+            if (nums[left] <= nums[mid]) {
+                if (nums[left] <= target && target < nums[mid])
+                    right = mid - 1;
+                else
+                    left = mid + 1;
+            }
+            else {
+                if (nums[mid] < target && target <= nums[right])
+                    left = mid + 1;
+                else
+                    right = mid - 1;
             }
         }
-
         return -1;
     }
 

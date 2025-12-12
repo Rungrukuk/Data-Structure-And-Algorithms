@@ -13,7 +13,24 @@ public class MinimumTimeToCompleteTrips_Practice extends BasePractice<Long, Mini
 
     @Override
     public Long practice() {
-        // TODO: Implement practice logic
-        throw new UnsupportedOperationException("Unimplemented method 'practice'");
+        long right = 0;
+        for (int t : problem.time){
+            if (t>right)
+                right = t;
+        }
+        long left = 1;
+        right *= problem.totalTrips;
+        while (left<right){
+            long middle = left+(right-left)/2;
+            long count = 0;
+            for (int t : problem.time){
+                count+=middle/t;
+            }
+            if (count< problem.totalTrips)
+                left = middle+1;
+            else
+                right = middle;
+        }
+        return left;
     }
 }
