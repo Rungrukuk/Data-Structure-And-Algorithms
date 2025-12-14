@@ -17,7 +17,7 @@ public class AppLauncher {
             logger.info("Application terminated successfully.");
 
         } catch (Exception e) {
-            logger.error("Fatal error in application: " + e.getMessage(), e);
+            logger.error("Fatal error in application: {}", e.getMessage(), e);
             System.err.println("Fatal error: " + e.getMessage());
             e.printStackTrace();
             System.exit(1);
