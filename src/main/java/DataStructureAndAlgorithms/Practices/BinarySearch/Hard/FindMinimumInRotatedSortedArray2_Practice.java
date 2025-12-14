@@ -13,7 +13,20 @@ public class FindMinimumInRotatedSortedArray2_Practice extends BasePractice<Inte
 
     @Override
     public Integer practice() {
-        // TODO: Implement practice logic
-        throw new UnsupportedOperationException("Unimplemented method 'practice'");
+        int left = 0;
+        int right = problem.nums.length-1;
+        while (left<right)
+        {
+            int middle = left+(right-left)/2;
+            if (problem.nums[middle]>problem.nums[right]){
+                left = middle+1;
+            }
+            else if (problem.nums[middle]<problem.nums[right]){
+                right = middle;
+            }
+            else
+                right--;
+        }
+        return problem.nums[left];
     }
 }
