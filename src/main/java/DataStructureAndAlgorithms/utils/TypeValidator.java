@@ -38,23 +38,28 @@ public class TypeValidator {
 
         String trimmedType = type.trim();
 
+        // Check for invalid characters
         if (trimmedType.matches(".*[^a-zA-Z0-9_<>\\[\\]?,\\s.].*")) {
             return false;
         }
 
+        // Check for primitives in generics
         if (hasPrimitiveInGenerics(trimmedType)) {
             return false;
         }
 
+        // Handle arrays
         if (trimmedType.endsWith("[]")) {
             String baseWithoutArrays = trimmedType.replaceAll("\\[]", "");
             return isValidJavaType(baseWithoutArrays);
         }
 
+        // Handle generic types
         if (trimmedType.contains("<")) {
             return validateGenericType(trimmedType);
         }
 
+        // Handle simple types
         String typeName = extractSimpleName(trimmedType);
         return KNOWN_JAVA_TYPES.contains(typeName);
     }
@@ -65,15 +70,37 @@ public class TypeValidator {
             baseType = baseType.substring(0, baseType.length() - 2);
         }
 
-        Pattern pattern = Pattern.compile("^([a-zA-Z][a-zA-Z0-9_]*(\\.[a-zA-Z][a-zA-Z0-9_]*)*)\\s*<(.+)>$");
-        Matcher matcher = pattern.matcher(baseType);
-
-        if (!matcher.matches()) {
+        // Find the first '<' and its matching '>'
+        int firstAngle = baseType.indexOf('<');
+        if (firstAngle == -1) {
             return false;
         }
 
-        String typeName = matcher.group(1);
-        String parameters = matcher.group(3);
+        // Extract the base type name (before the first '<')
+        String typeName = baseType.substring(0, firstAngle).trim();
+
+        // Extract the generic part (everything between the first '<' and last '>')
+        // We need to find the matching closing '>' by counting angle brackets
+        int angleCount = 0;
+        int lastAngle = -1;
+        for (int i = firstAngle; i < baseType.length(); i++) {
+            char c = baseType.charAt(i);
+            if (c == '<') {
+                angleCount++;
+            } else if (c == '>') {
+                angleCount--;
+                if (angleCount == 0) {
+                    lastAngle = i;
+                    break;
+                }
+            }
+        }
+
+        if (lastAngle == -1 || lastAngle != baseType.length() - 1) {
+            return false; // Unbalanced angle brackets or extra characters after last '>'
+        }
+
+        String parameters = baseType.substring(firstAngle + 1, lastAngle);
 
         if (!isKnownType(typeName)) {
             return false;
@@ -96,6 +123,7 @@ public class TypeValidator {
     }
 
     private static boolean hasPrimitiveInGenerics(String type) {
+        // Find all generic sections
         Pattern pattern = Pattern.compile("<([^>]*)>");
         Matcher matcher = pattern.matcher(type);
 
@@ -105,15 +133,15 @@ public class TypeValidator {
             for (String param : typeParams) {
                 String trimmedParam = param.trim();
                 if (trimmedParam.startsWith("?")) {
+                    // Skip wildcards for primitive check
                     continue;
                 }
-                if (isPrimitive(trimmedParam)) {
-                    return true;
-                }
+                // Remove any trailing array brackets for checking
                 String paramWithoutArrays = trimmedParam.replaceAll("\\[]", "");
                 if (isPrimitive(paramWithoutArrays)) {
                     return true;
                 }
+                // Recursively check nested generics
                 if (trimmedParam.contains("<")) {
                     if (hasPrimitiveInGenerics(trimmedParam)) {
                         return true;
@@ -165,23 +193,34 @@ public class TypeValidator {
             String trimmedParam = param.trim();
 
             if (trimmedParam.startsWith("?")) {
+                // Handle wildcards
                 if (trimmedParam.equals("?")) {
-                    continue;
+                    continue; // Unbounded wildcard is valid
                 }
-                if (trimmedParam.matches("^\\?\\s+extends\\s+.+$")) {
-                    String bound = trimmedParam.substring(trimmedParam.indexOf("extends") + 7).trim();
-                    if (!isValidJavaType(bound)) {
-                        return false;
-                    }
-                } else if (trimmedParam.matches("^\\?\\s+super\\s+.+$")) {
-                    String bound = trimmedParam.substring(trimmedParam.indexOf("super") + 5).trim();
-                    if (!isValidJavaType(bound)) {
+
+                // Check for wildcard with bounds
+                if (trimmedParam.matches("^\\?\\s+(extends|super)\\s+.+$")) {
+                    // Extract the bound type
+                    int extendsIndex = trimmedParam.indexOf("extends");
+                    int superIndex = trimmedParam.indexOf("super");
+                    int boundStart = Math.max(extendsIndex, superIndex);
+
+                    if (boundStart > 0) {
+                        String boundType = trimmedParam.substring(boundStart +
+                                (extendsIndex > 0 ? "extends".length() : "super".length())).trim();
+
+                        // Validate the bound type
+                        if (!isValidJavaType(boundType)) {
+                            return false;
+                        }
+                    } else {
                         return false;
                     }
                 } else {
-                    return false;
+                    return false; // Invalid wildcard syntax
                 }
             } else {
+                // Regular type parameter
                 if (!isValidJavaType(trimmedParam)) {
                     return false;
                 }
@@ -198,59 +237,81 @@ public class TypeValidator {
 
         String trimmedType = type.trim();
 
+        // Handle arrays
         if (trimmedType.endsWith("[]")) {
             String baseType = trimmedType.substring(0, trimmedType.length() - 2);
-
-            if (isPrimitive(baseType)) {
-                return baseType + "[]";
-            }
-
             String convertedBase = convertToWrapperType(baseType);
             return convertedBase + "[]";
         }
 
+        // Handle generic types
         if (trimmedType.contains("<")) {
-            int angleIndex = trimmedType.indexOf('<');
-            String baseType = trimmedType.substring(0, angleIndex);
-            String genericPart = trimmedType.substring(angleIndex);
+            int firstAngle = trimmedType.indexOf('<');
+            String baseType = trimmedType.substring(0, firstAngle);
+            String genericPart = trimmedType.substring(firstAngle);
+            String convertedBase = convertToWrapperType(baseType);
             String convertedGenericPart = convertGenericParameters(genericPart);
-            return baseType + convertedGenericPart;
+            return convertedBase + convertedGenericPart;
         }
 
+        // Handle primitive types
         for (int i = 0; i < PRIMITIVE_TYPES.length; i++) {
             if (PRIMITIVE_TYPES[i].equals(trimmedType)) {
                 return WRAPPER_TYPES[i];
             }
         }
 
+        // Already a wrapper or other type
         return trimmedType;
     }
 
     private static String convertGenericParameters(String genericPart) {
-        Pattern pattern = Pattern.compile("<([^>]*)>");
-        Matcher matcher = pattern.matcher(genericPart);
-
-        if (matcher.find()) {
-            String genericContent = matcher.group(1);
-            String[] typeParams = splitGenericParameters(genericContent);
-
-            StringBuilder convertedParams = new StringBuilder();
-            for (int i = 0; i < typeParams.length; i++) {
-                if (i > 0) {
-                    convertedParams.append(", ");
-                }
-                String param = typeParams[i].trim();
-                if (param.startsWith("?")) {
-                    convertedParams.append(param);
-                } else {
-                    convertedParams.append(convertToWrapperType(param));
-                }
-            }
-
-            return "<" + convertedParams + ">";
+        // Extract the content inside the angle brackets
+        int firstAngle = genericPart.indexOf('<');
+        if (firstAngle == -1) {
+            return genericPart;
         }
 
-        return genericPart;
+        // Find matching closing bracket
+        int angleCount = 0;
+        int lastAngle = -1;
+        for (int i = firstAngle; i < genericPart.length(); i++) {
+            char c = genericPart.charAt(i);
+            if (c == '<') {
+                angleCount++;
+            } else if (c == '>') {
+                angleCount--;
+                if (angleCount == 0) {
+                    lastAngle = i;
+                    break;
+                }
+            }
+        }
+
+        if (lastAngle == -1) {
+            return genericPart; // Should not happen for valid input
+        }
+
+        String parameters = genericPart.substring(firstAngle + 1, lastAngle);
+        String[] typeParams = splitGenericParameters(parameters);
+
+        StringBuilder convertedParams = new StringBuilder();
+        for (int i = 0; i < typeParams.length; i++) {
+            if (i > 0) {
+                convertedParams.append(", ");
+            }
+            String param = typeParams[i].trim();
+            if (param.startsWith("?")) {
+                // Preserve wildcards
+                convertedParams.append(param);
+            } else {
+                convertedParams.append(convertToWrapperType(param));
+            }
+        }
+
+        // Handle nested generics in the rest of the string
+        String afterGenerics = genericPart.substring(lastAngle + 1);
+        return "<" + convertedParams + ">" + convertGenericParameters(afterGenerics);
     }
 
     public static String getSimpleTypeName(Type type) {
@@ -286,5 +347,4 @@ public class TypeValidator {
             }
         }
     }
-
 }
