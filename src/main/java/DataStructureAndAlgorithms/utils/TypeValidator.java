@@ -136,11 +136,23 @@ public class TypeValidator {
                     // Skip wildcards for primitive check
                     continue;
                 }
-                // Remove any trailing array brackets for checking
-                String paramWithoutArrays = trimmedParam.replaceAll("\\[]", "");
-                if (isPrimitive(paramWithoutArrays)) {
+
+                // For primitive arrays, they are valid in generics
+                // Check if it's a primitive type (not array)
+                if (isPrimitive(trimmedParam) && !trimmedParam.contains("[]")) {
                     return true;
                 }
+
+                // Check if the type without arrays is primitive
+                String paramWithoutArrays = trimmedParam.replaceAll("\\[]", "");
+                if (isPrimitive(paramWithoutArrays)) {
+                    // If it's a primitive array (like int[]), it's allowed
+                    // If it's just a primitive (like int), it's not allowed
+                    // Since we already checked for non-array primitives above,
+                    // this case handles nested checks
+                    continue;
+                }
+
                 // Recursively check nested generics
                 if (trimmedParam.contains("<")) {
                     if (hasPrimitiveInGenerics(trimmedParam)) {
@@ -237,11 +249,18 @@ public class TypeValidator {
 
         String trimmedType = type.trim();
 
-        // Handle arrays
+        // Handle arrays - don't convert int[] to Integer[]
         if (trimmedType.endsWith("[]")) {
             String baseType = trimmedType.substring(0, trimmedType.length() - 2);
-            String convertedBase = convertToWrapperType(baseType);
-            return convertedBase + "[]";
+            // Check if base type is a primitive
+            if (isPrimitive(baseType)) {
+                // For primitive arrays, keep them as is (int[] stays int[])
+                return trimmedType;
+            } else {
+                // For non-primitive arrays, convert the base type
+                String convertedBase = convertToWrapperType(baseType);
+                return convertedBase + "[]";
+            }
         }
 
         // Handle generic types
@@ -254,7 +273,7 @@ public class TypeValidator {
             return convertedBase + convertedGenericPart;
         }
 
-        // Handle primitive types
+        // Handle primitive types (non-array, non-generic)
         for (int i = 0; i < PRIMITIVE_TYPES.length; i++) {
             if (PRIMITIVE_TYPES[i].equals(trimmedType)) {
                 return WRAPPER_TYPES[i];
