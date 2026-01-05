@@ -14,7 +14,6 @@ public class ThreeSum extends BaseProblem<List<List<Integer>>> {
     @Override
     public List<List<Integer>> solve() {
         List<List<Integer>> result = new ArrayList<>();
-
         Arrays.sort(nums);
         for (int i = 0; i < nums.length - 2; i++) {
             if (i > 0 && nums[i] == nums[i - 1])
